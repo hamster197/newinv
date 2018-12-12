@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+<html lang="ru-ru">
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <link href="/static/material/imgs/favicon.png" rel="shortcut icon">
+        <title>CRM | Агенство недвижимости</title>
+
+        {% load staticfiles %}
+
+<!-- Custom CSS -->
+    <link href="/static/material/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link href="/static/material/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+    <link href="/static/material/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+	<link href="/static/material/materialize.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link href="/static/material/dist/css/style.css" rel="stylesheet">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+
+        <meta name="robots" content="NONE,NOARCHIVE"/>
+
+
+
+
+    </head>
+
+    <body class=""><style>
+.btn {
+    background-color: #7460ee;
+    border-color: #7460ee;
+    color: #fff;}
+	.help-block {
+    display: inline-block;
+}
+
+th {
+    text-align: inherit;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 400;
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+}
+thead {
+    color: #fff;
+    background-color: #7460ee;
+    font-weight: 500;
+}
+table.bordered {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    display: block;
+    overflow-x: auto;
+    display: table;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.bordered td {
+    padding: 1rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+	a.endless_page_link {
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #7460ee;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.pagination {
+    align-items: center;
+    justify-content: center;
+}
+label{margin:0;}
+
+
+</style>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                        <i class="ti-menu ti-close"></i>
+                    </a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-brand">
+                        <a href="/dashboard/" class="logo">
+                            <!-- Logo icon -->
+                            <b class="logo-icon">
+                                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                                <!-- Dark Logo icon -->
+                                <!-- Light Logo icon -->
+                                <img src="/static/material/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                            </b>
+                            <!--End Logo icon -->
+                            <!-- Logo text -->
+                            <span class="logo-text">
+                                <!-- dark Logo text -->
+
+                                <!-- Light Logo text -->
+                                <img src="/static/material/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                            </span>
+                        </a>
+                        <a class="sidebartoggler d-none d-md-block" href="javascript:void(0)" data-sidebartype="mini-sidebar">
+                            <i class="mdi mdi-toggle-switch mdi-toggle-switch-off font-20"></i>
+                        </a>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ti-more"></i>
+                    </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-left mr-auto">
+                       <li class="nav-item d-none d-md-block">
+                            <a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar">
+                                <i class="mdi mdi-menu font-24"></i>
+                            </a>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item search-box">
+						<div class="d-flex align-items-center" style="
+    padding: 0 15px;
+    font-size: .875rem;
+    line-height: 64px;
+    height: 64px;
+">
+                                    <i class="mdi mdi-bell-outline font-20 mr-1"></i>
+                                    <div class="ml-1 d-none d-sm-block">
+                                        <span>{{tn1}} | {{tn2}} </span>
+                                    </div>
+                                </div>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-right">
+
+
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="/static/material/imgs/user.png" alt="user" class="rounded-circle" width="40">
+                                <span class="m-l-5 font-medium d-none d-sm-inline-block">{% if user.is_authenticated %}
+                                    {{ user.last_name }} {{ user.first_name }} (Avito:
+                                    {{ tvestum_count }}
+                                    )
+                                {% endif %} <i class="mdi mdi-chevron-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                                <span class="with-arrow">
+                                    <span class="bg-primary"></span>
+                                </span>
+                                <div class="d-flex no-block align-items-center p-15 bg-primary text-white m-b-10">
+                                    <div class="">
+                                        <img src="/static/material/imgs/user.png" alt="user" class="rounded-circle" style="margin: 10px;" width="40">
+                                    </div>
+                                    <div class="m-l-10">
+                                        <h4 class="mb-0"> {% if user.is_authenticated %}
+                                    {{ user.last_name }} {{ user.first_name }} {% endif %}</h4>
+                                        <p class=" mb-0"></p>
+                                    </div>
+                                </div>
+								<a class="dropdown-item" href="{% url 'ch_login' %}">
+                                    <i class="ti-settings m-r-5 m-l-5"></i> Изменить пароль</a>
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url "crm:logout" %}">
+                                    <i class="fa fa-power-off m-r-5 m-l-5"></i> Выйти</a>
+	
+
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- User profile and search -->
+                        <!-- ============================================================== -->
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">Добавить объект</span>
+                        </li>
+                        <li class="sidebar-item">
+					<a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-home-modern"></i>
+                                <span class="hide-menu">Квартиры </span>
+                            </a>
+							<ul aria-expanded="false" class="collapse  first-level">
+						        <li class="sidebar-item">
+                                    <a href="{% url 'crm:newvigr' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu">Циан вторичка</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:newNovvigr' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu">Циан новостройка</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:new_flat' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu">ЦРМ</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">{% comment %}
+                                    <a href="{% url 'crm:flat_apparts_postForm' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu">Апартаменты</span>
+                                    </a>
+                                </li>{% endcomment %}
+                            </ul>	
+                        </li>
+						<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-home-outline"></i>
+                                <span class="hide-menu">Дома </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:new_dom_post' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> ЦРМ </span>
+                                    </a>
+                                </li>{% comment %}
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> ЦИАН (В разработке) </span>
+                                    </a>
+                                </li>{% endcomment %}
+                                
+                            </ul>
+                        </li>
+						<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-highway"></i>
+                                <span class="hide-menu">Участки </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:new_uch_post' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> ЦРМ </span>
+                                    </a>
+                                </li>{% comment %}
+                                <li class="sidebar-item">
+                                    <a href="#" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> ЦИАН (В разработке) </span>
+                                    </a>
+                                </li>{% endcomment %}
+                                
+                            </ul>
+                        </li>
+						 <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">Объекты в базе</span>
+                        </li>
+							<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-crop-square"></i>
+                                <span class="hide-menu"> Мои выгр.объекты </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:my_flatunpub'%}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Квартиры </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{%  url 'crm:upb_dom_view' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Дома </span>
+                                    </a>
+                                </li>
+                                 <li class="sidebar-item">
+                                    <a href="{%  url 'crm:unpub_uc_index' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Участки </span>
+                                    </a>
+                                </li>{% comment %}
+								<li class="sidebar-item">
+                                    <a href="{% url 'crm:all_vs_pub' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> в Вестум</span>
+                                    </a>
+                                </li>{% endcomment %}
+								<li class="sidebar-item">
+                                    <a href="{% url 'crm:cianindex' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> в ЦИАН </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+						<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-crop-square"></i>
+                                <span class="hide-menu"> Все объекты </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{%  url 'crm:my_flatpub' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Квартиры </span>
+                                    </a>
+                                </li>{% comment %}
+                                <li class="sidebar-item">
+                                    <a href="{%  url 'crm:excl_flatpub' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Квартиры(Эксклюзив) </span>
+                                    </a>
+                                </li>{% endcomment %}
+                                 <li class="sidebar-item">
+                                    <a href="{%  url 'crm:pub_dom_view' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Дома </span>
+                                    </a>
+                                </li>
+								<li class="sidebar-item">
+                                    <a href="{%  url 'crm:pub_uc_index' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Участки</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+						{% if request.user.groups.get.name == 'seo' or request.user.groups.get.name == 'Администрация' %}
+							<li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">СЕО</span>
+                        </li>
+							<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-link"></i>
+                                <span class="hide-menu"> SEO </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:seo_flat_pub'%}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Квартиры на сайте </span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:seo_flat_unpub'%}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Квартиры не на сайте </span>
+                                    </a>
+                                </li>{% comment %}
+                                 <li class="sidebar-item">
+                                    <a href="{% url 'crm:dm_index'%}" class="sidebar-link">
+                                        <i class="mdi mdi-format-align-right"></i>
+                                        <span class="hide-menu"> Текст для ДомКлик </span>
+                                    </a>
+                                </li>{% endcomment %}
+                            </ul>
+                        </li>
+						
+						{% endif %}<li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">Офис</span>
+                        </li>
+							<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-account"></i>
+                                <span class="hide-menu"> Клиенты для сработки </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:NewZayav' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Внести клиента </span>
+                                    </a>
+                                </li>
+								{% if request.user.groups.get.name == 'Офис-менеджер' %}
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:NewZayavNov' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Внести новостройку </span>
+                                    </a>
+                                </li>
+                                 <li class="sidebar-item">
+                                    <a href="{% url 'crm:NewZayavLich' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Заявка на риелтора </span>
+                                    </a>
+                                </li>
+								    {% endif %}
+                                                        {% comment %}
+								<li class="sidebar-item">
+                                    <a href="Выбрать клиента" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Выбрать клиента</span>
+                                    </a>
+                                </li>
+								{% endcomment %}
+                            </ul>
+                        </li>                        <li class="nav-small-cap">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                            <span class="hide-menu">Отчеты</span>
+                        </li>
+						<li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:otch_new_all'%}" aria-expanded="false">
+                                <i class="mdi mdi-file-document"></i>
+                                <span class="hide-menu">Cоздать отчет по сделке</span>
+                            </a>
+                        </li>
+						{% comment %} {% if request.user.groups.get.name == 'Администрация' or request.user.groups.get.name == 'Администрация Адлер' %}{% endcomment %}
+						<li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:otch_all_reelt'%}" aria-expanded="false">
+                                <i class="mdi mdi-file-document"></i>
+                                <span class="hide-menu">Мои сделки</span>
+                            </a>
+                        </li>
+						{% comment %} {% endif %}{% endcomment %}
+						<li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:sdelka_reit'%}" aria-expanded="false">
+                                <i class="mdi mdi-star-outline"></i>
+                                <span class="hide-menu">Рейтинг</span>
+                            </a>
+                        </li>
+						<li class="sidebar-item">
+                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="mdi mdi-chart-areaspline"></i>
+                                <span class="hide-menu"> Статистика </span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:crm_obj_index' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Тек.неделя (Cочи)</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:crm_obj_past_index' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Пр.неделя (Сочи)</span>
+                                    </a>
+                                </li>
+								<li class="sidebar-item">
+                                    <a href="{% url 'crm:crm_obj_index_adler' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Тек.неделя (Адлер)</span>
+                                    </a>
+                                </li>
+								 <li class="sidebar-item">
+                                    <a href="{% url 'crm:crm_obj_past_index_adler' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Пр.неделя (Адлер)</span>
+                                    </a>
+                                </li>
+                                 <li class="sidebar-item">
+                                    <a href="{% url 'crm:DmCahestvoOtch'%}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Качество обьявлений </span>
+                                    </a>
+                                </li>{% if request.user.username == 'homka' %}
+								<li class="sidebar-item">
+                                    <a href="{% url 'crm:myadm'%}" class="sidebar-link">
+                                        <i class="mdi mdi-buffer"></i>
+                                        <span class="hide-menu"> Администрирование</span>
+                                    </a>
+                                </li>{% endif %}{% if request.user.groups.get.name == 'Администрация' %}
+								 <li class="sidebar-item">
+                                    <a href="{% url 'crm:DashBoard'%}" class="sidebar-link">
+                                        <i class="mdi mdi-buffer"></i>
+                                        <span class="hide-menu"> DashBoard </span>
+                                    </a>
+                                </li>{% endif %}
+                            </ul>
+                        </li>{% comment %}
+						<li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'zvn:index'%}" aria-expanded="false">
+                                <i class="mdi mdi-border-style"></i>
+                                <span class="hide-menu"> Ежедневник </span>
+                            </a>
+                        </li>{% endcomment %}
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-6 align-self-center">
+                        <p> </p>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">{% if not request.user.groups.get.name == 'Администрация' %}
+	                <!-- ============================================================== -->
+                <!-- Sales chart -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-emoticon font-20 text-info"></i>
+                                        <p class="font-16 m-b-5">Открытые</p>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{topen_otchet_сn}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-currency-eur font-20 text-success"></i>
+                                        <p class="font-16 m-b-5">Закрытые</p>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ tcloset_otchet_cn }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-image font-20 text-purple"></i>
+                                        <p class="font-16 m-b-5">Рассрочка</p>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ trasr_otchet_cn }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-poll font-20 text-danger"></i>
+                                        <p class="font-16 m-b-5">Срыв</p>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ sriv_otchet_cn }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+				<div class="row">
+                    <div class="col-sm-12 col-lg-4">
+                        <div class="card">
+						                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-poll font-20 text-danger"></i>
+                                        <a href="{% url 'crm:indexZayavka' %}" class="font-16 m-b-5">Заявки</a>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ Ntn3 }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                    </div>
+					<div class="col-sm-12 col-lg-4">
+                        <div class="card">
+						                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-poll font-20 text-danger"></i>
+                                        <a href="{% url 'crm:my_flatunpub' %}" class="font-16 m-b-5">Объектов в CRM</a>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ Nt_my_ya_obj }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                    </div>
+					<div class="col-sm-12 col-lg-4">
+                        <div class="card">
+						                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-7">
+                                        <i class="mdi mdi-poll font-20 text-danger"></i>
+                                        <a href="{% url 'crm:my_flatunpub' %}" class="font-16 m-b-5">Добавлено (нед)</a>
+                                    </div>
+                                    <div class="col-5">
+                                        <h1 class="font-light text-right mb-0">{{ Ntcrm_obj_week_count }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+
+                    </div>
+				</div>	{% endif %}
+                <!-- ============================================================== -->
+                <!-- Sales chart -->
+				<div class="content">
+
+                                                                {% if user.is_authenticated %}
+                                                                    {% block content %}{% endblock %}
+                                                                {% else %}
+                                                                    {% block content1 %}{% endblock %}
+                                                                {% endif %}
+
+                                                            </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center">
+                ЦРМ | Агенство Недвижимости.
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+
+		<div class="chat-windows"></div>												
+<!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="/static/material/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/static/material/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/static/material/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- apps -->
+    <script src="/static/material/dist/js/app.min.js"></script>
+    <script src="/static/material/dist/js/app.init.js"></script>
+    <script src="/static/material/dist/js/app-style-switcher.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="/static/material/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/static/material/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="/static/material/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="/static/material/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="/static/material/dist/js/custom.js"></script>
+	<script src="/static/material/materialize.js"></script>
+	
+
+ 
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+<style>.ml-1.d-none.d-sm-block {
+    display: none !important;
+}</style>
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+{% load material_form %}
+
+
+
+      <ul class="nav nav-pills m-t-30 m-b-30">{{ ti }}
+        <li class="nav-item"><a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">AVITO баллы</a></li>
+        <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Чистка Cian</a></li>
+        {% comment %}
+        <li class="tab col s3 disabled"><a href="#test3">Увольнение</a></li>
+        <li class="tab col s3 disabled"><a href="#test4">Test 4</a></li>
+        {% endcomment %}
+      </ul>
+{% load material_form %}
+
+<div class="tab-content br-n pn">
+    <div id="test1" class="tab-pane active">
+<form method="post" class="post-form">
+    <div class="row">
+      <div class="col s4">    {% csrf_token %}
+            {% form form=tVsForm %}{% endform %}
+      </div>
+      <div class="col s4" >
+              <button type="submit"  name="vestumAdd" class="btn" vertical-align="middle">Добавить баллы всем</button>
+      </div>
+      <div class="col s4">
+              <button type="submit"  name="vestumDellPrPub" class="btn">Убрать признак публикации</button>
+      </div>
+
+    </div>
+</form>
+
+  <div class="row">
+    <div class="col s12 ">
+      <div class="card ">
+        <div class="card-content ">
+              <table>
+        <thead>
+          <tr>
+              <th><strong>Отдел</strong></th>
+              <th><strong>ФИО</strong></th>
+              <th><strong>БАЛЛОВ В AVITO</strong></th>
+          </tr>
+        </thead>
+               <tbody>
+           {% for reelt in tallreelt %}
+          <tr>
+            <td>{{ reelt.groups.all.0 }} </td>
+            <td>{{ reelt.last_name }} {{ reelt.first_name }}</td>
+            <td> {{ reelt.userprofile1.vestum_count_ads }}</td>
+          </tr>
+           {%  endfor %}
+                </tbody>
+      </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="test2" class="tab-pane">
+  <span class="card-title">Удаление обьектов из Циан-введите нужный промежуток:</span>
+<form method="post" class="post-form">
+    {% csrf_token %}
+    {% form form=tform %}{% endform %}
+    <button type="submit"  name="cian_delete" class="btn">Удалить</button>
+    {% if tdel %}Удалено {{ tdel }} обьектов{% endif %}
+</form>
+</div>
+
+
+    <div id="test3" class="col s12"></div>
+    <div id="test4" class="col s12"></div>
+  </div>
+
+
+ </div>
+</div>
+
+{% endblock %}

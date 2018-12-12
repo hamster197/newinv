@@ -1,0 +1,293 @@
+{% extends 'crm/main.html' %}
+
+{% block content %}
+{% if request.user.groups.all.0.name == 'Администрация' %}
+
+<div class="row">
+                    <!-- column -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Однокомнатные: {{ tOneCrs }} руб.</h4>
+                                <div>
+                                    <div id="donutchart"></div>
+									    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Студии',      {{ tstcount }}],
+          ['Однокомнатные',     {{ tonecount }}],
+          ['Двухкомнатные',      {{ ttwo_count }}],
+          ['Трехкомнатные',      {{ ttreecount }}],
+          ['Многокомнатные',     {{ tmanycount }}],
+          ['Дома',      {{ thouse_count }}],
+
+        ]);
+
+        var options = {
+          title: 'Двухкомнатные: {{ tTwoCrs }} руб. Трехкомнатные {{ tTreCrs }} руб.',
+          pieHole: 0.14,
+		  fontName: 'Open Sans',
+		  colors: ['#5ac146', '#2961ff', '#40c4ff', '#ff821c', '#7460ee', '#f62d51'],
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column -->
+                    <!-- column -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Яндекс</h4>
+                                <div>
+                                    <div id="oil"></div>
+									           <script src="https://www.google.com/jsapi"></script>
+  <script>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChart);
+   function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+     ['Даты', ''],
+     ['{{ y|safe }}', {{ tc|safe }}],
+     ['{{ y2|safe }}', {{ tc2|safe }}],
+     ['{{ y3|safe }}', {{ tc3|safe }}],
+     ['{{ y4|safe }}', {{ tc4|safe }}],
+    ]);
+    var options = {
+     title: 'Посещения за сегодня: {{ tc|safe }}' ,
+     hAxis: {title: 'Даты'},
+     vAxis: {title: 'посетителей'},
+	 fontName: 'Open Sans',
+	 colors: ['#5ac146']
+    };
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('oil'));
+    chart.draw(data, options);
+   }
+  </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column -->
+</div>					
+<div class="row">
+                    <!-- column -->
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">ЦИАН</h4>
+                                <div>
+								<div id="piechart"></div>
+								    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Адлер ',     {{ tcianA }}],
+          ['Сочи',    {{ tCianS  }}]
+        ]);
+
+        var options = {
+          title: 'Обьявлени в ЦИАН; {{ tcianAll }}'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column -->
+					<div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Прибыль за полгода</h4>
+                                <div>
+								<div id="chart_div"></div>
+								   <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+         ['Дата:', 'Прибыль'],
+         ['{{ tdm1|safe }}', {{ tdsum1|safe }}],
+         ['{{ tdm2|safe }}', {{ tdsum2|safe }}],
+         ['{{ tdm3|safe }}', {{ tdsum3|safe }}],
+         ['{{ tdm4|safe }}', {{ tdsum4|safe }}],
+         ['{{ tdm5|safe }}', {{ tdsum5|safe }}],
+         ['{{ tdm6|safe }}', {{ tdsum6|safe }}]
+      ]);
+
+    var options = {
+      title : 'Прибыль компании за полгода',
+      vAxis: {title: 'Сумма'},
+      hAxis: {title: 'Дата'},
+      seriesType: 'bars',
+      series: {5: {type: 'line'}},
+     fontName: 'Open Sans',
+	 colors: ['#26c6da']
+    };
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+    </script>
+					   </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column -->
+										<div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Прибыль за месяц</h4>
+                                <div>
+								<div id="piechart_3d"></div>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Сочи ',     {{ tssochi|safe  }}],
+          ['Адлер',      {{ tsadler|safe  }}],
+        ]);
+
+        var options = {
+          title: 'Прибыль компании в текущем месяце:',
+          is3D: true,
+		  	 fontName: 'Open Sans',
+	 colors: ['#5ac146', '#f62d51']
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+					   </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column -->
+</div>								
+                 <!-- row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title m-b-40">Статистика</h4>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item"> <a class="nav-link active" id="test1-tab" data-toggle="tab" href="#test1" role="tab" aria-controls="test1" aria-expanded="true"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Рейтинг по отделам</span></a> </li>
+                                    <li class="nav-item"> <a class="nav-link" id="test2-tab" data-toggle="tab" href="#test2" role="tab" aria-controls="test2"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Сочи</span></a></li>
+                                    <li class="nav-item"> <a class="nav-link" id="test3-tab" data-toggle="tab" href="#test3" role="tab" aria-controls="test3"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Адлер</span></a></li>
+
+                                </ul>
+                                <div class="tab-content tabcontent-border p-20" id="myTabContent">
+                                    <div role="tabpanel" class="tab-pane fade show active" id="test1" aria-labelledby="test1-tab">
+                                        <div class="p-20""><p></p></div>
+										<div class="table-responsive">
+        <table class="table">
+                                        <thead class="bg-success text-white">
+          <tr>
+              <th>Отдел</th>
+              <th>Коммисия</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for rOtd in trOtd %}
+          <tr>
+            <td>{{ rOtd.otd }}</td>
+            <td>{{ rOtd.kommisia }} руб.</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table></div>
+                                    </div>
+                                    <div class="tab-pane fade" id="test2" role="tabpanel" aria-labelledby="test2-tab">
+                                        <div class="p-20""><p></p></div>
+										<div class="table-responsive">
+        <table class="table">
+                                        <thead class="bg-info text-white">
+<tr>
+              <th>ФИО</th>
+              <th>Сделок</th>
+              <th>Коммисия</th>
+              <th>Объектов в ЦРМ</th>
+              <th>Объектов в Циан</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for sOtd in tsOtd %}
+          <tr>
+            <td>{{ sOtd.auth_ful_name }}</td>
+            <td>{{ sOtd.sdelok_calc }}</td>
+            <td>{{ sOtd.sdelok_sum }}</td>
+            <td>{{ sOtd.crm_count }}</td>
+            <td>{{ sOtd.cian_count }}</td>
+          </tr>
+        {% endfor %}
+        </tbody></table></div>                                    </div>
+                                    <div class="tab-pane fade" id="test3" role="tabpanel" aria-labelledby="test3-tab">
+                                        <div class="p-20""><p></p></div>
+										<div class="table-responsive">
+        <table class="table">
+                                        <thead class="bg-primary text-white">
+          <tr>
+              <th>ФИО</th>
+              <th>Сделок</th>
+              <th>Коммисия</th>
+              <th>Объектов в ЦРМ</th>
+              <th>Объектов в Циан</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {% for aOtd in taOtd %}
+          <tr>
+            <td>{{ aOtd.auth_ful_name }}</td>
+            <td>{{ aOtd.sdelok_calc }}</td>
+            <td>{{ aOtd.sdelok_sum }}</td>
+            <td>{{ aOtd.crm_count }}</td>
+            <td>{{ aOtd.cian_count }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- row -->
+ 			
+
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+

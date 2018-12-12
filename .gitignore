@@ -1,0 +1,11 @@
+*.pyc
+crm/migrations/*.py
+
+*~
+__pycache__
+myvenv
+db.sqlite3
+/static1
+/zhem/settings.py
+.DS_Store
+.idea

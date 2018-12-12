@@ -1,0 +1,183 @@
+{% extends 'crm/main.html' %}
+
+{% block content %}
+
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+<p class="card-title">Автор: {{ tpdom.author.first_name }} {{ tpdom.author.last_name }} {{ tpdom.author.userprofile1.tel }}</p>
+	<ul class="nav nav-pills m-t-30 m-b-30">
+    <li class=" nav-item"> <a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Главное</a> </li>
+    <li class="nav-item"> <a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Описание</a> </li>
+    <li class="nav-item"> <a href="#test3" class="nav-link" data-toggle="tab" aria-expanded="true">Примечание</a> </li>
+	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото</a> </li>
+	{%  ifequal request.user tpdom.author %}<li class="nav-item"> <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">Данные клиента</a> </li>{% endifequal %}
+    </ul>
+<div class="tab-content br-n pn">
+    <div id="test1" class="tab-pane active">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+	<table class="bordered">
+        <tbody>
+          <tr>
+              <td>Дата публикации:  </td>
+              <td> <strong> {{tpdom.date_sozd  }}</strong></td>
+          </tr>
+          <tr>
+            <td>Район: </td>
+            <td><strong> {{tpdom.raion  }}</strong></td>
+          </tr>
+       <tr>
+            <td>Площадь:  </td>
+            <td><strong>{{tpdom.ploshad}}</strong></strong></td>
+          </tr>
+                 <tr>
+            <td>Площадь участка: </td>
+            <td><strong>{{tpdom.h_ploshad_uch}}</strong> </td>
+          </tr>
+          <tr>
+            <td>Исп участка: </td>
+            <td><strong>{{tpdom.h_isp_uch  }}</strong></td>
+          </tr>
+                    <tr>
+            <td>Комнат:</td>
+            <td><strong> {{ tpdom.h_komnat }}</strong></td>
+          </tr>
+          <tr>
+            <td>Цена агенства: </td>
+            <td><strong>{{ tpdom.cena_agenstv }} руб.</strong></td>
+          </tr>
+        </tbody>
+      </table>	
+</div>
+</div>
+
+    <div id="test2" class="tab-pane">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+        <table class="bordered">
+			  <tbody>
+          <tr>
+              <td>Вид права: </td>
+              <td><strong> {{tpdom.h_vid_prava  }}</strong></td>
+          </tr>
+          <tr>
+            <td>Вид из окон:  </td>
+            <td><strong>{{tpdom.h_vid_is_okon}}</strong></td>
+          </tr>
+          <tr>
+              <td>Инфраструктура:  </td>
+              <td><strong>{{tpdom.h_infr}}</strong></td>
+          </tr>
+          <tr>
+            <td>Тип дома:  </td>
+            <td><strong>{{tpdom.h_tip_doma  }}</strong></td>
+          </tr>
+          <tr>
+              <td>Раст до моря:   </td>
+              <td><strong> {{ tpdom.h_rast_more }}</strong></td>
+          </tr>
+          <tr>
+            <td>Цена агенства: </td>
+            <td><strong>{{ tpdom.cena_agenstv }} руб.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</div>
+
+<div id="test3" class="tab-pane">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+	<div class="table-responsive">
+        <table class="table">
+        <tbody>
+          <tr>
+              <td>Примечание: </td>
+              <td><strong>{{tpdom.prim}}</strong></td>
+          </tr>
+          <tr>
+            <td>Цена агенства: </td>
+            <td><strong>{{ tpdom.cena_agenstv }} руб.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</div>
+</div>
+
+
+<div id="test5" class="tab-pane">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+        {% for i in tpdom.idd_gal.all %}
+            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.63.187{{ i.npict.url }}"></div>
+        {% endfor %}	
+</div>
+</div>
+
+    <div id="test4" class="tab-pane">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+           {%  ifequal request.user tpdom.author %}<table class="bordered">
+        <tbody>
+          <tr>
+              <td>ФИО собственника:  </td>
+              <td><strong>{{tpdom.client_name }}</strong></td>
+          </tr>
+          <tr>
+            <td>Телефон собственника: </td>
+            <td><strong>{{tpdom.client_tel}}</strong</td>
+          </tr>
+          <tr>
+            <td>Адрес: </td>
+            <td><strong>{{tpdom.adress}}, {{ tpdom.dom_numb }}</strong</td>
+          </tr>
+              <tr>
+              <td>Цена собственника:  </td>
+              <td><strong>{{tpdom.cena_sobstv}} руб.</strong></td>
+          </tr>
+          <tr>
+            <td>Цена агенства: </td>
+            <td><strong>{{ tpdom.cena_agenstv }} руб.</strong></td>
+          </tr>
+        </tbody>
+      </table>{% endifequal %}
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+	
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+{% ifequal request.user tpdom.author %}
+<a href="{% url 'crm:dom_edit' idd=tpdom.id %} " class="btn" title = "Редактировать">Редактировать</a>{% endifequal %}
+
+</div>
+</div>
+</div>
+</div>
+		<script src="/static/material/js/jquery.js"></script>
+		<script src="/static/material/js/materialize.admin.min.js"></script>
+
+{% load el_pagination_tags %}
+
+
+
+
+<!--      <li><a href="{% url 'crm:upb_dom_view' %}" class="btn-floating yellow darken-1"title = "Личные"><i class="material-icons">account_box</i></a></li>
+      <li><a <a href="{% url 'crm:pub_dom_view' %}"  class="btn-floating green" title = "В агенстве"><i class="material-icons">announcement</i></a></li>
+        <li><a href="{% url 'crm:dom_print' idd=tpdom.pk %}" class="btn-floating indigo darken-4" title = "Распечатать" target="_blank"><i class="material-icons">local_printshop</i></a></li>
+-->    
+
+
+  </div>
+
+{% endblock %}

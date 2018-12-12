@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Starter Template - Materialize</title>
+
+
+        <!-- Add jQuery library -->
+        <script
+            type="text/javascript"
+            src="http://code.jquery.com/jquery-latest.min.js"></script>
+        
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+        
+        <!-- Add fancyBox -->
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+        <link
+            rel="stylesheet"
+            href="/static/crm/css/jquery.fancybox.css"
+            type="text/css"
+            media="screen"/>
+        <!-- Compiled and minified CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+
+        <link href="/static/material/css/materialize.css" rel="stylesheet">
+
+
+        <meta name="robots" content="NONE,NOARCHIVE"/>
+
+        <script src="/static/material/js/jquery.js"></script>
+  
+
+    </head>
+<img class="materialboxed" width="650" src="http://77.222.63.187/image/2018/06/25/real/10094517-0-153238.jpg">
+  <!--  Scripts-->
+<script src="/static/material/js/materialize.admin.min.js"></script>
+
+  </body>
+</html>
+
+
+
+
+
+
+{% comment %}{% extends 'crm/main.html' %}
+{% block content %}
+
+{% load material_form %}
+    <div class="row">
+         <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <form method="post" class="post-form">
+                    {% csrf_token %}
+                        {% form form=tpnewspostform layout=form.layout%}{% endform %}
+                        <button type="submit" name="_submit" class="btn">Сохранить</button>
+                </div>
+            </div>
+         </div>
+     </div>
+
+</form>
+
+
+
+
+
+
+{% endblock %}{% endcomment %}
