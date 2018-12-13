@@ -1724,12 +1724,12 @@ def reeelt_otchet_all_view(request):
         rec = str(rec +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='По рекомендации').count()))
 ######################################################################################################################
         domclick = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
-                                              ot_kuda_kl='Домклик(Сбер)').count()
+                                              ot_kuda_kl='Cian').count()
         domclick = domclick +(otchet_nov.objects.filter(date_sozd__gte=ds, date_sozd__lte=de, sdelka_zakrita='Рассрочка',
-                                              ot_kuda_kl='Домклик(Сбер)').count())
+                                              ot_kuda_kl='Cian').count())
         domclick = domclick+(otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Срыв',
-                                              ot_kuda_kl='Домклик(Сбер)').count())
-        domclick = str(domclick +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='Домклик(Сбер)').count()))
+                                              ot_kuda_kl='Cian').count())
+        domclick = str(domclick +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='Cian').count()))
 ######################################################################################################################
         Yandex = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
                                               ot_kuda_kl='Yandex Недвижимость').count()

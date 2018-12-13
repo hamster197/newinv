@@ -368,7 +368,7 @@ class otchet_nov(models.Model):
     name_agency = models.CharField(max_length=50, verbose_name='Название агенства:',
                                    help_text='если есть',blank=True,  default='')
 
-    ot_kuda_choises = (('Другое' , 'Другое'),('Avito','Avito'),('Юла','Юла'),('Сайт компании','Сайт компании'),#('Avito Turbo','Avito Turbo'),('Vestum','Vestum'),('Cian','Cian'),
+    ot_kuda_choises = (('Другое' , 'Другое'),('Avito','Avito'),('Юла','Юла'),('Сайт компании','Сайт компании'),('Cian','Cian'),#('Avito Turbo','Avito Turbo'),('Vestum','Vestum'),('Cian','Cian'),
                        ('По рекомендации','По рекомендации'),('Домклик(Сбер)','Домклик(Сбер)'),('Yandex Недвижимость','Yandex Недвижимость'))
     ot_kuda_kl = models.CharField(max_length=20, verbose_name='Канал привлечения клиента:', choices=ot_kuda_choises)
 
