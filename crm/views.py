@@ -5211,15 +5211,24 @@ def DashBoardView(request):
     studia_count = flat_obj.objects.filter(type = 'flat', komnat ='Студия').count()
     OneRoom_count = flat_obj.objects.filter(type = 'flat', komnat='Однокомнатная').count()
     OneRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Однокомнатная').aggregate(Sum("cena_agenstv"))
-    OneRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // OneRoom_count
+    if OneRoom_Sum == None:
+        OneRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // OneRoom_count
+    else:
+        OneRoomSrCena = 0
 
     TwoRoom_count  = flat_obj.objects.filter(type = 'flat', komnat ='Двухкомнатная').count()
     TwoRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Двухкомнатная').aggregate(Sum("cena_agenstv"))
-    TwoRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TwoRoom_count
+    if TwoRoom_Sum == None:
+        TwoRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TwoRoom_count
+    else:
+        TwoRoomSrCena=0
 
     TreeRoom_count  = flat_obj.objects.filter(type = 'flat', komnat='Трехкомнатная').count()
     TreeRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Трехкомнатная').aggregate(Sum("cena_agenstv"))
-    TreeRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TreeRoom_count
+    if TreeRoom_Sum == None:
+        TreeRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TreeRoom_count
+    else:
+        TreeRoomSrCena=0
 
     ManyRoom_count  = flat_obj.objects.filter(type = 'flat', komnat='Многокомнатная').count()
     Houses_count = flat_obj.objects.filter(type = 'house').count()
