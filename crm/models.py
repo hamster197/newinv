@@ -29,7 +29,7 @@ class UserProfile1(models.Model):
     ya_choises = (('Да','Да'),('Нет','Нет'))
     ya =models.CharField('Yandex недвижимость',default='Нет', max_length=3, choices=ya_choises)
     nach_otd = models.CharField('Начальник отдела', default='Нет', max_length=3, choices=ya_choises)
-    #joomla_usr_id = models.CharField(verbose_name='ID пользователя в Joomla', max_length=10, default='')
+    joomla_usr_id = models.CharField(verbose_name='ID пользователя в Joomla', max_length=10, default='')
     search_minp = models.IntegerField(default=0, verbose_name='Мин.площадь')
     search_maxp = models.IntegerField(default=5000, verbose_name='Макс.площадь')
     search_minc = models.IntegerField(default=0, verbose_name='Мин.цена')
