@@ -79,16 +79,16 @@ class VestimPorydok(admin.ModelAdmin):
 
 
 admin.site.register(flat_obj, flatfields, )
-#admin.site.register(otchet_nov, sdelka_nov)
+admin.site.register(otchet_nov, sdelka_nov)
 admin.site.register(zayavka, zayavkaFields)
 admin.site.register(feed, feedfelds)
 admin.site.register(feed_gallery, feedgalfelds)
 admin.site.register(stat_obj_crm, statistika_fields)
 #admin.site.register(reyting_po_sdelkam, reytingFields)
-#admin.site.register(reyt_sdelka_otd, OtdReytFields)
+admin.site.register(reyt_sdelka_otd, OtdReytFields)
 admin.site.register(cachestvoDomCl, cashDomClickFields)
 admin.site.register(TmpCianCount, CianFields)
-admin.site.register(zvonok,ZvonokFields)
+#admin.site.register(zvonok,ZvonokFields)
 
 class UserInline(admin.StackedInline):
     model = UserProfile1

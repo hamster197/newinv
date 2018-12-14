@@ -23,9 +23,9 @@
 {% for i in post.idd_gal.all %}
     {% if i.npict.url %}
                 {% if forloop.counter == 1 %}
-                 <image primary="1"><![CDATA[http://77.222.63.187{{ i.npict.url }}]]></image>
+                 <image primary="1"><![CDATA[http://77.222.63.160{{ i.npict.url }}]]></image>
                 {% else %}
-                 <image primary="0"><![CDATA[http://77.222.63.187{{ i.npict.url }}]]></image>
+                 <image primary="0"><![CDATA[http://77.222.63.160{{ i.npict.url }}]]></image>
                 {% endif %}
     {% endif %}
 {% endfor %}
