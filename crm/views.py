@@ -4950,14 +4950,14 @@ def DashBoardView(request):
     cn = get_object_or_404(TmpCianCount, pk=1)
     tsochi = cn.sochi
     tadler = cn.adler
-    count = feed.objects.filter(pub='Да', date_sozd__gte=date).exclude( author__groups__name='Офис в Адлере').count()
-    post = feed.objects.filter(pub='Да', date_sozd__gte=date).exclude( author__groups__name='Офис в Адлере').order_by(
+    count = feed.objects.filter(pub='Да', date_sozd__gte=date).exclude( author__groups__name__contains='Адлер').count()
+    post = feed.objects.filter(pub='Да', date_sozd__gte=date).exclude( author__groups__name__contains='Адлер').order_by(
         '-date_sozd')[:tsochi]
     if count < tsochi:
-        apost = feed.objects.filter(pub='Да', date_sozd__gte=date,  author__groups__name='Офис в Адлере').order_by(
+        apost = feed.objects.filter(pub='Да', date_sozd__gte=date,  author__groups__name__contains='Адлер').order_by(
             '-date_sozd')[:tadler+(tsochi-count)]
     else:
-        apost = feed.objects.filter(pub='Да', date_sozd__gte=date,  author__groups__name='Офис в Адлере').order_by(
+        apost = feed.objects.filter(pub='Да', date_sozd__gte=date,  author__groups__name__contains='Адлер').order_by(
             '-date_sozd')[:tadler]
     cianSochi = post.count()
     cianAdler = apost.count()
