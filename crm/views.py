@@ -259,7 +259,7 @@ def flat_postForm(request):
 @login_required
 def flat_apparts_postForm(request):
     n1='Апартаменты'
-    n2='подача на Cайт, RegionalRealty, ДомКлик, Росриэлт, Yandex, Mail, Юла'
+    n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     n3 = zayavka.objects.filter(status='Свободен').count()
     if request.POST:
         if request.user.userprofile1.ya == 'Да':
@@ -1127,7 +1127,7 @@ def cliend_detail_view(request, idd):
 @login_required
 def new_dom_view(request):
     n1='Дома'
-    n2='подача на Cайт, RegionalRealty, ДомКлик, Yandex, Mail, Юла'
+    n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
         form = doma_new_post(request.POST)
         if form.is_valid():
@@ -1258,7 +1258,7 @@ def dom_print_view(request, idd):
 @login_required()
 def new_uc_view(request):
     n1='Участки'
-    n2='подача на Cайт, RegionalRealty, ДомКлик, Yandex, Mail, Юла'
+    n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
         form=uc_new_post(request.POST)
         if form.is_valid():

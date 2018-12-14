@@ -369,7 +369,7 @@ class otchet_nov(models.Model):
                                    help_text='если есть',blank=True,  default='')
 
     ot_kuda_choises = (('Другое' , 'Другое'),('Avito','Avito'),('Юла','Юла'),('Сайт компании','Сайт компании'),('Cian','Cian'),#('Avito Turbo','Avito Turbo'),('Vestum','Vestum'),('Cian','Cian'),
-                       ('По рекомендации','По рекомендации'),('Домклик(Сбер)','Домклик(Сбер)'),('Yandex Недвижимость','Yandex Недвижимость'))
+                       ('По рекомендации','По рекомендации'),('Yandex Недвижимость','Yandex Недвижимость'))#('Домклик(Сбер)','Домклик(Сбер)'),
     ot_kuda_kl = models.CharField(max_length=20, verbose_name='Канал привлечения клиента:', choices=ot_kuda_choises)
 
     rielt = models.ForeignKey('auth.User', verbose_name='Риелтор:', on_delete=models.CASCADE)
