@@ -299,7 +299,7 @@ class uc_edit_form(forms.ModelForm):
 class otchet_all_form(forms.ModelForm):
     class Meta:
         model = otchet_nov
-        fields = ('fio_kl','tel_kl','fio_pr','tel_pr','tel_posr','name_posr','name_agency',
+        fields = ('nazv_nov','fio_kl','tel_kl','fio_pr','tel_pr','tel_posr','name_posr','name_agency',
                   'ot_kuda_kl','date_zakr','ploshad','stoimost','komisia','ipoteka',
                   'rasrochka','prim', 'reelt1', 'rielt_proc1', 'reelt2', 'rielt_proc2',
                   'reelt3', 'rielt_proc3', 'reelt4', 'rielt_proc4', 'reelt5', 'rielt_proc5',

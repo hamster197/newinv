@@ -446,7 +446,7 @@ class otchet_nov(models.Model):
     old_date = models.CharField(max_length=3, verbose_name='Сделка проводится задним числом?',default='Нет', choices=old_date_choises)
     sdelka_zakrita_choises = (('Да','Да'),('Да-Рассрочка','Да-Рассрочка'),('Нет','Нет'),('Срыв','Срыв'),('Рассрочка','Рассрочка'))
     sdelka_zakrita = models.CharField(max_length=13, choices=sdelka_zakrita_choises, default='Да', verbose_name='Сделка закрыта')
-    pr_prosmotra_golovin = models.CharField(max_length=3, verbose_name='Признак просмотра Головиным', default='', blank=True)
+    pr_prosmotra_golovin = models.CharField(max_length=3, verbose_name='Признак просмотра', default='', blank=True)
     class Meta:
        verbose_name = 'Отчет по сделке'
        verbose_name_plural = 'Отчеты по сделке'
