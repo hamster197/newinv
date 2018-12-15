@@ -5211,22 +5211,23 @@ def DashBoardView(request):
     studia_count = flat_obj.objects.filter(type = 'flat', komnat ='Студия').count()
     OneRoom_count = flat_obj.objects.filter(type = 'flat', komnat='Однокомнатная').count()
     OneRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Однокомнатная').aggregate(Sum("cena_agenstv"))
-    if OneRoom_Sum == None:
+    if str(OneRoom_Sum.get('cena_agenstv__sum')) != 'None':
         OneRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // OneRoom_count
     else:
         OneRoomSrCena = 0
+    t = str(OneRoom_Sum.get('cena_agenstv__sum'))
 
     TwoRoom_count  = flat_obj.objects.filter(type = 'flat', komnat ='Двухкомнатная').count()
-    TwoRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Двухкомнатная').aggregate(Sum("cena_agenstv"))
-    if TwoRoom_Sum == None:
-        TwoRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TwoRoom_count
+    TwoRoom_Sum = flat_obj.objects.filter(type='flat', komnat='Двухкомнатная').aggregate(Sum("cena_agenstv"))
+    if str(TwoRoom_Sum .get('cena_agenstv__sum')) != 'None':
+        TwoRoomSrCena = int(str(TwoRoom_Sum .get('cena_agenstv__sum'))) // TwoRoom_count
     else:
         TwoRoomSrCena=0
 
     TreeRoom_count  = flat_obj.objects.filter(type = 'flat', komnat='Трехкомнатная').count()
     TreeRoom_Sum = flat_obj.objects.filter(type = 'flat', komnat='Трехкомнатная').aggregate(Sum("cena_agenstv"))
-    if TreeRoom_Sum == None:
-        TreeRoomSrCena = int(str(OneRoom_Sum.get('cena_agenstv__sum'))) // TreeRoom_count
+    if str(TreeRoom_Sum.get('cena_agenstv__sum')) != 'None':
+        TreeRoomSrCena = int(str(TreeRoom_Sum.get('cena_agenstv__sum'))) // TreeRoom_count
     else:
         TreeRoomSrCena=0
 
@@ -5247,5 +5248,5 @@ def DashBoardView(request):
                                                      'tstcount':studia_count,'tonecount':OneRoom_count,
                                                      'ttwo_count':TwoRoom_count, 'ttreecount':TreeRoom_count,
                                                      'tmanycount':ManyRoom_count,'thouse_count':Houses_count,'tAllCount':all_count,
-                                                     'tOneCrs': OneRoomSrCena, 'tTwoCrs': TwoRoomSrCena,'tTreCrs': TreeRoomSrCena,})
+                                                     'tOneCrs': OneRoomSrCena, 'tTwoCrs': TwoRoomSrCena,'tTreCrs': TreeRoomSrCena,'tt':t })
 
