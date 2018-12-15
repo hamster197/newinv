@@ -2462,6 +2462,7 @@ def newVigGalView(request, idd):
     n3 = zayavka.objects.filter(status='Свободен').count()
     d11 =timezone.datetime.now().date()-timedelta(days=timezone.datetime.now().weekday())
     crm_obj_week_count = flat_obj.objects.filter(author_id=request.user.id, date_sozd__gte=d11).count()
+    sp = get_object_or_404(feed, pk=idd)
     if request.POST:
         form = vigruzkaGaleryForm(request.POST, request.FILES)
         if form.is_valid():
