@@ -79,7 +79,7 @@ class VestimPorydok(admin.ModelAdmin):
 
 
 admin.site.register(flat_obj, flatfields, )
-#admin.site.register(otchet_nov, sdelka_nov)
+admin.site.register(otchet_nov, sdelka_nov)
 admin.site.register(zayavka, zayavkaFields)
 admin.site.register(feed, feedfelds)
 admin.site.register(feed_gallery, feedgalfelds)

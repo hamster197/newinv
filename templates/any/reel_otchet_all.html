@@ -4,6 +4,7 @@
     <div class="col-lg-3">
      <div class="card">
     <div class="card-body">
+{% if request.user.groups.all.0.name == 'Администрация' %}
 	<h4 class="card-title">Каналы привлечения:</h4>
    <div class="chip">
     Avito {{ tavito }}
@@ -29,6 +30,7 @@
   <div class="chip">
    Другое {{ trazn }}
   </div>
+{% endif %}
  </div>
 </div>
 </div>
