@@ -333,7 +333,7 @@ def news_postform(request):
 @login_required
 def flat_postForm(request):
     n1='Квартиры'
-    n2='подача на Cайт, RegionalRealty, ДомКлик, Yandex, Mail, Юла'
+    n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     n3 = zayavka.objects.filter(status='Свободен').count()
     if request.POST:
         if request.user.userprofile1.ya == 'Да':
