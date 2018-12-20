@@ -48,6 +48,13 @@ def AvitoIndexView(request):
     post = avitoflats.objects.filter(auth=request.user)
     return render(request,'avito/index.html',{'tpost':post, 'tn1':n1,'tn2':n2})
 
+@login_required
+def AvitoDetailView(request, idd):
+    n1 = 'Мой обьект'
+    n2 = 'на Авито'
+    post = get_object_or_404(avitoflats, pk=idd)
+    return render(request,'avito/detail.html',{'tpost':post, 'tn1':n1,'tn2':n2})
+
 def avitoFeedView(request):
     post = avitoflats.objects.all()
     gal = avito_gallery.objects.all()

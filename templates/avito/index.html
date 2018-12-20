@@ -8,29 +8,32 @@
         <table class="bordered">
         <thead>
           <tr>
-              <th>Дата создания</th>
-              <th>ID</th>
+              <th>Дата начала публикации</th>
+              <th>Дата окончания публикации</th>
+              <th>Статус</th>
+              <th>Адрес</th>
               <th>Цена</th>
-              <th>Название</th>
-              <th></th>
 			  <th></th>
 			  <th></th>
           </tr>
         </thead>
 
 
-   {% if tsp %}
+   {% if tpost %}
 
-    {% for sp in tsp %}
+    {% for post in tpost %}
         <tbody>
           <tr>
-            <td> {{ sp.date_sozd }} </td>
-            <td>{{ sp.pk }}</td>
-            <td> {{ sp.prais }} </td>
-            <td> {{ sp.nazv }}</td>
-            <td><a href="{% url 'crm:cianedit' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Редактировать</button></a></td>
+            <td> {{ post.DateBegin }} </td>
+            <td>{{ post.DateEnd }}</td>
+            <td> {{ post.AdStatus }} </td>
+            <td> {{ post.Street }} {{ post.House_Numb }}</td>
+            <td>{{ post.Price }}</td>
+            <td><a href="{% url 'avito_ap:Avito_detail' idd=post.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Редактировать</button></a></td>
+              {% comment %}
             <td><a href="{% url 'crm:newvigrgal' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>фото</button></a></td>
             <td><a href="{% url 'crm:ciandelsubj' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Удалить</button></a></td>
+            {% endcomment %}
           </tr>
 
         </tbody>
@@ -39,5 +42,7 @@
     {% endfor %}
  </table>
   {% endif %}
-
+               </div>
+          </div>
+    </div>
 {% endblock %}

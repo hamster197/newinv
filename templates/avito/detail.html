@@ -1,0 +1,107 @@
+{% extends 'crm/main.html' %}
+
+{% block content %}
+
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+	<ul class="nav nav-pills m-t-30 m-b-30">
+    <li class=" nav-item"> <a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Главное</a> </li>
+	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото</a> </li>
+    </ul>
+<div class="tab-content br-n pn">
+    <div id="test1" class="tab-pane active">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+	<table class="bordered">
+        <tbody>
+          <tr>
+              <td>Дата начала размещения объявления:</td>
+              <td> <strong> {{ tpost.DateBegin }}</strong></td>
+          </tr>
+          <tr>
+            <td>Дата окончания публикации объявления:</td>
+            <td><strong> {{ tpost.DateEnd  }}</strong></td>
+          </tr>
+       <tr>
+            <td>Платная услуга:</td>
+            <td><strong>{{ tpost.Square }}</strong></strong></td>
+          </tr>
+                 <tr>
+            <td>Адрес: </td>
+            <td><strong>ул.{{ tpost.Street }} дом №{{ tpost.House_Numb }}</strong> </td>
+          </tr>
+          <tr>
+            <td>Принадлежность квартиры к рынку:</td>
+            <td><strong>{{ tpost.MarketType  }}</strong></td>
+          </tr>
+                    <tr>
+            <td>Тип дома:</td>
+            <td><strong> {{ tpost.HouseType }}</strong></td>
+          </tr>
+          <tr>
+            <td>Количество этажей в доме:</td>
+            <td><strong>{{ tpost.Floors }} </strong></td>
+          </tr>
+          <tr>
+            <td>Этаж:</td>
+            <td><strong>{{ tpost.Floor }} </strong></td>
+          </tr>
+          <tr>
+            <td>Общая площадь объекта:</td>
+            <td><strong>{{ tpost.Square }} метр</strong></td>
+          </tr>
+          <tr>
+            <td>Цена в рублях:</td>
+            <td><strong>{{ tpost.Price }} руб.</strong></td>
+          </tr>
+          <tr>
+            <td>Oписание объявления:</td>
+            <td><strong>{{ tpost.Description }} </strong></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</div>
+
+
+<div id="test5" class="tab-pane">
+	<div class="p-20" ><p> </p></div>
+    <div class="row">
+        {% for i in tpdom.idd_gal.all %}
+            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.63.160{{ i.npict.url }}"></div>
+        {% endfor %}
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+{% comment %}
+<a href="{% url 'crm:dom_edit' idd=tpdom.id %} " class="btn" title = "Редактировать">Редактировать</a>
+{% endcomment %}
+</div>
+</div>
+</div>
+</div>
+		<script src="/static/material/js/jquery.js"></script>
+		<script src="/static/material/js/materialize.admin.min.js"></script>
+
+{% load el_pagination_tags %}
+
+
+
+
+
+  </div>
+
+{% endblock %}
