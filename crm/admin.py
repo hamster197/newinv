@@ -5,7 +5,9 @@ from .models import news, UserProfile1, flat_obj, flat_obj_gal, clients, uchasto
     vestum_poryadok_feed
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from zvonki.models import zvonok
+#from zvonki.models import zvonok
+from avito.models import avitoflats, avito_gallery
+
 
 class flatgaladm(admin.StackedInline):
     model = flat_obj_gal
@@ -77,6 +79,13 @@ class ZvonokFields(admin.ModelAdmin):
 class VestimPorydok(admin.ModelAdmin):
     list_display = ('date','poryadok',)
 
+class avitogaladm(admin.StackedInline):
+    model = avito_gallery
+
+class AvitoFields(admin.ModelAdmin):
+    inlines = [avitogaladm]
+    list_display = ('auth','DateBegin','DateEnd','AdStatus','Street','House_Numb','Square','Price',)
+    #list_filter = ['auth', 'AdStatus']
 
 admin.site.register(flat_obj, flatfields, )
 #admin.site.register(otchet_nov, sdelka_nov)
@@ -89,6 +98,8 @@ admin.site.register(reyt_sdelka_otd, OtdReytFields)
 admin.site.register(cachestvoDomCl, cashDomClickFields)
 admin.site.register(TmpCianCount, CianFields)
 #admin.site.register(zvonok,ZvonokFields)
+admin.site.register(avitoflats, AvitoFields)
+
 
 class UserInline(admin.StackedInline):
     model = UserProfile1

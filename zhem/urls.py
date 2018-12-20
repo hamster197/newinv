@@ -17,6 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+import avito
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,7 +32,8 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login_view, name='login'),
     url(r'^ch_pass$', views.ch_pass_view, name='ch_login'),
     url(r'^', include('crm.urls')),
-    url(r'^zvonki/', include('zvonki.urls'))
+    url(r'^zvonki/', include('zvonki.urls')),
+    url(r'^avito/', include('avito.urls')),
 
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

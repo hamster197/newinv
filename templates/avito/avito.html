@@ -1,0 +1,33 @@
+<Ads formatVersion="3" target="Avito.ru">
+{% for post in tppost %}
+    <Ad>
+		<Id>{{ post.pk }}</Id>
+		<Category>Квартиры</Category>
+		<OperationType>Продам</OperationType>
+		<DateBegin>{{ post.DateBegin }}</DateBegin>
+		<DateEnd>{{ post.DateEnd }}</DateEnd>
+		<Address>Краснодарский край, Сочи, ул.{{ post.Street }}, {{ post.House_Numb }} </Address>
+		<Description>{{ post.Description }}
+		</Description>
+		<Price>{{ post.Price }}</Price>
+		<CompanyName>Инвестиционно — строительная компания “Инвест Сочи”</CompanyName>
+		<ManagerName>{{  post.auth.first_name }} {{ post.auth.last_name }}</ManagerName>
+		<AllowEmail>Нет</AllowEmail>
+		<ContactPhone>{{ post.auth.userprofile1.tel  }} </ContactPhone>
+	<Photos>
+    {% for i in post.idd_gal.all %}
+      <PhotoSchema>
+        <FullUrl>http://77.222.63.160/{{ i.npict.url }}</FullUrl>
+      </PhotoSchema>
+        <AdStatus>{{ post.AdStatus }}</AdStatus>
+		<Rooms>{{ post.Rooms }}</Rooms>
+		<Square>{{ post.Square }}</Square>
+		<Floor>{{ post.Floor }}</Floor>
+		<Floors>{{ post.Floors }}</Floors>
+		<HouseType>{{ post.HouseType }}</HouseType>
+		<MarketType>{{ post.MarketType }}</MarketType>
+        {% endfor %}
+    </Photos>
+    </Ad>
+{% endfor %}
+</Ads>

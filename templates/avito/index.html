@@ -1,0 +1,43 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+    <div class="row">
+      <div class="col-lg-12">
+          <div class="card">
+               <div class="card-content">
+
+        <table class="bordered">
+        <thead>
+          <tr>
+              <th>Дата создания</th>
+              <th>ID</th>
+              <th>Цена</th>
+              <th>Название</th>
+              <th></th>
+			  <th></th>
+			  <th></th>
+          </tr>
+        </thead>
+
+
+   {% if tsp %}
+
+    {% for sp in tsp %}
+        <tbody>
+          <tr>
+            <td> {{ sp.date_sozd }} </td>
+            <td>{{ sp.pk }}</td>
+            <td> {{ sp.prais }} </td>
+            <td> {{ sp.nazv }}</td>
+            <td><a href="{% url 'crm:cianedit' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Редактировать</button></a></td>
+            <td><a href="{% url 'crm:newvigrgal' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>фото</button></a></td>
+            <td><a href="{% url 'crm:ciandelsubj' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Удалить</button></a></td>
+          </tr>
+
+        </tbody>
+
+
+    {% endfor %}
+ </table>
+  {% endif %}
+
+{% endblock %}
