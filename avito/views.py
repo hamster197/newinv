@@ -35,11 +35,11 @@ def AvitoGalView(request, idd):
             avito_gallery=form.save(commit=False)
             avito_gallery.id_gal_id = idd
             avito_gallery.save()
-            return redirect('crm:newvigrgal', idd=avito_gallery.id_gal_id)
+            return redirect('avito_ap:Avito_new_galery', idd=avito_gallery.id_gal_id)
     else:
         form = AvitoGaleryForm()
         sp = get_object_or_404(avitoflats, pk=idd)
-    return render(request,'any/vigGalForm.html',{'tpform':form, 'tn1':n1, 'tn2':n2, 'post':sp})
+    return render(request,'avito/avitogalform.html',{'tpform':form, 'tn1':n1, 'tn2':n2, 'post':sp})
 
 @login_required
 def AvitoIndexView(request):

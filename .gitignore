@@ -1,5 +1,6 @@
 *.pyc
 crm/migrations/*.py
+image/*.*
 
 *~
 __pycache__

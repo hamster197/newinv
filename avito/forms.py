@@ -19,3 +19,4 @@ class AvitoGaleryForm(forms.ModelForm):
     class Meta:
         fields = ('npict',)
         model = avito_gallery
+
