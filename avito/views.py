@@ -54,7 +54,7 @@ def AvitiGalView(request, idd, sidd):
 def AvitoIndexView(request):
     n1 = 'Мои обьекты'
     n2 = 'на Авито'
-    post = avitoflats.objects.filter(auth=request.user)
+    post = avitoflats.objects.filter(auth=request.user).order_by('-DateEnd')
     return render(request,'avito/index.html',{'tpost':post, 'tn1':n1,'tn2':n2})
 
 @login_required

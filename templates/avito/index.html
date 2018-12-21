@@ -29,7 +29,11 @@
             <td> {{ post.AdStatus }} </td>
             <td> {{ post.Street }} {{ post.House_Numb }}</td>
             <td>{{ post.Price }}</td>
-            <td><a href="{% url 'avito_ap:Avito_detail' idd=post.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Редактировать</button></a></td>
+            <td><a href="{% url 'avito_ap:Avito_detail' idd=post.pk %}"><button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit"></span>Просмотр</button></a></td>
+
+              <td><a href="{% url 'avito_ap:Avito_detail' idd=post.pk %}"><button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit"></span>Редактировать</button></a></td>
               {% comment %}
             <td><a href="{% url 'crm:newvigrgal' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>фото</button></a></td>
             <td><a href="{% url 'crm:ciandelsubj' idd=sp.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Удалить</button></a></td>
