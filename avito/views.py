@@ -42,6 +42,15 @@ def AvitoGalView(request, idd):
     return render(request,'avito/avitogalform.html',{'tpform':form, 'tn1':n1, 'tn2':n2, 'post':sp})
 
 @login_required
+def AvitiGalView(request, idd, sidd):
+    n1 = 'Редактировать фото Avito'
+    n2 = 'Фото'
+    spsubj = avito_gallery.objects.get(pk=sidd)
+    spsubj.delete()
+    sp = get_object_or_404(avitoflats, pk=idd)
+    return redirect('avito_ap:Avito_new_galery', idd=sp.pk)
+
+@login_required
 def AvitoIndexView(request):
     n1 = 'Мои обьекты'
     n2 = 'на Авито'

@@ -26,10 +26,10 @@
           <tr>
             <td> ID: {{ i.pk }}  </td>
             <td><a href="{{MEDIA_ROOT}}{{ i.npict.url }}"><img src="{{MEDIA_ROOT}}{{ i.npict.url }}"  height="232"></a>  </td>
-            <td><a href="{% url 'avito_ap:Avito_index'  %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Закончить редактирование</button></a></td>
-            {% comment %}
-              <td><a href="{% url 'crm:ciandel' idd=post.pk sidd=i.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Удалить</button></a></td>
-            {% endcomment %}
+            <td><a href="{% url 'avito_ap:Avito_index'  %}"><button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit"></span>Закончить редактирование</button></a></td>
+              <td><a href="{% url 'avito_ap:Avito_del_galery' idd=post.pk sidd=i.pk %}">
+                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>Удалить</button></a></td>
           </tr>
 
         </tbody>
