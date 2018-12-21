@@ -3,7 +3,7 @@ from django.utils import timezone
 from material import *
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import SelectMultiple
+from django.forms import SelectMultiple, CheckboxSelectMultiple, RadioSelect, Select
 
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     UserProfile1, domclickText, vestum_poryadok_feed
@@ -445,6 +445,7 @@ class all_zayav_form(forms.ModelForm):
     class Meta:
         model = zayavka
         fields =('fio','tel_kl','kanal','raion','komnat','ploshad','budget','prim')
+        widgets = {'raion': Select }
 
 class sriv_zayavka_form(forms.ModelForm):
     class Meta:

@@ -5,8 +5,7 @@
     <offers>
          {% for post in tppost %}
         <offer>
-            <id>{{ post.pk|cut:" "  }}</id>
-
+            <id>{{ post.pk|cut:" " }}</id>
             <part>жилая</part>
 
             <object-type>квартира</object-type>
@@ -23,9 +22,9 @@
 {% for i in post.idd_gal.all %}
     {% if i.npict.url %}
                 {% if forloop.counter == 1 %}
-                 <image primary="1"><![CDATA[http://77.222.63.160{{ i.npict.url }}]]></image>
+                 <image primary="1"><![CDATA[http://77.222.63.187{{ i.npict.url }}]]></image>
                 {% else %}
-                 <image primary="0"><![CDATA[http://77.222.63.160{{ i.npict.url }}]]></image>
+                 <image primary="0"><![CDATA[http://77.222.63.187{{ i.npict.url }}]]></image>
                 {% endif %}
     {% endif %}
 {% endfor %}
@@ -41,7 +40,7 @@
                 {% endif %}
                 <price>
 
-                    <value>{{ post.cena_agenstv|cut:" "   }}</value>
+                    <value>{{ post.cena_agenstv|cut:" "  }}</value>
 
                     <unit>total</unit>
 
@@ -128,7 +127,7 @@
 {% if tdom %}
     {% for doma in tdom %}
         <offer>
-            <id>{{ doma.pk }}</id>
+            <id>{{ doma.pk|cut:" "  }}</id>
 
             <part>жилая</part>
 
@@ -143,7 +142,7 @@
             <images>
 
 
-{% for i in post.idd_gal.all %}
+{% for i in doma.idd_gal.all %}
     {% if i.npict.url %}
                 {% if forloop.counter == 1 %}
                  <image primary="1"><![CDATA[http://77.222.63.187{{ i.npict.url }}]]></image>
@@ -160,7 +159,7 @@
 
                 <price>
 
-                    <value>{{ doma.cena_agenstv  }}</value>
+                    <value>{{ doma.cena_agenstv|cut:" "   }}</value>
 
                     <unit>total</unit>
 
