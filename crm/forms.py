@@ -445,7 +445,7 @@ class all_zayav_form(forms.ModelForm):
     class Meta:
         model = zayavka
         fields =('fio','tel_kl','kanal','raion','komnat','ploshad','budget','prim')
-        widgets = {'raion': Select(attrs={'multiple': 'multiple',})} #'class': 'select2 form-control',
+        widgets = {'raion': Select(attrs={'multiple': 'multiple', 'class': 'select2 form-control',})} #'class': 'select2 form-control',
 
 class sriv_zayavka_form(forms.ModelForm):
     class Meta:
