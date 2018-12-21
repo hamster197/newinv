@@ -43,12 +43,35 @@ def AvitoGalView(request, idd):
 
 @login_required
 def AvitiGalView(request, idd, sidd):
-    n1 = 'Редактировать фото Avito'
-    n2 = 'Фото'
     spsubj = avito_gallery.objects.get(pk=sidd)
     spsubj.delete()
     sp = get_object_or_404(avitoflats, pk=idd)
     return redirect('avito_ap:Avito_new_galery', idd=sp.pk)
+
+@login_required
+def AvitoEditSubjView(request, idd):
+    n1 = 'Редактировать объект'
+    n2 = 'на Avito'
+    subj = get_object_or_404(avitoflats, pk=idd)
+    if request.POST:
+        form = AvitoEditForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            #post.auth = request.user
+            post.DateBegin = datetime.now()
+            post.DateEnd = datetime.now() + timedelta(days=7)
+            post.save(form)
+            return redirect('avito_ap:Avito_new_galery', idd = post.pk)
+    else:
+        #form = AvitoEditForm()
+        form = AvitoEditForm(instance=subj)
+    return render(request,'avito/edit.html',{'tform':form, 'tn1':n1,'tn2':n2})
+
+@login_required
+def AvitoDellView(request, idd):
+    spsubj = avitoflats.objects.get(pk=idd)
+    spsubj.delete()
+    return redirect('avito_ap:Avito_index')
 
 @login_required
 def AvitoIndexView(request):

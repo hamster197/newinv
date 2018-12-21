@@ -26,7 +26,9 @@ urlpatterns = [
     url(r'^avito/index$', views.AvitoIndexView, name='Avito_index'),
     url(r'^avito/detail/(?P<idd>[0-9]+)/$', views.AvitoDetailView, name='Avito_detail'),
     url(r'^avito/new$', views.newAvitoSub, name='Avito_new'),
+    url(r'^avito/edit/(?P<idd>[0-9]+)/$', views.AvitoEditSubjView, name='Avito_Edit_Subj'),
     url(r'^avito/Gal/(?P<idd>[0-9]+)/$', views.AvitoGalView, name='Avito_new_galery'),
+    url(r'^avito/del/(?P<idd>[0-9]+)/$', views.AvitoDellView, name='Avito_Del_Subj'),
     url(r'^avito/Gal/del/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$', views.AvitiGalView, name='Avito_del_galery'),
     url(r'^avito/avito.xml$', views.avitoFeedView, name='Avito_feed'),
 ]
