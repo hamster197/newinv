@@ -58,8 +58,8 @@ def AvitoEditSubjView(request, idd):
         if form.is_valid():
             post = form.save(commit=False)
             #post.auth = request.user
-            post.DateBegin = datetime.now()
-            post.DateEnd = datetime.now() + timedelta(days=7)
+            #post.DateBegin = datetime.now()
+            #post.DateEnd = datetime.now() + timedelta(days=7)
             post.save()
             return redirect('avito_ap:Avito_new_galery', idd = post.pk)
     else:
@@ -68,10 +68,82 @@ def AvitoEditSubjView(request, idd):
     return render(request,'avito/edit.html',{'tform':form, 'tn1':n1,'tn2':n2})
 
 @login_required
+def AvitoBZPubView(request, idd):
+    if request.user.userprofile1.vestum_count_ads != 0:
+        request.user.userprofile1.vestum_count_ads = request.user.userprofile1.vestum_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Обычное'
+        sp.save()
+
+
+@login_required
+def AvitoPremiumPubView(request, idd):
+    if request.user.userprofile1.avitoPR_count_ads != 0:
+        request.user.userprofile1.avitoPR_count_ads = request.user.userprofile1.avitoPR_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Премиум-объявление'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
+def AvitoVIPPubView(request, idd):
+    if request.user.userprofile1.avitoVIP_count_ads != 0:
+        request.user.userprofile1.avitoVIP_count_ads = request.user.userprofile1.avitoVIP_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'VIP-объявление'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
+def AvitoPodnPubView(request, idd):
+    if request.user.userprofile1.avitoPODN_count_ads != 0:
+        request.user.userprofile1.avitoPODN_count_ads = request.user.userprofile1.avitoPODN_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Поднятие объявления в поиске'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
+def AvitoVidPubView(request, idd):
+    if request.user.userprofile1.avitoVID_count_ads != 0:
+        request.user.userprofile1.avitoVID_count_ads = request.user.userprofile1.avitoVID_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Выделение объявления'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
+def AvitoTurboPubView(request, idd):
+    if request.user.userprofile1.avitoTURBO_count_ads != 0:
+        request.user.userprofile1.avitoTURBO_count_ads = request.user.userprofile1.avitoTURBO_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Турбо-продажа'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
+def AvitoQuickPubView(request, idd):
+    if request.user.userprofile1.avitoQUICK_count_ads != 0:
+        request.user.userprofile1.avitoQUICK_count_ads = request.user.userprofile1.avitoQUICK_count_ads-1
+        request.user.userprofile1.save()
+        sp = get_object_or_404(avitoflats, pk = idd)
+        sp.AdStatus = 'Быстрая продажа'
+        sp.save()
+        return redirect('avito_ap:Avito_index')
+
+@login_required
 def AvitoDellView(request, idd):
     spsubj = avitoflats.objects.get(pk=idd)
     spsubj.delete()
     return redirect('avito_ap:Avito_index')
+
+
 
 @login_required
 def AvitoIndexView(request):

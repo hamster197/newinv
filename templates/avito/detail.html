@@ -81,12 +81,35 @@
 <div class="card">
 <div class="card-body">
 <blockquote>Применить услуги:</br>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Премиум</a>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">VIP</a>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Поднятие в поиске</a>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Выделение</a>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Турбо-продажа</a>
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Быстрая продажа</a>
+
+{% if request.user.userprofile1.vestum_count_ads != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_Obicn' idd=tpost.id %} " class="btn" title = "Обычное об.">Обычное об.</a>
+{% endif %}
+
+{% if request.user.userprofile1.avitoPR_count_ads != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_premium' idd=tpost.id %} " class="btn" title = "Премиум">Премиум</a>
+{% endif %}
+
+{% if request.user.userprofile1.avitoVIP_count_ads != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_VIP' idd=tpost.id %} " class="btn" title = "VIP">VIP</a>
+{% endif %}
+
+{% if request.user.userprofile1.avitoPODN_count_ads != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_Podn' idd=tpost.id %} " class="btn" title = "Поднятие в поиске">Поднятие в поиске</a>
+{% endif %}
+
+{% if request.user.userprofile1.avitoVID_count_ads != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_Vid' idd=tpost.id %} " class="btn" title = "Выделение">Выделение</a>
+{% endif %}
+
+{% if request.user.userprofile1.Avito_Post_Turbo != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_Turbo' idd=tpost.id %} " class="btn" title = "Турбо-продажа">Турбо-продажа</a>
+{% endif %}
+
+{% if request.user.userprofile1.Avito_Post_Quick != 0 %}
+    <a href="{% url 'avito_ap:Avito_Post_Quick' idd=tpost.id %} " class="btn" title = "Быстрая продажа">Быстрая продажа</a>
+{% endif %}
+
 </blockquote>
 </div>
 </div>

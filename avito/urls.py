@@ -14,10 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib.auth.decorators import login_required
-from django.http import request
-#from django.views.generic import DetailView,ListView
-
 from . import views
 
 
@@ -27,6 +23,13 @@ urlpatterns = [
     url(r'^avito/detail/(?P<idd>[0-9]+)/$', views.AvitoDetailView, name='Avito_detail'),
     url(r'^avito/new$', views.newAvitoSub, name='Avito_new'),
     url(r'^avito/edit/(?P<idd>[0-9]+)/$', views.AvitoEditSubjView, name='Avito_Edit_Subj'),
+    url(r'^avito/edit/obichn/(?P<idd>[0-9]+)/$', views.AvitoBZPubView, name='Avito_Post_Obicn'),
+    url(r'^avito/edit/premium/(?P<idd>[0-9]+)/$', views.AvitoPremiumPubView, name='Avito_Post_premium'),
+    url(r'^avito/edit/VIP/(?P<idd>[0-9]+)/$', views.AvitoVIPPubView, name='Avito_Post_VIP'),
+    url(r'^avito/edit/Podn/(?P<idd>[0-9]+)/$', views.AvitoPodnPubView, name='Avito_Post_Podn'),
+    url(r'^avito/edit/Vid/(?P<idd>[0-9]+)/$', views.AvitoVidPubView, name='Avito_Post_Vid'),
+    url(r'^avito/edit/Turbo/(?P<idd>[0-9]+)/$', views.AvitoTurboPubView, name='Avito_Post_Turbo'),
+    url(r'^avito/edit/Quick/(?P<idd>[0-9]+)/$', views.AvitoQuickPubView, name='Avito_Post_Quick'),
     url(r'^avito/Gal/(?P<idd>[0-9]+)/$', views.AvitoGalView, name='Avito_new_galery'),
     url(r'^avito/del/(?P<idd>[0-9]+)/$', views.AvitoDellView, name='Avito_Del_Subj'),
     url(r'^avito/Gal/del/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$', views.AvitiGalView, name='Avito_del_galery'),
