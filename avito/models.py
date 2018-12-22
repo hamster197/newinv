@@ -3,8 +3,8 @@ from django.db import models
 
 class avitoflats(models.Model):
     auth = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True)
-    DateBegin = models.DateField(verbose_name='Дата начала размещения объявления:')
-    DateEnd = models.DateField(verbose_name='Дата окончания публикации объявления:')
+    DateBegin = models.DateField(verbose_name='Дата начала размещения объявления:',null=True)
+    DateEnd = models.DateField(verbose_name='Дата окончания публикации объявления:',null=True)
     Street = models.CharField(verbose_name='Улица:', help_text='Например Гагарина',max_length=55, blank=False)
     House_Numb = models.CharField(verbose_name='Номер дома:', help_text='например 36', max_length=55, blank=False,
                                   null=False)
@@ -13,9 +13,10 @@ class avitoflats(models.Model):
     #AdStatus_ch = (('Free','Обычное'),('Premium','Премиум-объявление;'),('VIP','VIP-объявление'),
     #               ('PushUp','Поднятие объявления в поиске'),('Highlight','Выделение объявления')
     #               ,('TurboSale','Турбо-продажа'),('QuickSale','Быстрая продажа'))
-    AdStatus_ch = (('Обычное','Обычное'),('Премиум-объявление','Премиум-объявление'),('VIP-объявление','VIP-объявление'),
-                   ('Поднятие объявления в поиске','Поднятие объявления в поиске'),('Выделение объявления','Выделение объявления')
-                   ,('TurboSale','Турбо-продажа'),('QuickSale','Быстрая продажа'))
+    AdStatus_ch = (('Неопубликованно','Без услуг'),('Обычное','Обычное'),('Премиум-объявление','Премиум-объявление')
+                   ,('VIP-объявление','VIP-объявление'),('Поднятие объявления в поиске','Поднятие объявления в поиске')
+                   ,('Выделение объявления','Выделение объявления')
+                   ,('Турбо-продажа','Турбо-продажа'),('Быстрая продажа','Быстрая продажа'))
     AdStatus = models.CharField(verbose_name='Платная услуга:',max_length=55, choices=AdStatus_ch)
     Rooms = models.IntegerField(verbose_name='Количество комнат в квартире:', validators=[MinValueValidator(1)], null=False)
     Square = models.IntegerField(verbose_name='Общая площадь объекта:', blank=False, validators=[MinValueValidator(10)])

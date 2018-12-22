@@ -141,6 +141,7 @@ urlpatterns = [
 
     #for homka admin
     url(r'^myadm/$', views.my_admi_view, name = 'myadm'),
+    url(r'^myadm/usrbals/(?P<idd>[0-9]+)/$',views.UserBallsAddView, name='usrbalsadd'),
 
     # for Dashboard
     url(r'^dashboard/$', views.DashBoardView, name='DashBoard'),

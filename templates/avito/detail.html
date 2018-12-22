@@ -1,9 +1,14 @@
 {% extends 'crm/main.html' %}
 
 {% block content %}
-
 <div class="row">
 <div class="col-lg-12">
+    <blockquote> <p class="flow-text">
+    <a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Редактировать</a>
+    Статус: {{ tpost.AdStatus }}
+        {% if tpost.DateBegin %} ({{ tpost.DateBegin }}- {{ tpost.DateEnd }}){% endif %}
+    </p>
+    </blockquote>
 <div class="card">
 <div class="card-body">
 	<ul class="nav nav-pills m-t-30 m-b-30">
@@ -16,19 +21,8 @@
     <div class="row">
 	<table class="bordered">
         <tbody>
+
           <tr>
-              <td>Дата начала размещения объявления:</td>
-              <td> <strong> {{ tpost.DateBegin }}</strong></td>
-          </tr>
-          <tr>
-            <td>Дата окончания публикации объявления:</td>
-            <td><strong> {{ tpost.DateEnd  }}</strong></td>
-          </tr>
-       <tr>
-            <td>Платная услуга:</td>
-            <td><strong>{{ tpost.Square }}</strong></strong></td>
-          </tr>
-                 <tr>
             <td>Адрес: </td>
             <td><strong>ул.{{ tpost.Street }} дом №{{ tpost.House_Numb }}</strong> </td>
           </tr>
@@ -86,9 +80,14 @@
 <div class="col-lg-12">
 <div class="card">
 <div class="card-body">
-
-<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Редактировать</a>
-
+<blockquote>Применить услуги:</br>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Премиум</a>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">VIP</a>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Поднятие в поиске</a>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Выделение</a>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Турбо-продажа</a>
+<a href="{% url 'avito_ap:Avito_Edit_Subj' idd=tpost.id %} " class="btn" title = "Редактировать">Быстрая продажа</a>
+</blockquote>
 </div>
 </div>
 </div>

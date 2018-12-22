@@ -17,7 +17,8 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     vigruzkaForm, vigruzkaGaleryForm, vigGalForm, flat_pict_form, vigruzkaNovostroikaForm, yandex_flatform, \
     yandex_flateditform, all_otchet_filtr_form, otchet_all_form1, Urist_new_zayavka_Form, sriv_zayavka_form, \
     nov_new_zayv_form, all_zayav_form, reelt_lich_new_zayv_form, search_by_moth_form, seo_pub_form, kadastr_form, \
-    adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart
+    adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
+    BallForm
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -4944,16 +4945,6 @@ def kach_otch_view(request):
 
 @login_required
 def my_admi_view(request):
-    ########################
-    ## For yandex
-    ########################
-    atoken = 'AQAAAAAL3YMmAAUP5ttpdkGLCkoSkUQM4FKV7AE'
-    y11 = str(timezone.datetime.now().strftime('%Y-%m-%d'))
-    d1 = requests.get(
-        'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y11 + '&date2=' + y11 + '&metrics=ym:s:visits&oauth_token=' + atoken)
-    parsed1 = json.loads(d1.text)
-    #pars_param = parsed1['data'][0]['metrics'][0]
-    pars= parsed1
     n1='CRM' #+ ' pars with params='#+ str(pars_param)
     n2='администрирование'#+' pars='+str(pars)
     #n2='pars='+str(pars)
@@ -4990,11 +4981,23 @@ def my_admi_view(request):
             if f.is_valid():
                 vsForm = vestum_count_form()
                 balls = f.cleaned_data['vs_count']
+                PRballs = f.cleaned_data['pr_count']
+                VIPballs = f.cleaned_data['vip_count']
+                PODballs = f.cleaned_data['pod_count']
+                VIDballs = f.cleaned_data['vid_count']
+                TRballs = f.cleaned_data['tr_count']
+                Qballs = f.cleaned_data['q_count']
                 form = adm_form()
                 all_reelt = User.objects.filter(is_active=True).exclude(groups__in=['8', '9', '10', '12', '11', '13']) \
                     .order_by('groups__name', 'last_name')
                 for usr in UserProfile1.objects.all():
                     usr.vestum_count_ads = int(balls)
+                    usr.avitoPR_count_ads = int(PRballs)
+                    usr.avitoVIP_count_ads = int(VIPballs)
+                    usr.avitoPODN_count_ads = int(PODballs)
+                    usr.avitoVID_count_ads = int(VIDballs)
+                    usr.avitoTURBO_count_ads = int(TRballs)
+                    usr.avitoQUICK_count_ads = int(Qballs)
                     usr.save()
                 return render(request, 'any/my_adm.html', {'tn1': n1, 'tn2': n2, 'tform': form, 'tdel': del1,
                                                            'tPrVsForm':PrVsForm,'tVsForm':vsForm, 'tallreelt':all_reelt,})
@@ -5006,6 +5009,21 @@ def my_admi_view(request):
     form = adm_form()
     return render(request,'any/my_adm.html',{'tn1':n1, 'tn2':n2,'tform':form,'tdel':del1, 'tVsForm':vsForm,
                                              'tPrVsForm':PrVsForm, 'tallreelt':all_reelt})
+@login_required
+def UserBallsAddView(request, idd):
+    n1='CRM администрирование'
+    n2='добавить балы'
+    usr = get_object_or_404(User, id=idd)
+    usrProf = get_object_or_404(UserProfile1, id=idd)
+    if request.POST:
+        form = BallForm(request.POST,instance=usrProf)
+        if form.is_valid():
+            form.save()
+            return redirect('crm:myadm')
+    else:
+        form = BallForm(instance=usrProf)
+    return render(request,'any/userballadd.html',{'tusr':usr,'tform':form, 'tn1': n1, 'tn2': n2})
+
 @login_required
 def DashBoardView(request):
     ########################

@@ -19,8 +19,7 @@ class newsform(forms.ModelForm):
         fields=('nazv','text')
 
 
-
-############################3
+############################
 #FLATS
 ############################
 
@@ -504,8 +503,26 @@ class adm_form(forms.Form):
     )
 
 class vestum_count_form(forms.Form):
-    vs_count = forms.IntegerField(label='Баллы для всех в Avito:')
+    vs_count = forms.IntegerField(label='Обычное', initial='0')
+    pr_count = forms.IntegerField(label='Премиум', initial='0')
+    vip_count = forms.IntegerField(label='VIP', initial='0')
+    pod_count = forms.IntegerField(label='Поднятие', initial='0')
+    vid_count = forms.IntegerField(label='Выделение', initial='0')
+    tr_count = forms.IntegerField(label='Turbo', initial='0')
+    q_count = forms.IntegerField(label='Быстрая продажа', initial='0')
+    layout = Layout(
+        Row('vs_count', 'pr_count','vip_count','pod_count','vid_count','tr_count','q_count'),
+    )
 
+class BallForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile1
+        fields = ('vestum_count_ads','avitoPR_count_ads','avitoVIP_count_ads','avitoPODN_count_ads',
+                  'avitoVID_count_ads','avitoTURBO_count_ads','avitoQUICK_count_ads',)
+    layout = Layout(
+        Row('vestum_count_ads', 'avitoPR_count_ads', 'avitoVIP_count_ads', 'avitoPODN_count_ads',
+                'avitoVID_count_ads', 'avitoTURBO_count_ads', 'avitoQUICK_count_ads'),
+        )
 
 class vestum_poryadok_form(forms.ModelForm):
     class Meta:

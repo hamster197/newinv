@@ -16,8 +16,8 @@ def newAvitoSub(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.auth = request.user
-            post.DateBegin = datetime.now()
-            post.DateEnd = datetime.now() + timedelta(days=7)
+            #post.DateBegin = datetime.now()
+            #post.DateEnd = datetime.now() + timedelta(days=7)
             post.save(form)
             return redirect('avito_ap:Avito_new_galery', idd = post.pk)
     else:

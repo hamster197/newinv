@@ -52,8 +52,13 @@ class UserProfile1(models.Model):
                      )
     search_raion = models.CharField(max_length=25, default='Любой', verbose_name='Район', choices=raion_choises)
 
-    vestum_count_ads = models.IntegerField(verbose_name='Кол-во обьявлений в Вестум:', default=0)
-
+    vestum_count_ads = models.IntegerField(verbose_name='Avito(Обычное):', default=0, validators=[MinValueValidator(0)])
+    avitoPR_count_ads = models.IntegerField(verbose_name='Avito(Премиум):', default=0, validators=[MinValueValidator(0)])
+    avitoVIP_count_ads = models.IntegerField(verbose_name='Avito(VIP):', default=0, validators=[MinValueValidator(0)])
+    avitoPODN_count_ads = models.IntegerField(verbose_name='Avito(Поднятие):', default=0, validators=[MinValueValidator(0)])
+    avitoVID_count_ads = models.IntegerField(verbose_name='Avito(Выделение):', default=0, validators=[MinValueValidator(0)])
+    avitoTURBO_count_ads = models.IntegerField(verbose_name='Avito(Turbo):', default=0, validators=[MinValueValidator(0)])
+    avitoQUICK_count_ads = models.IntegerField(verbose_name='Avito(Быстрая продажа):', default=0, validators=[MinValueValidator(0)])
     def __unicode__(self):
         return self.user
     class Meta:

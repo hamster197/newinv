@@ -25,8 +25,8 @@
     {% for post in tpost %}
         <tbody>
           <tr>
-            <td> {{ post.DateBegin }} </td>
-            <td>{{ post.DateEnd }}</td>
+            <td>{% if post.DateBegin %} {{ post.DateBegin }}{% else %}Неопубликованно{% endif %} </td>
+            <td>{% if post.DateEnd %} {{ post.DateEnd }} {% else %}Неопубликованно{% endif %}</td>
             <td> {{ post.AdStatus }} </td>
             <td> {{ post.Street }} {{ post.House_Numb }}</td>
             <td>{{ post.Price }}</td>
