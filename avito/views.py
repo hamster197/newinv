@@ -54,13 +54,13 @@ def AvitoEditSubjView(request, idd):
     n2 = 'на Avito'
     subj = get_object_or_404(avitoflats, pk=idd)
     if request.POST:
-        form = AvitoEditForm(request.POST)
+        form = AvitoEditForm(request.POST, instance=subj)
         if form.is_valid():
             post = form.save(commit=False)
             #post.auth = request.user
             post.DateBegin = datetime.now()
             post.DateEnd = datetime.now() + timedelta(days=7)
-            post.save(form)
+            post.save()
             return redirect('avito_ap:Avito_new_galery', idd = post.pk)
     else:
         #form = AvitoEditForm()
