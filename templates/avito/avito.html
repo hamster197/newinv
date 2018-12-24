@@ -14,20 +14,38 @@
 		<ManagerName>{{  post.auth.first_name }} {{ post.auth.last_name }}</ManagerName>
 		<AllowEmail>Нет</AllowEmail>
 		<ContactPhone>{{ post.auth.userprofile1.tel  }} </ContactPhone>
-	<Photos>
-    {% for i in post.idd_gal.all %}
-      <PhotoSchema>
-        <FullUrl>http://77.222.63.160/{{ i.npict.url }}</FullUrl>
-      </PhotoSchema>
-        <AdStatus>{{ post.AdStatus }}</AdStatus>
+    	<Images>
+            {% for i in post.idd_gal.all %}
+			<Image url="http://77.222.63.160/{{ i.npict.url }}" />
+            {% endfor %}
+		</Images>
+    {% if post.AdStatus == 'Обычное' %}
+        <AdStatus>Free</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'Премиум-объявление' %}
+        <AdStatus>Premium</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'VIP-объявление' %}
+        <AdStatus>VIP</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'Поднятие объявления в поиске' %}
+        <AdStatus>PushUp</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'Выделение объявления' %}
+        <AdStatus>Highlight</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'Турбо-продажа' %}
+        <AdStatus>TurboSale</AdStatus>
+    {% endif %}
+    {% if post.AdStatus == 'Быстрая продажа' %}
+        <AdStatus>QuickSale</AdStatus>
+    {% endif %}
 		<Rooms>{{ post.Rooms }}</Rooms>
 		<Square>{{ post.Square }}</Square>
 		<Floor>{{ post.Floor }}</Floor>
 		<Floors>{{ post.Floors }}</Floors>
 		<HouseType>{{ post.HouseType }}</HouseType>
 		<MarketType>{{ post.MarketType }}</MarketType>
-        {% endfor %}
-    </Photos>
     </Ad>
 {% endfor %}
 </Ads>

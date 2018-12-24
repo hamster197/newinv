@@ -25,10 +25,13 @@
     {% for post in tpost %}
         <tbody>
           <tr>
-            <td>{% if post.DateBegin %} {{ post.DateBegin }}{% else %}Неопубликованно{% endif %} </td>
-            <td>{% if post.DateEnd %} {{ post.DateEnd }} {% else %}Неопубликованно{% endif %}</td>
-            <td> {{ post.AdStatus }} </td>
-            <td> {{ post.Street }} {{ post.House_Numb }}</td>
+            <td>{% if post.DateBegin %} {{ post.DateBegin }}
+                {% else %}{% endif %} </td>
+            <td>{% if post.DateEnd %} {{ post.DateEnd }}
+                {% else %}{% endif %}</td>
+            <td> {% if post.AdStatus == 'Неопубликованно' or post.DateEnd > tdate %}<span class="new badge red" data-badge-caption="">Неопубликованно</span>
+                {% else %}{{ post.AdStatus }}{% endif %} </td>
+            <td> {{ post.Street }} д.{{ post.House_Numb }}</td>
             <td>{{ post.Price }}</td>
             <td><a href="{% url 'avito_ap:Avito_detail' idd=post.pk %}"><button type="submit" class="btn btn-primary">
                 <span class="glyphicon glyphicon-edit"></span>Просмотр</button></a></td>

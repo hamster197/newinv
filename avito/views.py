@@ -18,6 +18,7 @@ def newAvitoSub(request):
             post.auth = request.user
             #post.DateBegin = datetime.now()
             #post.DateEnd = datetime.now() + timedelta(days=7)
+            post.AdStatus = 'Неопубликованно'
             post.save(form)
             return redirect('avito_ap:Avito_new_galery', idd = post.pk)
     else:
@@ -73,9 +74,11 @@ def AvitoBZPubView(request, idd):
         request.user.userprofile1.vestum_count_ads = request.user.userprofile1.vestum_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Обычное'
         sp.save()
-
+        return redirect('avito_ap:Avito_index')
 
 @login_required
 def AvitoPremiumPubView(request, idd):
@@ -83,6 +86,8 @@ def AvitoPremiumPubView(request, idd):
         request.user.userprofile1.avitoPR_count_ads = request.user.userprofile1.avitoPR_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Премиум-объявление'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -93,6 +98,8 @@ def AvitoVIPPubView(request, idd):
         request.user.userprofile1.avitoVIP_count_ads = request.user.userprofile1.avitoVIP_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'VIP-объявление'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -103,6 +110,8 @@ def AvitoPodnPubView(request, idd):
         request.user.userprofile1.avitoPODN_count_ads = request.user.userprofile1.avitoPODN_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Поднятие объявления в поиске'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -113,6 +122,8 @@ def AvitoVidPubView(request, idd):
         request.user.userprofile1.avitoVID_count_ads = request.user.userprofile1.avitoVID_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Выделение объявления'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -123,6 +134,8 @@ def AvitoTurboPubView(request, idd):
         request.user.userprofile1.avitoTURBO_count_ads = request.user.userprofile1.avitoTURBO_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Турбо-продажа'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -133,6 +146,8 @@ def AvitoQuickPubView(request, idd):
         request.user.userprofile1.avitoQUICK_count_ads = request.user.userprofile1.avitoQUICK_count_ads-1
         request.user.userprofile1.save()
         sp = get_object_or_404(avitoflats, pk = idd)
+        sp.DateBegin = datetime.now()
+        sp.DateEnd = datetime.now() + timedelta(days=7)
         sp.AdStatus = 'Быстрая продажа'
         sp.save()
         return redirect('avito_ap:Avito_index')
@@ -149,8 +164,13 @@ def AvitoDellView(request, idd):
 def AvitoIndexView(request):
     n1 = 'Мои обьекты'
     n2 = 'на Авито'
+    date = datetime.now()
+    post = avitoflats.objects.filter(auth=request.user, DateEnd__lte=date).order_by('-DateEnd')
+    for i in post:
+        i.AdStatus = 'Неопубликованно'
+        i.save()
     post = avitoflats.objects.filter(auth=request.user).order_by('-DateEnd')
-    return render(request,'avito/index.html',{'tpost':post, 'tn1':n1,'tn2':n2})
+    return render(request,'avito/index.html',{'tpost':post, 'tn1':n1,'tn2':n2,})
 
 @login_required
 def AvitoDetailView(request, idd):
@@ -160,7 +180,9 @@ def AvitoDetailView(request, idd):
     return render(request,'avito/detail.html',{'tpost':post, 'tn1':n1,'tn2':n2})
 
 def avitoFeedView(request):
-    post = avitoflats.objects.all()
+    #post = avitoflats.objects.all()
+    date = datetime.now()
+    post = avitoflats.objects.filter(DateEnd__gte=date).exclude(AdStatus='Неопубликованно').order_by('-DateEnd')
     gal = avito_gallery.objects.all()
     return render(request,'avito/avito.html',{'tppost': post, 'tpgal':gal}, content_type="text/xml")
 

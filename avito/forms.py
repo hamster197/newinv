@@ -7,7 +7,7 @@ from avito.models import avitoflats, avito_gallery
 class AvitoEditForm(forms.ModelForm):
     class Meta:
         model = avitoflats
-        fields = ('AdStatus','Street','House_Numb','MarketType','HouseType','Floors','Floor','Rooms','Square',
+        fields = ('Street','House_Numb','MarketType','HouseType','Floors','Floor','Rooms','Square',
                   'Price','Description')
     def clean(self):
         cleaned_data = super(AvitoEditForm, self).clean()

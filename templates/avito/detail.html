@@ -82,31 +82,31 @@
 <div class="card-body">
 <blockquote>Применить услуги:</br>
 
-{% if request.user.userprofile1.vestum_count_ads != 0 %}
+{% if request.user.userprofile1.vestum_count_ads != 0 and tpost.AdStatus == 'Неопубликованно' %}
     <a href="{% url 'avito_ap:Avito_Post_Obicn' idd=tpost.id %} " class="btn" title = "Обычное об.">Обычное об.</a>
 {% endif %}
 
-{% if request.user.userprofile1.avitoPR_count_ads != 0 %}
+{% if request.user.userprofile1.avitoPR_count_ads != 0 and tpost.AdStatus != 'Премиум-объявление' and tpost.AdStatus != 'Неопубликованно'%}
     <a href="{% url 'avito_ap:Avito_Post_premium' idd=tpost.id %} " class="btn" title = "Премиум">Премиум</a>
 {% endif %}
 
-{% if request.user.userprofile1.avitoVIP_count_ads != 0 %}
+{% if request.user.userprofile1.avitoVIP_count_ads != 0 and tpost.AdStatus != 'VIP-объявление'  and tpost.AdStatus != 'Неопубликованно'%}
     <a href="{% url 'avito_ap:Avito_Post_VIP' idd=tpost.id %} " class="btn" title = "VIP">VIP</a>
 {% endif %}
 
-{% if request.user.userprofile1.avitoPODN_count_ads != 0 %}
+{% if request.user.userprofile1.avitoPODN_count_ads != 0 and tpost.AdStatus != 'Поднятие объявления в поиске' and tpost.AdStatus != 'Неопубликованно' %}
     <a href="{% url 'avito_ap:Avito_Post_Podn' idd=tpost.id %} " class="btn" title = "Поднятие в поиске">Поднятие в поиске</a>
 {% endif %}
 
-{% if request.user.userprofile1.avitoVID_count_ads != 0 %}
+{% if request.user.userprofile1.avitoVID_count_ads != 0 and tpost.AdStatus != 'Выделение объявления' and tpost.AdStatus != 'Неопубликованно' %}
     <a href="{% url 'avito_ap:Avito_Post_Vid' idd=tpost.id %} " class="btn" title = "Выделение">Выделение</a>
 {% endif %}
 
-{% if request.user.userprofile1.Avito_Post_Turbo != 0 %}
+{% if request.user.userprofile1.avitoTURBO_count_ads != 0 and tpost.AdStatus != 'Турбо-продажа' and tpost.AdStatus != 'Неопубликованно' %}
     <a href="{% url 'avito_ap:Avito_Post_Turbo' idd=tpost.id %} " class="btn" title = "Турбо-продажа">Турбо-продажа</a>
 {% endif %}
 
-{% if request.user.userprofile1.Avito_Post_Quick != 0 %}
+{% if request.user.userprofile1.avitoQUICK_count_ads != 0 and tpost.AdStatus != 'Быстрая продажа' and tpost.AdStatus != 'Неопубликованно' %}
     <a href="{% url 'avito_ap:Avito_Post_Quick' idd=tpost.id %} " class="btn" title = "Быстрая продажа">Быстрая продажа</a>
 {% endif %}
 
