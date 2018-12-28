@@ -405,7 +405,8 @@ class otchet_nov(models.Model):
 
     a_choises = [(c.username, c.last_name+ ' '+c.first_name ) for c in User.objects.filter(is_active=True).order_by('last_name')]
 
-    reelt1 = models.CharField(max_length=100, choices=a_choises, default=' ', verbose_name='Риелтор в сделке №1',blank=True, help_text='Обязательно к заполнению!')
+    reelt1 = models.CharField(max_length=100, choices=a_choises, default=' ', verbose_name='Риелтор в сделке №1',
+                              blank=True, help_text='Обязательно к заполнению!')
     otd_reelt1 = models.CharField(max_length=25, verbose_name='Отдел:',default='')#,choices=o_choises,default='')
     rielt_proc1 = models.IntegerField(verbose_name='Доля(%) риелтора №1 в сделке:', validators=[MaxValueValidator(100)], default=100, blank=True, help_text='Обязательно к заполнению!')
 

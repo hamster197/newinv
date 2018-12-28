@@ -1,19 +1,32 @@
 {% extends 'crm/main.html' %}
 {% block content %}
-    <li>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </li>
-    <li>date sozd= {{ tpost.date_sozd }} </li>
-    <li>budget = {{ tpost.budget }} rub</li>
-  <ul>Статусы
+{% load material_form %}
+    <li>Текущий статус: {{ tpost.tek_status }}</li>
+    <li>Отвественный: {{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </li>
+    <li>Канал: {{ tpost.kanal.kanal }} </li>
+    <li>Дата создания: {{ tpost.date_sozd }} </li>
+    <li>Бюджет: {{ tpost.budget }} руб.</li>
+
+  <ul>Статусы заявки:
 {% for i in  tpost.idd_st.all %}
     <li>{{ i.status}} {{ i.date_sozd}}</li>
 {% endfor %}
-  </ul> Добавить статус
+
+  <ul>Комментарии заявки:
+{% for c in  tpost.kom_id.all %}
+    <li>{{ c.date_sozd }} {{ c.comment }}</li>
+{% endfor %}
+
+  </ul> Изменить статус:
   {% for status_zayav_vibor in tstatus_zayav_vibor %}
       <li> <a href="{% url 'voronka_ap:voronka_ChangeStatus' idd=tpost.pk st_id=status_zayav_vibor.pk %}">
           {{ status_zayav_vibor.status_nazv }}</a></li>
   {% endfor %}
 {{ ts}}
 
-
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        {% form form=tsur_form layout=form.layout%}{% endform %}
+        <button type="submit" name="_submit" class="btn">Изменить отвественного</button>
 
 {% endblock %}
