@@ -1,0 +1,19 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+    <li>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </li>
+    <li>date sozd= {{ tpost.date_sozd }} </li>
+    <li>budget = {{ tpost.budget }} rub</li>
+  <ul>Статусы
+{% for i in  tpost.idd_st.all %}
+    <li>{{ i.status}} {{ i.date_sozd}}</li>
+{% endfor %}
+  </ul> Добавить статус
+  {% for status_zayav_vibor in tstatus_zayav_vibor %}
+      <li> <a href="{% url 'voronka_ap:voronka_ChangeStatus' idd=tpost.pk st_id=status_zayav_vibor.pk %}">
+          {{ status_zayav_vibor.status_nazv }}</a></li>
+  {% endfor %}
+{{ ts}}
+
+
+
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+    {% for post in tpost %}
+        <p><a href="{% url 'voronka_ap:voronka_detail' idd=post.pk %}">{{ post.budget }} {{ post.pk }} {{ post.rielt }}</a></p>
+    {% endfor %}
+{% endblock %}

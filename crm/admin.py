@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from voronka.models import zayavka_vr, status_klienta, status_klienta_all
 from .models import news, UserProfile1, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, \
     zayavka, stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -85,7 +86,21 @@ class avitogaladm(admin.StackedInline):
 class AvitoFields(admin.ModelAdmin):
     inlines = [avitogaladm]
     list_display = ('auth','DateBegin','DateEnd','AdStatus','Street','House_Numb','Square','Price',)
-    #list_filter = ['auth', 'AdStatus']
+
+
+class stInline(admin.TabularInline):
+    #model = zayavka_vr.stat_zayv_spr.through
+    model = status_klienta_all#.through
+
+class voronka_fields(admin.ModelAdmin):
+    inlines = [stInline]
+    list_display = ('rielt','budget','date_sozd')
+
+class status_kl_fields(admin.ModelAdmin):
+    list_display = ('status_id','status_nazv')
+
+class status_kl_all_fields(admin.ModelAdmin):
+    list_display = ('date_sozd','status','auth','otdel')
 
 admin.site.register(flat_obj, flatfields, )
 #admin.site.register(otchet_nov, sdelka_nov)
@@ -99,6 +114,9 @@ admin.site.register(cachestvoDomCl, cashDomClickFields)
 admin.site.register(TmpCianCount, CianFields)
 #admin.site.register(zvonok,ZvonokFields)
 admin.site.register(avitoflats, AvitoFields)
+admin.site.register(zayavka_vr,voronka_fields)
+admin.site.register(status_klienta, status_kl_fields)
+admin.site.register(status_klienta_all)
 
 
 class UserInline(admin.StackedInline):

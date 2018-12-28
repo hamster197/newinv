@@ -439,6 +439,12 @@ label{margin:0;}
                                         <span class="hide-menu"> Внести клиента </span>
                                     </a>
                                 </li>
+                                <li class="sidebar-item">
+                                    <a href="{% url 'voronka_ap:voronka_index' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Мои клиенты </span>
+                                    </a>
+                                </li>
 								{% if request.user.groups.get.name == 'Офис-менеджер' %}
                                 <li class="sidebar-item">
                                     <a href="{% url 'crm:NewZayavNov' %}" class="sidebar-link">

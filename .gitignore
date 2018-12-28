@@ -1,5 +1,7 @@
 *.pyc
 crm/migrations/*.py
+avito/migrations/*.py
+voronka/migrations/*.py
 image/*.*
 
 *~

@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^', include('crm.urls')),
     url(r'^zvonki/', include('zvonki.urls')),
     url(r'^avito/', include('avito.urls')),
-
+    url(r'^voronka/', include('voronka.urls')),
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
