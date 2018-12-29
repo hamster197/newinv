@@ -1,32 +1,60 @@
 {% extends 'crm/main.html' %}
 {% block content %}
 {% load material_form %}
-    <li>Текущий статус: {{ tpost.tek_status }}</li>
-    <li>Отвественный: {{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </li>
-    <li>Канал: {{ tpost.kanal.kanal }} </li>
-    <li>Дата создания: {{ tpost.date_sozd }} </li>
-    <li>Бюджет: {{ tpost.budget }} руб.</li>
+    <li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
+    <li>Текущий статус: <strong>{{ tpost.tek_status }}</strong></li>
+    <li>Отвественный: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
+    <li>Канал: <strong>{{ tpost.kanal.kanal }} </strong></li>
+    <li>Что ищет: <strong>{{ tpost.estate }}</strong></li>
+    <li>Бюджет: <strong>{{ tpost.budget }} руб.</strong></li>
+        <li>ФИО:<strong> {{ tpost.fio }} </strong>
+        тел.:<strong> {{ tpost.tel }} </strong>
+        email.:<strong> {{ tpost.email }} </strong></li>
 
-  <ul>Статусы заявки:
+  <ul><strong>Статусы заявки:(История)</strong>
 {% for i in  tpost.idd_st.all %}
-    <li>{{ i.status}} {{ i.date_sozd}}</li>
+    <li><strong>{{ i.date_sozd}}</strong> {{ i.status}} </li>
 {% endfor %}
 
-  <ul>Комментарии заявки:
+  <ul><strong>Комментарии заявки:</strong>
 {% for c in  tpost.kom_id.all %}
-    <li>{{ c.date_sozd }} {{ c.comment }}</li>
+    <li><strong>{{ c.date_sozd }}</strong> {{ c.comment }}</li>
 {% endfor %}
 
-  </ul> Изменить статус:
+  <ul><strong>Задачи:</strong>
+{% for c in  tpost.zadacha_id.all %}
+    <li><strong> {{ c.zadacha_date }}</strong> {{ c.zadacha }}</li>
+{% endfor %}
+
+  </ul>
+      </br><strong>Изменить статус:</strong>
   {% for status_zayav_vibor in tstatus_zayav_vibor %}
       <li> <a href="{% url 'voronka_ap:voronka_ChangeStatus' idd=tpost.pk st_id=status_zayav_vibor.pk %}">
           {{ status_zayav_vibor.status_nazv }}</a></li>
   {% endfor %}
-{{ ts}}
 
+    </br><strong>Изменить отвественного</strong>
     <form method="post" class="post-form">
         {% csrf_token %}
         {% form form=tsur_form layout=form.layout%}{% endform %}
-        <button type="submit" name="_submit" class="btn">Изменить отвественного</button>
+        <button type="submit" name="otv_post" class="btn">Изменить отвественного</button>
 
+    </br><strong>Добавить коментарий</strong>
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        {% form form=tcom_form layout=form.layout%}{% endform %}
+        <button type="submit" name="comment_post" class="btn">Добавить коментарий</button>
+
+       </br> <strong>Добавить задачу</strong>
+        <form method="post" class="post-form">
+        {% csrf_token %}
+        {% form form=tzad_form layout=form.layout%}{% endform %}
+        <button type="submit" name="zadacha_post" class="btn">Добавить задачу</button>
+
+       </br> <strong>Изменить статус</strong>
+        <form method="post" class="post-form">
+        {% csrf_token %}
+        {% form form=tst_form layout=form.layout%}{% endform %}
+        <button type="submit" name="status_post" class="btn">Изменить статус</button>
+        {{ ss }}
 {% endblock %}

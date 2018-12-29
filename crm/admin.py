@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from voronka.models import zayavka_vr, status_klienta, status_klienta_all, kanal_pr1, comment
+from voronka.models import zayavka_vr, status_klienta, status_klienta_all, kanal_pr1, comment, zayavka_subj, zadachi,\
+    zadachi_spr
 from .models import news, UserProfile1, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, \
     zayavka, stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -105,6 +106,13 @@ class status_kl_all_fields(admin.ModelAdmin):
 class comment_fields(admin.ModelAdmin):
     list_display = ('date_sozd','comment',)
 
+class zadachi_fields(admin.ModelAdmin):
+    list_display = ('zadacha_date','zadacha')
+
+class zadachi_spr_fields(admin.ModelAdmin):
+    list_display = ('zadacha',)
+
+
 admin.site.register(flat_obj, flatfields, )
 #admin.site.register(otchet_nov, sdelka_nov)
 admin.site.register(zayavka, zayavkaFields)
@@ -121,8 +129,10 @@ admin.site.register(zayavka_vr,voronka_fields)
 admin.site.register(status_klienta, status_kl_fields)
 admin.site.register(status_klienta_all, status_kl_all_fields)
 admin.site.register(kanal_pr1)
-admin.site.register(comment)
-
+admin.site.register(comment, comment_fields)
+admin.site.register(zayavka_subj)#, zadachi_spr_fields)
+admin.site.register(zadachi, zadachi_fields)
+admin.site.register(zadachi_spr, zadachi_spr_fields)
 
 class UserInline(admin.StackedInline):
     model = UserProfile1
