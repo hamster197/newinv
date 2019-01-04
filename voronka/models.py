@@ -12,6 +12,7 @@ class status_klienta(models.Model):
     class Meta:
         verbose_name = 'Статус сделки(Справочник)'
         verbose_name_plural = 'Статус сделки(Справочник)'
+        ordering =['status_id']
 
 class status_klienta_all(models.Model):
     zayavka_vr_id = models.ForeignKey('zayavka_vr', on_delete=models.CASCADE, null=True,
@@ -55,7 +56,8 @@ class zayavka_vr(models.Model):
     budget = models.IntegerField(verbose_name='Бюджет:', default=800000,validators=[MinValueValidator(300000)])
     stat_zayv_spr = models.ManyToManyField(status_klienta_all, related_name='status_zayv_spr', blank=True)
     fio = models.CharField(max_length=85, verbose_name='ФИО Клиента', default='', blank=False, null=False)
-    tel = PhoneNumberField('тел собственника', help_text ='+79881234567', default='', blank=False, null=False)
+    tel = PhoneNumberField('Тел. собственника', help_text ='+79881234567', default='', blank=False, null=False)
+    tel_dop = PhoneNumberField('Доп. тел собственника', help_text='+79881234567', default='', blank=True, null=True)
     email = models.EmailField(verbose_name='email', blank=True, help_text='email@mail.ru')
     def __str__(self):
         return str(self.estate)+' '+str(self.budget)+'rub. '+str(self.rielt)
@@ -84,7 +86,8 @@ class zadachi_spr(models.Model):
 
 class zadachi(models.Model):
     zadacha_idd = models.ForeignKey(zayavka_vr, related_name='zadacha_id', on_delete=models.CASCADE)
-    zadacha_date = models.DateTimeField(verbose_name='Дата:')
+    zadacha_date = models.DateField(verbose_name='Дата:')
+    zadacha_time = models.TimeField(verbose_name='Время:')
     zadacha = models.ForeignKey(zadachi_spr, verbose_name='Задача:', related_name='zadacha_id', on_delete=models.CASCADE)
     def __str__(self):
         return str(self.zadacha)

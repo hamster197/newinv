@@ -32,7 +32,7 @@ def VoronkaDetailView(request, idd):
     tek_status_zayav_vibor = status_klienta.objects.all().order_by('-status_id')[0]
 
     if 'otv_post' in request.POST:
-        usr_form = ChangeRieltForm1(request.POST)#, instance=post)
+        usr_form = ChangeRieltForm1(request.POST)
         if usr_form.is_valid():
             usrid = usr_form.cleaned_data['rielt']
             post.rielt_id = usrid

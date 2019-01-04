@@ -1,30 +1,90 @@
 {% extends 'crm/main.html' %}
 {% block content %}
+    {%  if  tpost.rielt.username == request.user.username or request.user.groups.all.0.name == 'Администрация' or request.user.userprofile1.nach_otd == 'Да' %}
+
+
 {% load material_form %}
-    <li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
-    <li>Текущий статус: <strong>{{ tpost.tek_status }}</strong></li>
-    <li>Отвественный: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
-    <li>Канал: <strong>{{ tpost.kanal.kanal }} </strong></li>
-    <li>Что ищет: <strong>{{ tpost.estate }}</strong></li>
-    <li>Бюджет: <strong>{{ tpost.budget }} руб.</strong></li>
-        <li>ФИО:<strong> {{ tpost.fio }} </strong>
-        тел.:<strong> {{ tpost.tel }} </strong>
-        email.:<strong> {{ tpost.email }} </strong></li>
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+    <div class="row">
+       <div class="col s1"><blockquote>
+        <form method="post" class="post-form">
+        {% csrf_token %}
+            {% form form=tst_form layout=form.layout%}
+        {% endform %}
+        <div class="right-align"><button type="submit" name="status_post" class="btn" >Изменить статус</button></div>
+       </blockquote></div>
+      <div class="col s1"><blockquote>
+        <form method="post" class="post-form">
+        {% csrf_token %}
+            {% form form=tsur_form layout=form.layout%}{% endform %}
+        <div class="right-align"><button type="submit" name="otv_post" class="btn">Изменить отвественного</button></div>
+      </blockquote></div>
+    </div>
+</div>
+</div>
+</div>
+</div>
 
-  <ul><strong>Статусы заявки:(История)</strong>
-{% for i in  tpost.idd_st.all %}
-    <li><strong>{{ i.date_sozd}}</strong> {{ i.status}} </li>
-{% endfor %}
+<div class="row">
+<div class="col-lg-12">
+<div class="card">
+<div class="card-body">
+<blockquote>
+        <div class="row">
+        <div class="col s1"><blockquote><h4>INFO:</h4>
+            <li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
+            <li>Текущий статус: <strong>{{ tpost.tek_status }}</strong></li>
+            <li>Отвественный: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
+            <li>Канал: <strong>{{ tpost.kanal.kanal }} </strong></li>
+            <li>Что ищет: <strong>{{ tpost.estate }}</strong></li>
+            <li>Бюджет: <strong>{{ tpost.budget }} руб.</strong></li>
+            <li>ФИО Клиента:<strong> {{ tpost.fio }} </strong>
+            <li>тел.:<strong> {{ tpost.tel }} </strong></li>
+            <li>email.:<strong> {{ tpost.email }} </strong></li>
+        </blockquote></div>
+        <div class="col s1"><blockquote><h4>Комментарии:
+            {% for c in  tpost.kom_id.all %}
+                <li><strong>{{ c.date_sozd }}</strong> {{ c.comment }}</li>
+            {% endfor %}
+            </br>
+            <form method="post" class="post-form">
+            {% csrf_token %}
+            {% form form=tcom_form layout=form.layout%}{% endform %}
+            <button type="submit" name="comment_post" class="btn">Добавить коментарий</button>
+        </h4></blockquote></div>
+        <div class="col s1"><blockquote><h4>Задачи:</h4>
+            {% for c in  tpost.zadacha_id.all %}
+            <li><strong> {{ c.zadacha_date }}</strong> {{ c.zadacha }}</li>
+            {% endfor %}
+            <form method="post" class="post-form">
+                {% csrf_token %}
+                {% form form=tzad_form layout=form.layout%}{% endform %}
+                <button type="submit" name="zadacha_post" class="btn">Добавить задачу</button>
+        </blockquote></div>
+        <div class="col s1"><blockquote><h4>История статусов:
+            {% for i in  tpost.idd_st.all %}
+                <li><strong>{{ i.date_sozd}}</strong> {{ i.status}} </li>
+            {% endfor %}
+        </h4></blockquote></div>
+      </div>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
 
-  <ul><strong>Комментарии заявки:</strong>
-{% for c in  tpost.kom_id.all %}
-    <li><strong>{{ c.date_sozd }}</strong> {{ c.comment }}</li>
-{% endfor %}
 
-  <ul><strong>Задачи:</strong>
-{% for c in  tpost.zadacha_id.all %}
-    <li><strong> {{ c.zadacha_date }}</strong> {{ c.zadacha }}</li>
-{% endfor %}
+
+
+
+
+
+
+
+{% comment %}
 
   </ul>
       </br><strong>Изменить статус:</strong>
@@ -39,22 +99,15 @@
         {% form form=tsur_form layout=form.layout%}{% endform %}
         <button type="submit" name="otv_post" class="btn">Изменить отвественного</button>
 
-    </br><strong>Добавить коментарий</strong>
-    <form method="post" class="post-form">
-        {% csrf_token %}
-        {% form form=tcom_form layout=form.layout%}{% endform %}
-        <button type="submit" name="comment_post" class="btn">Добавить коментарий</button>
 
-       </br> <strong>Добавить задачу</strong>
-        <form method="post" class="post-form">
-        {% csrf_token %}
-        {% form form=tzad_form layout=form.layout%}{% endform %}
-        <button type="submit" name="zadacha_post" class="btn">Добавить задачу</button>
+
 
        </br> <strong>Изменить статус</strong>
         <form method="post" class="post-form">
         {% csrf_token %}
         {% form form=tst_form layout=form.layout%}{% endform %}
         <button type="submit" name="status_post" class="btn">Изменить статус</button>
-        {{ ss }}
+{% endcomment %}
+
+    {% endif %}
 {% endblock %}
