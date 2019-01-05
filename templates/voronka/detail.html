@@ -43,7 +43,12 @@
             <li>Бюджет: <strong>{{ tpost.budget }} руб.</strong></li>
             <li>ФИО Клиента:<strong> {{ tpost.fio }} </strong>
             <li>тел.:<strong> {{ tpost.tel }} </strong></li>
-            <li>email.:<strong> {{ tpost.email }} </strong></li>
+            {% if tpost.tel_dop %}
+                <li>тел(доп).:<strong> {{ tpost.tel_dop }} </strong></li>
+            {% endif %}
+            {% if tpost.email %}
+                <li>email.:<strong> {{ tpost.email }} </strong></li>
+            {% endif %}
         </blockquote></div>
         <div class="col s1"><blockquote><h4>Комментарии:
             {% for c in  tpost.kom_id.all %}
@@ -57,11 +62,18 @@
         </h4></blockquote></div>
         <div class="col s1"><blockquote><h4>Задачи:</h4>
             {% for c in  tpost.zadacha_id.all %}
-            <li><strong> {{ c.zadacha_date }}</strong> {{ c.zadacha }}</li>
+            <li><strong> {{ c.zadacha_date }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
             {% endfor %}
             <form method="post" class="post-form">
-                {% csrf_token %}
-                {% form form=tzad_form layout=form.layout%}{% endform %}
+                {% csrf_token %}{% comment %}
+                <div class="row">
+                <div class="col s1">{{  tzad_form.zadacha_date }}</div>
+                <div class="col s1">{{  tzad_form.zadacha_time }}</div>
+                </div>
+                {{  tzad_form.zadacha }}
+               {% endcomment %}
+                {% form form=tzad_form layout=tzad_form.layout %}{% endform %}
+
                 <button type="submit" name="zadacha_post" class="btn">Добавить задачу</button>
         </blockquote></div>
         <div class="col s1"><blockquote><h4>История статусов:

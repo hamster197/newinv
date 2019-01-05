@@ -25,11 +25,11 @@ def VoronkaDetailView(request, idd):
     #coment = post.kom_id.all().order_by('date_sozd')
     #zadachi = post.zadacha_id.all().order_by('-zadacha_date')
 
-    names_to_exclude = []
-    for i in status_klienta_all.objects.filter(zayavka_vr_id_id=post.pk):
-        names_to_exclude.append(i.status.status_nazv)
-    status_zayav_vibor = status_klienta.objects.all().order_by('status_id').exclude(status_nazv__in=names_to_exclude)
-    tek_status_zayav_vibor = status_klienta.objects.all().order_by('-status_id')[0]
+    #names_to_exclude = []
+    #for i in status_klienta_all.objects.filter(zayavka_vr_id_id=post.pk):
+    #    names_to_exclude.append(i.status.status_nazv)
+    #status_zayav_vibor = status_klienta.objects.all().order_by('status_id').exclude(status_nazv__in=names_to_exclude)
+    #tek_status_zayav_vibor = status_klienta.objects.all().order_by('-status_id')[0]
 
     if 'otv_post' in request.POST:
         usr_form = ChangeRieltForm1(request.POST)
@@ -41,7 +41,6 @@ def VoronkaDetailView(request, idd):
     if 'comment_post' in request.POST:
         com_form = NewCommentForm(request.POST)
         if com_form.is_valid():
-            n2 = '213123'
             comment = com_form.save(commit=False)
             comment.komm_id_id = idd
             comment.save()
@@ -57,8 +56,8 @@ def VoronkaDetailView(request, idd):
     st_form = StatusEdit(initial={'status_f': status_klienta_all, })
     
     return render(request,'voronka/detail.html',{'tn1':n1, 'tn2':n2, 'tpost':post,
-                                                 'tek_status_zayav_vibor':tek_status_zayav_vibor,
-                                                  'tstatus_zayav_vibor':status_zayav_vibor, #'ss':st,
+                                                 #'tek_status_zayav_vibor':tek_status_zayav_vibor,
+                                                  #'tstatus_zayav_vibor':status_zayav_vibor, #'ss':st,
                                                  'tsur_form':usr_form,'tcom_form':com_form,'tst_form':st_form,
                                                  'tzad_form':zad_form,
                                                  })

@@ -22,9 +22,12 @@ class NewZadachaForm(forms.ModelForm):
         fields = ('zadacha_date','zadacha_time','zadacha')
         widgets = {'zadacha_date': forms.TextInput(attrs={'type': 'date'}),
                    'zadacha_time': forms.TextInput(attrs={'type': 'time'})}
-        layout = Layout(
-            Row('zadacha_date', 'zadacha_time'),
-        )
+
+    layout = Layout(
+                    Row('zadacha_date', 'zadacha_time'),
+                    'zadacha'
+                    )
+
 
 class StatusEdit(forms.Form):
     status_f = forms.ModelChoiceField(label='Изменить статус :',
