@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from material import Row, Layout
 
-from voronka.models import comment, zadachi, status_klienta_all, status_klienta
+from voronka.models import comment, zadachi, status_klienta
 
 
 class ChangeRieltForm1(forms.Form):
@@ -31,4 +31,4 @@ class NewZadachaForm(forms.ModelForm):
 
 class StatusEdit(forms.Form):
     status_f = forms.ModelChoiceField(label='Изменить статус :',
-                                       queryset=status_klienta.objects.exclude(status_nazv__in=['Лид получен','Входящая заявка']).order_by('status_id'))
+                                       queryset=status_klienta.objects.exclude(status_nazv__in=['Лид получен','Входящая заявка','Входящая заявка']).order_by('status_id'))

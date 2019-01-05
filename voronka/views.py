@@ -2,6 +2,7 @@
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from voronka.forms import ChangeRieltForm1, NewCommentForm, NewZadachaForm, StatusEdit
@@ -12,8 +13,47 @@ from voronka.models import zayavka_vr, status_klienta, status_klienta_all
 def VoronkaIndexView(request):
     n1 ='Мои '
     n2 = 'Заявки'
-    post = zayavka_vr.objects.all()
-    return render(request,'voronka/index.html',{'tpost':post, 'tn1':n1, 'tn2':n2})
+    ##########################################
+    ### Start of vhodyashe zayavki
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'))
+        vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
+                                                ).count()
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                             otdel = otd)
+        vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                                otdel = otd).count()
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                             rielt = usr )
+        vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                                rielt = usr ).count()
+    ##########################################
+    ### Start of zayavki in work
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        work_zayav = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка'])
+        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
+                                                ).count()
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        work_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                             otdel = otd)
+        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                                otdel = otd).count()
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        work_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                             rielt = usr )
+        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                                rielt = usr ).count()
+    return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
+                                                'work_zayav':work_zayav, 'twork_zayav_cn':work_zayav_cn,
+                                                'tn1':n1, 'tn2':n2})
 
 @login_required
 def VoronkaDetailView(request, idd):
@@ -38,6 +78,26 @@ def VoronkaDetailView(request, idd):
             post.rielt_id = usrid
             post.save()
     usr_form = ChangeRieltForm1()
+
+    if 'status_post' in request.POST:
+        status_form = StatusEdit(request.POST)
+        if status_form.is_valid():
+            #idd, st_id
+            idd = post.pk
+            name = status_form.cleaned_data['status_f']
+            status_pk = get_object_or_404(status_klienta, status_nazv=name)
+            auth_id = post.rielt_id
+            gr = post.rielt.groups.get().name
+            post = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd=datetime.now(),
+                                                     status_id=status_pk.pk, auth_id=auth_id, otdel=gr, )
+            post.save()
+            otd = get_object_or_404(status_klienta, pk=status_pk.pk)
+            post.tek_status = otd.status_nazv
+            post.save()
+            post = zayavka_vr.objects.get(pk=idd)
+            #n2 = str(idd)+' '+str(status_pk.pk)
+
+
     if 'comment_post' in request.POST:
         com_form = NewCommentForm(request.POST)
         if com_form.is_valid():
@@ -62,16 +122,16 @@ def VoronkaDetailView(request, idd):
                                                  'tzad_form':zad_form,
                                                  })
 
-@login_required
-def VoronkaChangeView(request, idd, st_id):
-    auth = zayavka_vr.objects.get(pk=idd)
-    auth_id = auth.rielt_id
-    #gr = auth.rielt.groups.get().id
-    gr = auth.rielt.groups.get().name
-    post = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd = datetime.now(),
-                                             status_id=st_id, auth_id=auth_id, otdel=gr,)
-    post.save()
-    otd = get_object_or_404(status_klienta, pk = st_id)
-    auth.tek_status = otd.status_nazv
-    auth.save()
-    return redirect('voronka_ap:voronka_detail', idd = idd)#render(request,'voronka/index.html')
+#@login_required
+#def VoronkaChangeView(request, idd, st_id):
+#    auth = zayavka_vr.objects.get(pk=idd)
+#    auth_id = auth.rielt_id
+#    #gr = auth.rielt.groups.get().id
+#    gr = auth.rielt.groups.get().name
+#    post = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd = datetime.now(),
+#                                             status_id=st_id, auth_id=auth_id, otdel=gr,)
+#    post.save()
+#    otd = get_object_or_404(status_klienta, pk = st_id)
+#    auth.tek_status = otd.status_nazv
+#    auth.save()
+#    return redirect('voronka_ap:voronka_detail', idd = idd)#render(request,'voronka/index.html')

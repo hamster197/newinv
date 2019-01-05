@@ -26,7 +26,7 @@ class status_klienta_all(models.Model):
     class Meta:
         verbose_name = 'Статус сделки(Даты)'
         verbose_name_plural = 'Статус сделки(Даты)'
-        ordering = ['-date_sozd']
+        ordering = ['-pk']
 
 class kanal_pr1(models.Model):
     kanal = models.CharField(max_length=45, verbose_name='Канал привлечения:')
@@ -64,6 +64,7 @@ class zayavka_vr(models.Model):
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявка'
+        ordering = ['-date_sozd']
 
 class comment(models.Model):
     komm_id = models.ForeignKey(zayavka_vr, related_name='kom_id', on_delete=models.CASCADE, null=True,)
