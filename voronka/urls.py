@@ -19,6 +19,9 @@ from . import views
 
 app_name='voronka_ap'
 urlpatterns = [
+    url(r'^voronka/new_new_vh$', views.NewZayavVhView, name='voronka_new_vh_zayav'),
+    url(r'^voronka/new_new_work$', views.NewZayavWorkView, name='voronka_new_work_zayav'),
+    url(r'^voronka/vhedit/(?P<idd>[0-9]+)/$', views.EditZayavVhView, name='voronka_vh_edit'),
     url(r'^voronka/index$', views.VoronkaIndexView, name='voronka_index'),
     url(r'^voronka/detail/(?P<idd>[0-9]+)/$', views.VoronkaDetailView, name='voronka_detail'),
     #url(r'^voronka/changestauszayav/(?P<idd>[0-9]+)/(?P<st_id>[0-9]+)/$',

@@ -3,8 +3,24 @@ from django import forms
 from django.contrib.auth.models import User
 from material import Row, Layout
 
-from voronka.models import comment, zadachi, status_klienta
+from voronka.models import comment, zadachi, status_klienta, zayavka_vr
 
+
+class NewVhZayavForm(forms.ModelForm):
+    class Meta:
+        model = zayavka_vr
+        fields = ['tel','kanal',]
+
+class EditVhZayavForm(forms.ModelForm):
+    class Meta:
+        model = zayavka_vr
+        fields = ['fio','tel','tel_dop','email','kanal','estate','budget',]
+
+
+class NewWorkZayavForm(forms.ModelForm):
+    class Meta:
+        model = zayavka_vr
+        fields = ['fio','tel','tel_dop','email','kanal','estate','budget',]
 
 class ChangeRieltForm1(forms.Form):
     a_choises = [(c.id, c.last_name + ' ' + c.first_name) for c in
@@ -28,7 +44,6 @@ class NewZadachaForm(forms.ModelForm):
                     'zadacha'
                     )
 
-
 class StatusEdit(forms.Form):
     status_f = forms.ModelChoiceField(label='Изменить статус :',
-                                       queryset=status_klienta.objects.exclude(status_nazv__in=['Лид получен','Входящая заявка','Входящая заявка']).order_by('status_id'))
+                                       queryset=status_klienta.objects.exclude(status_nazv__in=['Лид получен','Входящая заявка с сайта','Входящая заявка']).order_by('status_id'))

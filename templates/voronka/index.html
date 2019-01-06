@@ -6,9 +6,11 @@
     <div class="row">
       <div class="col s1">
               <blockquote>
-                    Входящие ({{ tvh_zayav_cn }}) <a href="#!" class="collection-item">
+                    Входящие ({{ tvh_zayav_cn }}) <a href="{% url 'voronka_ap:voronka_new_vh_zayav' %}" class="collection-item">
                   <span class="new badge red" data-badge-caption="">Добавить заявку </span></a>
               </blockquote>
+
+
     {% for vh_zayav in tvh_zayav %}
   <div class="row">
     <div class="col s12 m6">
@@ -20,9 +22,8 @@
             <li>{{ vh_zayav.date_sozd }}</li>
         </div>
         <div class="card-action">
-          <a href="{% url 'voronka_ap:voronka_detail' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка' %}
+          <a href="{% url 'voronka_ap:voronka_vh_edit' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка' %}
               Взять заявку{% else %}Внести данные{% endif %}</a>
-
         </div>
       </div>
     </div>
@@ -34,7 +35,7 @@
     {% endcomment %}
       <div class="col s1">
               <blockquote>
-                    В работе ({{ twork_zayav_cn }}) <a href="#!" class="collection-item">
+                    В работе ({{ twork_zayav_cn }}) <a href="{% url 'voronka_ap:voronka_new_work_zayav' %}" class="collection-item">
                   <span class="new badge red" data-badge-caption="">Добавить заявку </span></a>
               </blockquote>
     {% for work_zayav in twork_zayav %}
@@ -107,7 +108,9 @@
         </div>
         <div class="card-action">
           <a href="{% url 'voronka_ap:voronka_detail' idd=nd_zayav.pk %}">Подробнее</a>
-
+          {% if not nd_zayav.fio %}
+              <a href="{% url 'voronka_ap:voronka_vh_edit' idd=vh_zayav.pk %}">Внести данные</a>
+          {% endif %}
         </div>
       </div>
     </div>

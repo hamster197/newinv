@@ -55,18 +55,18 @@ class zayavka_vr(models.Model):
     estate = models.ForeignKey(zayavka_subj, on_delete=models.CASCADE, null=True, verbose_name='Что ищет:')
     otdel = models.CharField(max_length=55, verbose_name='Oтдел', default='')
     tek_status = models.CharField(max_length=55, verbose_name='Текущий статус', null=True)
-    budget = models.IntegerField(verbose_name='Бюджет:', default=800000,validators=[MinValueValidator(300000)])
+    budget = models.IntegerField(verbose_name='Бюджет:', default=0,validators=[MinValueValidator(300000)])
     stat_zayv_spr = models.ManyToManyField(status_klienta_all, related_name='status_zayv_spr', blank=True)
     fio = models.CharField(max_length=85, verbose_name='ФИО Клиента', default='', blank=False, null=False)
     tel = PhoneNumberField('Тел. собственника', help_text ='+79881234567', default='', blank=False, null=False)
-    tel_dop = PhoneNumberField('Доп. тел собственника', help_text='+79881234567', default='', blank=True, null=True)
-    email = models.EmailField(verbose_name='email', blank=True, help_text='email@mail.ru')
+    tel_dop = PhoneNumberField('Доп. тел собственника(если есть)', help_text='+79881234567', default='', blank=True, null=True)
+    email = models.EmailField(verbose_name='email(если есть)', blank=True, help_text='email@mail.ru')
     def __str__(self):
         return str(self.estate)+' '+str(self.budget)+'rub. '+str(self.rielt)
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявка'
-        ordering = ['-date_sozd']
+        ordering = ['-date_sozd','-pk']
 
 class comment(models.Model):
     komm_id = models.ForeignKey(zayavka_vr, related_name='kom_id', on_delete=models.CASCADE, null=True,)

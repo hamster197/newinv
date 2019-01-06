@@ -37,7 +37,9 @@
         <div class="col s1"><blockquote><h4>INFO:</h4>
             <li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
             <li>Дата взятия в работу:<strong> {{ tpost.date_vzatia }} </strong></li>
+            {% if tpost.date_zakr %}
             <li>Дата закрытия:<strong> {{ tpost.date_zakr }} </strong></li>
+            {% endif %}
             <li>Текущий статус: <strong>{{ tpost.tek_status }}</strong></li>
             <li>Отвественный: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
             <li>Канал: <strong>{{ tpost.kanal.kanal }} </strong></li>
