@@ -45,7 +45,9 @@ class zayavka_subj(models.Model):
         verbose_name_plural = 'Тип надвижимости(Справочник)'
 
 class zayavka_vr(models.Model):
-    date_sozd = models.DateField(verbose_name='Дата создания(Входящая заявка):', null=True, blank=True, auto_now=True)
+    date_sozd = models.DateField(verbose_name='Дата создания(Входящая заявка):', null=True, blank=True)
+    date_vzatia = models.DateField(verbose_name='Дата взятия в работу(Входящая заявка):', null=True, blank=True)
+    date_zakr = models.DateField(verbose_name='Дата закрытия(Входящая заявка):', null=True, blank=True)
     a_choises = [(c.id, c.last_name + ' ' + c.first_name) for c in
                  User.objects.filter(is_active=True).order_by('last_name')]
     rielt = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=True, verbose_name='Автор:')

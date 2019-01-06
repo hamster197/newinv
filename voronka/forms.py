@@ -8,7 +8,7 @@ from voronka.models import comment, zadachi, status_klienta
 
 class ChangeRieltForm1(forms.Form):
     a_choises = [(c.id, c.last_name + ' ' + c.first_name) for c in
-                 User.objects.filter(is_active=True).order_by('last_name')]
+                 User.objects.filter(is_active=True).exclude(username='sait').order_by('last_name')]
     rielt = forms.ChoiceField(choices=a_choises, label='Выберите нового ответсвенного:', )
 
 class NewCommentForm(forms.ModelForm):

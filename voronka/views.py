@@ -32,27 +32,85 @@ def VoronkaIndexView(request):
                                              rielt = usr )
         vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
                                                 rielt = usr ).count()
+
+
     ##########################################
     ### Start of zayavki in work
     #########################################
     if request.user.groups.get().name == 'Администрация':
-        work_zayav = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка'])
-        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
-                                                ).count()
+        work_zayav = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+        work_zayav_cn = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
     if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
         otd = request.user.groups.get().name
-        work_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                                             otdel = otd)
-        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                                                otdel = otd).count()
+        work_zayav = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+        work_zayav_cn = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
     if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
         usr = request.user
-        work_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                                             rielt = usr )
-        work_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                                                rielt = usr ).count()
+        work_zayav = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+        work_zayav_cn = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
+
+
+    ##########################################
+    ### Start of pokaz/vstrecha  zayavki
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча')
+        pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча').count()
+
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel = otd)
+        pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel = otd).count()
+
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', rielt = usr)
+        pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', rielt = usr).count()
+
+    ##########################################
+    ### Start of nedozvon  zayavki
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон')
+        nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон').count()
+
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', otdel = otd)
+        nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', otdel = otd).count()
+
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', rielt = usr)
+        nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', rielt = usr).count()
+
+    ##########################################
+    ### Start of zakritie  zayavki
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта')
+        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта').count()
+
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта', otdel = otd)
+        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта', otdel = otd).count()
+
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr)
+        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr).count()
     return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
-                                                'work_zayav':work_zayav, 'twork_zayav_cn':work_zayav_cn,
+                                                'twork_zayav': work_zayav, 'twork_zayav_cn': work_zayav_cn,
+                                                'tpokaz_zayav': pokaz_zayav, 'tpokaz_zayav_cn': pokaz_zayav_cn,
+                                                'tnd_zayav': nd_zayav, 'tnd_zayav_cn': nd_zayav_cn,
+                                                'tzakr_zayav':zakr_zayav, 'tzakr_zayav_cn':zakr_zayav_cn,
                                                 'tn1':n1, 'tn2':n2})
 
 @login_required
@@ -88,8 +146,10 @@ def VoronkaDetailView(request, idd):
             status_pk = get_object_or_404(status_klienta, status_nazv=name)
             auth_id = post.rielt_id
             gr = post.rielt.groups.get().name
+            n2= name
+            otd = get_object_or_404(status_klienta, pk=status_pk.pk)
             post = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd=datetime.now(),
-                                                     status_id=status_pk.pk, auth_id=auth_id, otdel=gr, )
+                                                     status_id=status_pk.pk, auth_id=auth_id, otdel=gr)#, tek_status='otd')
             post.save()
             otd = get_object_or_404(status_klienta, pk=status_pk.pk)
             post.tek_status = otd.status_nazv

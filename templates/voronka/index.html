@@ -14,11 +14,15 @@
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">{{ vh_zayav.tel }} </span>
+          <span class="card-title">{% if vh_zayav.tek_status == 'Входящая заявка' %}{{ vh_zayav.tel }}
+          {% else %}Заявка с сайта {% endif %}</span>
+
             <li>{{ vh_zayav.date_sozd }}</li>
         </div>
         <div class="card-action">
-          <a href="{% url 'voronka_ap:voronka_detail' idd=vh_zayav.pk %}">Взять заявку</a>
+          <a href="{% url 'voronka_ap:voronka_detail' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка' %}
+              Взять заявку{% else %}Внести данные{% endif %}</a>
+
         </div>
       </div>
     </div>
@@ -30,28 +34,116 @@
     {% endcomment %}
       <div class="col s1">
               <blockquote>
-                    В работе (25) <a href="#!" class="collection-item">
+                    В работе ({{ twork_zayav_cn }}) <a href="#!" class="collection-item">
                   <span class="new badge red" data-badge-caption="">Добавить заявку </span></a>
               </blockquote>
+    {% for work_zayav in twork_zayav %}
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">{{ work_zayav.tel }}</span>
+            <li>Клиент: {{ work_zayav.fio }}</li>
+            <li>{{ work_zayav.estate }} {{ work_zayav.budget }} руб.</li>
+            <li>Дата создания: {{ work_zayav.date_sozd }}</li>
+            <li>Дата взятия: {{ work_zayav.date_vzatia }}</li>
+            <li>Ответственный: {{ work_zayav.rielt.first_name }} {{ work_zayav.rielt.last_name }}</li>
+        </div>
+        <div class="card-action">
+          <a href="{% url 'voronka_ap:voronka_detail' idd=work_zayav.pk %}">Подробнее</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+
       </div>
     {% comment %}
     start of zayavki vstrech
     {% endcomment %}
       <div class="col s1">
               <blockquote>
-                    Показ/Встреча (25)
+                    Показ/Встреча ({{ tpokaz_zayav_cn }})
               </blockquote>
+    {% for pokaz_zayav in tpokaz_zayav %}
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">{{ pokaz_zayav.tel }}</span>
+            <li>Клиент: {{ pokaz_zayav.fio }}</li>
+            <li>{{ pokaz_zayav.estate }} {{ pokaz_zayav.budget }} руб.</li>
+            <li>Дата создания: {{ pokaz_zayav.date_sozd }}</li>
+            <li>Дата взятия: {{ pokaz_zayav.date_vzatia }}</li>
+            <li>Ответственный: {{ pokaz_zayav.rielt.first_name }} {{ pokaz_zayav.rielt.last_name }}</li>
+        </div>
+        <div class="card-action">
+          <a href="{% url 'voronka_ap:voronka_detail' idd=pokaz_zayav.pk %}">Подробнее</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
       </div>
     {% comment %}
     start of nedozvon zayavki
     {% endcomment %}
       <div class="col s1">
               <blockquote>
-                    Недозвон (25)
+                    Недозвон ({{ tnd_zayav_cn }})
               </blockquote>
+    {% for nd_zayav in tnd_zayav %}
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">{{ nd_zayav.tel }}</span>
+            <li>Дата создания: {{ nd_zayav.date_sozd }}</li>
+            {% if nd_zayav.date_vzatia %}<li>Дата взятия: {{ nd_zayav.date_vzatia }}</li>{% endif %}
+            <li>Ответственный: {{ nd_zayav.rielt.first_name }} {{ nd_zayav.rielt.last_name }}</li>
+            {% if nd_zayav.estate %}<li>{{ nd_zayav.estate }} {{ nd_zayav.budget }} руб.</li>{% endif %}
+        </div>
+        <div class="card-action">
+          <a href="{% url 'voronka_ap:voronka_detail' idd=nd_zayav.pk %}">Подробнее</a>
+
+        </div>
       </div>
     </div>
+  </div>
+    {% endfor %}
+      </div>
 
 
+    {% comment %}
+    start of Zakritie zayavki
+    {% endcomment %}
+      <div class="col s1">
+              <blockquote>
+                    Закрытые ({{ tzakr_zayav_cn }})
+              </blockquote>
+    {% for zakr_zayav in tzakr_zayav %}
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">{{ zakr_zayav.tel }}</span>
+            <li>Дата создания: {{ zakr_zayav.date_sozd }}</li>
+            <li>Дата взятия: {{ zakr_zayav.date_vzatia }}</li>
+            <li>Дата закрытия: {{ zakr_zayav.date_vzatia }}</li>
+            <li>Ответственный: {{ zakr_zayav.rielt.first_name }} {{ zakr_zayav.rielt.last_name }}</li>
+            <li>{{ zakr_zayav.estate }} {{ zakr_zayav.budget }} руб.</li>
+        </div>
+        <div class="card-action">
+          <a href="{% url 'voronka_ap:voronka_detail' idd=zakr_zayav.pk %}">Подробнее</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+      </div>
+    </div>
 
 {% endblock %}
