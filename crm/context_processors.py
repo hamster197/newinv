@@ -5,6 +5,8 @@ from django.db.models import Q
 from crm.models import zayavka, flat_obj, otchet_nov
 from django.utils import timezone
 
+from voronka.models import zayavka_vr
+
 
 def main(request):
     n3 = zayavka.objects.filter(status='Свободен').count()
@@ -40,6 +42,23 @@ def main(request):
             | Q(reelt8=request.user) | Q(reelt9=request.user) | Q(
                 reelt10=request.user),
             sdelka_zakrita='Рассрочка').count()
+        ##########################################
+        ### Start of vhodyashe zayavki
+        #########################################
+        if request.user.groups.get().name == 'Администрация':
+            n3 = zayavka_vr.objects.filter(
+                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
+                ).count()
+        if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+            otd = request.user.groups.get().name
+            n3 = zayavka_vr.objects.filter(
+                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                otdel=otd).count()
+        if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+            usr = request.user
+            n3 = zayavka_vr.objects.filter(
+                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                rielt=usr).count()
         vestum_count = str(request.user.userprofile1.vestum_count_ads)
         my_ya_obj = flat_obj.objects.filter(author=request.user).count()
         d11 =timezone.datetime.now().date()-timedelta(days=timezone.datetime.now().weekday())
