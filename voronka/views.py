@@ -29,13 +29,12 @@ def VoronkaIndexView(request):
                                                 otdel = otd).count()
     if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
         usr = request.user
-        vh_zayav = zayavka_vr.objects.filter(tek_status='Входящая заявка',
-                                             rielt = usr )
-        vh_zayav_cn = zayavka_vr.objects.filter(tek_status='Входящая заявка', rielt = usr ).count()
+        vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
+                                             rielt = usr) | Q(tek_status='Входящая заявка с сайта') )
+        vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
+                                             rielt = usr) | Q(tek_status='Входящая заявка с сайта')).count()
 
-        vh_zayav_sait = zayavka_vr.objects.filter(tek_status='Входящая заявка с сайта' )
-        vh_zayav_cn_sait = zayavka_vr.objects.filter(tek_status='Входящая заявка с сайта').count()
-        vh_zayav_cn = vh_zayav_cn + vh_zayav_cn_sait
+
 
     ##########################################
     ### Start of zayavki in work
