@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from voronka.forms import ChangeRieltForm1, NewCommentForm, NewZadachaForm, StatusEdit, NewVhZayavForm, \
-    NewWorkZayavForm, EditVhZayavForm
+    NewWorkZayavForm, EditVhZayavForm, RieltSearchForm, OtdSearchForm
 from voronka.models import zayavka_vr, status_klienta, status_klienta_all
 
 
@@ -108,11 +108,24 @@ def VoronkaIndexView(request):
         usr = request.user
         zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr)
         zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr).count()
+    otssearch = OtdSearchForm()
+    if 'otd_search' in request.POST:
+        otdform = OtdSearchForm(request.POST)
+        if otdform.is_valid():
+            name = otdform.cleaned_data['otdel']
+            otd = get_object_or_404(Group,id=name)
+            vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
+                                             otdel = otd)
+            n2 = n2+' '+str(otd)
+            otssearch= OtdSearchForm(initial={'otdel':str(otd)})
+
+    rieltsearch = RieltSearchForm()
     return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
                                                 'twork_zayav': work_zayav, 'twork_zayav_cn': work_zayav_cn,
                                                 'tpokaz_zayav': pokaz_zayav, 'tpokaz_zayav_cn': pokaz_zayav_cn,
                                                 'tnd_zayav': nd_zayav, 'tnd_zayav_cn': nd_zayav_cn,
                                                 'tzakr_zayav':zakr_zayav, 'tzakr_zayav_cn':zakr_zayav_cn,
+                                                'totssearch':otssearch,'trieltsearch':rieltsearch,
                                                 'tn1':n1, 'tn2':n2})
 
 @login_required

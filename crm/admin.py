@@ -95,7 +95,7 @@ class stInline(admin.TabularInline):
 
 class voronka_fields(admin.ModelAdmin):
     inlines = [stInline]
-    list_display = ('pk','rielt','tek_status','budget','date_sozd')
+    list_display = ('pk','rielt','otdel','tek_status','budget','date_sozd')
 
 class status_kl_fields(admin.ModelAdmin):
     list_display = ('pk','status_id','status_nazv')

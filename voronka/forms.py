@@ -1,6 +1,6 @@
 
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from material import Row, Layout
 
 from voronka.models import comment, zadachi, status_klienta, zayavka_vr
@@ -47,3 +47,14 @@ class NewZadachaForm(forms.ModelForm):
 class StatusEdit(forms.Form):
     status_f = forms.ModelChoiceField(label='Изменить статус :',
                                        queryset=status_klienta.objects.exclude(status_nazv__in=['Лид получен','Входящая заявка с сайта','Входящая заявка']).order_by('status_id'))
+
+
+class OtdSearchForm(forms.Form):
+    a_choises = [(c.id, c.name) for c in
+                 Group.objects.all().exclude(name__in=['Администрация','Администрация Адлер','Офис-менеджер','Юристы','seo']).order_by('name')]
+    otdel = forms.ChoiceField(choices=a_choises, label='Выберите отдел:', )
+
+class RieltSearchForm(forms.Form):
+    a_choises = [(c.id, c.last_name + ' ' + c.first_name) for c in
+                 User.objects.filter(is_active=True).exclude(username='sait').order_by('last_name')]
+    rielt = forms.ChoiceField(choices=a_choises, label='Выберите нового ответсвенного:', )

@@ -431,12 +431,15 @@ label{margin:0;}
                                 <i class="mdi mdi-account"></i>
                                 <span class="hide-menu"> Клиенты для сработки </span>
                             </a>
+
                             <ul aria-expanded="false" class="collapse  first-level">
                                 <li class="sidebar-item">
+                                    {% if request.user.groups.get.name == 'Администрация' %}
                                     <a href="#" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Воронка продаж </span>
                                     </a>
+                                    {% endif %}
                                 </li>
                                 <li class="sidebar-item">
                                     <a href="{% url 'voronka_ap:voronka_index' %}" class="sidebar-link">
