@@ -1,7 +1,7 @@
 #from datetime# import timezone, datetime
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -136,6 +136,7 @@ def VoronkaDetailView(request, idd):
         if usr_form.is_valid():
             usrid = usr_form.cleaned_data['rielt']
             post.rielt_id = usrid
+            post.otdel = post.rielt.groups.get().name
             post.save()
     usr_form = ChangeRieltForm1()
 
@@ -157,7 +158,7 @@ def VoronkaDetailView(request, idd):
             post.tek_status = otd.status_nazv
             post.save()
             post = zayavka_vr.objects.get(pk=idd)
-            n2 = str(idd)+' '+str(status_pk.pk)
+            #n2 = str(idd)+' '+str(status_pk.pk)
 
 
     if 'comment_post' in request.POST:
@@ -287,6 +288,25 @@ def VzZayvSaitView(request, idd):
     auth.save()
     return redirect('voronka_ap:voronka_index')
 
+
+@login_required
+def NedozvZayvSaitView(request, idd):
+    vpost = get_object_or_404(zayavka_vr, pk = idd)
+    idz = vpost.pk
+    vpost.rielt = request.user
+    vpost.date_vzatia = datetime.now()
+    vpost.tek_status = 'Недозвон'
+    vpost.save()
+    auth = zayavka_vr.objects.get(pk=idz)
+    auth_id = auth.rielt_id
+    gr = auth.rielt.groups.get().name
+    post = status_klienta_all.objects.create(zayavka_vr_id_id=idz, date_sozd=datetime.now(),
+                                             status_id=3, auth_id=auth_id, otdel=gr, )
+    post.save()
+    otd = get_object_or_404(status_klienta, pk=3)
+    auth.tek_status = otd.status_nazv
+    auth.save()
+    return redirect('voronka_ap:voronka_index')
 #@login_required
 #def VoronkaChangeView(request, idd, st_id):
 #    auth = zayavka_vr.objects.get(pk=idd)
