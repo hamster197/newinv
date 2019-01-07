@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^voronka/new_new_work$', views.NewZayavWorkView, name='voronka_new_work_zayav'),
     url(r'^voronka/vhedit/(?P<idd>[0-9]+)/$', views.EditZayavVhView, name='voronka_vh_edit'),
     url(r'^voronka/vhvzyat/(?P<idd>[0-9]+)/$', views.VzZayvSaitView, name='voronka_vh_vzyat_zayav'),
+    url(r'^voronka/nedozvon/(?P<idd>[0-9]+)/$', views.NedozvZayvSaitView, name='voronka_nedozvon_zayav'),
     url(r'^voronka/index$', views.VoronkaIndexView, name='voronka_index'),
     url(r'^voronka/detail/(?P<idd>[0-9]+)/$', views.VoronkaDetailView, name='voronka_detail'),
     #url(r'^voronka/changestauszayav/(?P<idd>[0-9]+)/(?P<st_id>[0-9]+)/$',

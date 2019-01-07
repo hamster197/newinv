@@ -20,9 +20,13 @@
             <li>{{ vh_zayav.date_sozd }}</li>
         </div>
         <div class="card-action">
-          <a href="{% url 'voronka_ap:voronka_vh_vzyat_zayav' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка' %}
-              Взять заявку{% else %}Внести данные{% endif %}</a>
-          <a href="{% url 'voronka_ap:voronka_vh_edit' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка с сайта' %}
+
+          {% if vh_zayav.tek_status != 'Входящая заявка' %}
+              <a href="{% url 'voronka_ap:voronka_vh_vzyat_zayav' idd=vh_zayav.pk %}">Взять заявку</a>
+          {% else %}
+          <a href="{% url 'voronka_ap:voronka_vh_edit' idd=vh_zayav.pk %}">Внести данные{% endif %}</a>
+
+          <a href="{% url 'voronka_ap:voronka_nedozvon_zayav' idd=vh_zayav.pk %}">{% if vh_zayav.tek_status != 'Входящая заявка с сайта' %}
               Недозв.{% endif %}</a>
         </div>
       </div>
