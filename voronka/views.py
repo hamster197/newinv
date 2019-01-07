@@ -280,9 +280,9 @@ def VzZayvSaitView(request, idd):
     auth_id = auth.rielt_id
     gr = auth.rielt.groups.get().name
     post = status_klienta_all.objects.create(zayavka_vr_id_id=idz, date_sozd=datetime.now(),
-                                             status_id=2, auth_id=auth_id, otdel=gr, )
+                                             status_id=1, auth_id=auth_id, otdel=gr, )
     post.save()
-    otd = get_object_or_404(status_klienta, pk=2)
+    otd = get_object_or_404(status_klienta, pk=1)
     auth.tek_status = otd.status_nazv
     auth.save()
     return redirect('voronka_ap:voronka_index')
