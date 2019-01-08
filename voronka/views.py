@@ -14,6 +14,7 @@ from voronka.models import zayavka_vr, status_klienta, status_klienta_all
 def VoronkaIndexView(request):
     n1 ='Мои '
     n2 = 'Заявки'
+
     ##########################################
     ### Start of vhodyashe zayavki
     #########################################
@@ -108,6 +109,8 @@ def VoronkaIndexView(request):
         usr = request.user
         zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt = usr)
         zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt = usr).count()
+
+
     otssearch = OtdSearchForm()
     if 'otd_search' in request.POST:
         otdform = OtdSearchForm(request.POST)
@@ -116,10 +119,50 @@ def VoronkaIndexView(request):
             otd = get_object_or_404(Group,id=name)
             vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
                                              otdel = otd)
-            n2 = n2+' '+str(otd)
-            otssearch= OtdSearchForm(initial={'otdel':str(otd)})
+            vh_zayav_cn = zayavka_vr.objects.filter(
+                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
+                ).count()
+            work_zayav = zayavka_vr.objects.filter(otdel=name).exclude(
+                tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
+                                'Показ/Встреча', 'Недозвон', 'Закрыта'])
+            work_zayav_cn = zayavka_vr.objects.filter(otdel=name).exclude(
+                tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
+                                'Показ/Встреча', 'Недозвон', 'Закрыта']).count()
+            pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=name)
+            pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=name).count()
+            nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=name)
+            nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=name).count()
+            zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt=name)
+            zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'),
+                                                      rielt=name).count()
+            gr = get_object_or_404(Group, name=otd)
+            otssearch= OtdSearchForm(initial={'otdel':gr.id})
 
     rieltsearch = RieltSearchForm()
+    if 'rielt_search' in request.POST:
+        form = RieltSearchForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['rielt']
+            vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
+                                                   rielt=name) | Q(tek_status='Входящая заявка с сайта'))
+            vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
+                                                      rielt=name) | Q(tek_status='Входящая заявка с сайта')).count()
+            work_zayav = zayavka_vr.objects.filter(rielt=name).exclude(
+                tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
+                                'Показ/Встреча', 'Недозвон', 'Закрыта'])
+            work_zayav_cn = zayavka_vr.objects.filter(rielt=name).exclude(
+                tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
+                                'Показ/Встреча', 'Недозвон', 'Закрыта']).count()
+            pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', rielt=name)
+            pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', rielt=name).count()
+            nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', rielt=name)
+            nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', rielt=name).count()
+            zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt=name)
+            zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'),
+                                                      rielt=name).count()
+
+            rieltsearch = RieltSearchForm(initial={'rielt':name})
+
     date = datetime.now()
     zavtra_date = datetime.now()+timedelta(days=1)
     return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
