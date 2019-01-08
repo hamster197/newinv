@@ -178,11 +178,14 @@
       </div>
         <div class="col s1">
               <blockquote>
-                    Задачи:
+                    Задачи на сегодня:
               </blockquote>
     {% for tpost in twork_zayav|slice:":20" %}
             {% for c in  tpost.zadacha_id.all %}
-            <li><strong> {{ c.zadacha_date }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
+                {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
+            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}">{{ tdate|date:"d F Y"  }}<strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
+                {% endif %}
+
             {% endfor %}
         {% endfor %}
     </div>
