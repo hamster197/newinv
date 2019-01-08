@@ -176,6 +176,16 @@
   </div>
     {% endfor %}
       </div>
+        <div class="col s1">
+              <blockquote>
+                    Задачи:
+              </blockquote>
+    {% for tpost in twork_zayav|slice:":20" %}
+            {% for c in  tpost.zadacha_id.all %}
+            <li><strong> {{ c.zadacha_date }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
+            {% endfor %}
+        {% endfor %}
+    </div>
     </div>
 
 {% endblock %}
