@@ -1,5 +1,5 @@
 #from datetime# import timezone, datetime
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
@@ -121,7 +121,9 @@ def VoronkaIndexView(request):
 
     rieltsearch = RieltSearchForm()
     date = datetime.now()
-    return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,'tdate':date,
+    zavtra_date = datetime.now()+timedelta(days=1)
+    return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
+                                                'tdate':date,'tzavtra_date':zavtra_date,
                                                 'twork_zayav': work_zayav, 'twork_zayav_cn': work_zayav_cn,
                                                 'tpokaz_zayav': pokaz_zayav, 'tpokaz_zayav_cn': pokaz_zayav_cn,
                                                 'tnd_zayav': nd_zayav, 'tnd_zayav_cn': nd_zayav_cn,

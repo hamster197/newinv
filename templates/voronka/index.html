@@ -178,14 +178,23 @@
       </div>
         <div class="col s1">
               <blockquote>
-                    Задачи на сегодня:
+                    Задачи:
               </blockquote>
+          <div class="row">
+    <li>Сегодня</li>
     {% for tpost in twork_zayav|slice:":20" %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
-            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}">{{ tdate|date:"d F Y"  }}<strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
+            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
                 {% endif %}
-
+            {% endfor %}
+        {% endfor %}
+    </br><p>Завтра</p>
+    {% for tpost in twork_zayav|slice:":20" %}
+            {% for c in  tpost.zadacha_id.all %}
+                {% if tzavtra_date|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
+            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     </div>
