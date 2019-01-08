@@ -117,10 +117,8 @@ def VoronkaIndexView(request):
         if otdform.is_valid():
             name = otdform.cleaned_data['otdel']
             otd = get_object_or_404(Group,id=name)
-            vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                                             otdel = otd)
-            vh_zayav_cn = zayavka_vr.objects.filter(
-                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка')
+            vh_zayav = zayavka_vr.objects.filter(tek_status='Входящая заявка',  otdel = otd)
+            vh_zayav_cn = zayavka_vr.objects.filter(tek_status='Входящая заявка', otdel = otd,
                 ).count()
             work_zayav = zayavka_vr.objects.filter(otdel=name).exclude(
                 tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
