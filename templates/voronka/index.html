@@ -181,16 +181,20 @@
                     Задачи:
               </blockquote>
           <div class="row">
-    <li>Сегодня</li>
-    {% for tpost in twork_zayav|slice:":20" %}
+    {% if twork_zayav %}
+          <li>Сегодня</li>
+    {% endif %}
+    {% for tpost in twork_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
             <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
                 {% endif %}
             {% endfor %}
         {% endfor %}
+    {% if twork_zayav %}
     </br><p>Завтра</p>
-    {% for tpost in twork_zayav|slice:":20" %}
+    {% endif %}
+    {% for tpost in twork_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tzavtra_date|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
             <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
