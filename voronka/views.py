@@ -232,7 +232,7 @@ def EditZayavVhView(request, idd):
         eform = EditVhZayavForm(request.POST)
         if eform.is_valid():
             zayavka = eform.save(commit=False)
-            zayavka.date_sozd = datetime.now()
+            zayavka.date_vzatia = datetime.now()
             zayavka.rielt_id = request.user.id
             zayavka.otdel = request.user.groups.get().name
             zayavka.tek_status = 'Входящая заявка'

@@ -37,7 +37,7 @@
           {% else %}Заявка с сайта {% endif %}</span>
 
             <li>{{ vh_zayav.date_sozd }}</li>
-        {% if vh_zayav.rielt.first_name %}
+        {% if vh_zayav.tek_status != 'Входящая заявка' %}
             <li>Отвественный: <strong>{{ vh_zayav.rielt.first_name }} {{ vh_zayav.rielt.last_name }} </strong></li>
             <li>Oтдел: <strong>{{ vh_zayav.otdel }} </strong></li>
         {% endif %}
