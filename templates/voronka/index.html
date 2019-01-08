@@ -75,6 +75,7 @@
             <li>{{ work_zayav.estate }} {{ work_zayav.budget }} руб.</li>
             <li>Дата создания: {{ work_zayav.date_sozd }}</li>
             <li>Дата взятия: {{ work_zayav.date_vzatia }}</li>
+            <li>Текущий статус: <strong>{{ work_zayav.tek_status }}</strong></li>
             <li>Ответственный: {{ work_zayav.rielt.first_name }} {{ work_zayav.rielt.last_name }}</li>
         </div>
         <div class="card-action">
@@ -162,6 +163,7 @@
             <li>Дата создания: {{ zakr_zayav.date_sozd }}</li>
             <li>Дата взятия: {{ zakr_zayav.date_vzatia }}</li>
             <li>Дата закрытия: {{ zakr_zayav.date_vzatia }}</li>
+            <li>Текущий статус: <strong>{{ zakr_zayav.tek_status }}</strong></li>
             <li>Ответственный: {{ zakr_zayav.rielt.first_name }} {{ zakr_zayav.rielt.last_name }}</li>
             <li>{{ zakr_zayav.estate }} {{ zakr_zayav.budget }} руб.</li>
         </div>

@@ -96,18 +96,18 @@ def VoronkaIndexView(request):
     ### Start of zakritie  zayavki
     #########################################
     if request.user.groups.get().name == 'Администрация':
-        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта')
-        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта').count()
+        zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'))
+        zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)')).count()
 
     if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
         otd = request.user.groups.get().name
-        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта', otdel = otd)
-        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта', otdel = otd).count()
+        zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), otdel = otd)
+        zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), otdel = otd).count()
 
     if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
         usr = request.user
-        zakr_zayav = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr)
-        zakr_zayav_cn = zayavka_vr.objects.filter(tek_status='Закрыта', rielt = usr).count()
+        zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt = usr)
+        zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt = usr).count()
     otssearch = OtdSearchForm()
     if 'otd_search' in request.POST:
         otdform = OtdSearchForm(request.POST)
@@ -171,7 +171,7 @@ def VoronkaDetailView(request, idd):
             post.tek_status = otd.status_nazv
             post.save()
             post = zayavka_vr.objects.get(pk=idd)
-            #n2 = str(idd)+' '+str(status_pk.pk)
+            return redirect('voronka_ap:voronka_index')
 
 
     if 'comment_post' in request.POST:
