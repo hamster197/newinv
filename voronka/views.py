@@ -143,10 +143,10 @@ def VoronkaIndexView(request):
         form = RieltSearchForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['rielt']
-            vh_zayav = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
-                                                   rielt=name) | Q(tek_status='Входящая заявка с сайта'))
-            vh_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Входящая заявка',
-                                                      rielt=name) | Q(tek_status='Входящая заявка с сайта')).count()
+            vh_zayav = zayavka_vr.objects.filter(tek_status='Входящая заявка',
+                                                   rielt=name)
+            vh_zayav_cn = zayavka_vr.objects.filter(tek_status='Входящая заявка',
+                                                      rielt=name).count()
             work_zayav = zayavka_vr.objects.filter(rielt=name).exclude(
                 tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
                                 'Показ/Встреча', 'Недозвон', 'Закрыта'])
