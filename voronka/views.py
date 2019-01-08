@@ -116,24 +116,26 @@ def VoronkaIndexView(request):
         otdform = OtdSearchForm(request.POST)
         if otdform.is_valid():
             name = otdform.cleaned_data['otdel']
-            otd = get_object_or_404(Group,id=name)
-            vh_zayav = zayavka_vr.objects.filter(tek_status='Входящая заявка',  otdel = otd)
-            vh_zayav_cn = zayavka_vr.objects.filter(tek_status='Входящая заявка', otdel = otd,
+            otd = get_object_or_404(Group, id=name)
+            vh_zayav = zayavka_vr.objects.filter(tek_status='Входящая заявка',  otdel = name)
+            vh_zayav_cn = zayavka_vr.objects.filter(tek_status='Входящая заявка', otdel = name,
                 ).count()
-            work_zayav = zayavka_vr.objects.filter(otdel=name).exclude(
+            work_zayav = zayavka_vr.objects.filter(otdel=otd).exclude(
                 tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
                                 'Показ/Встреча', 'Недозвон', 'Закрыта'])
-            work_zayav_cn = zayavka_vr.objects.filter(otdel=name).exclude(
+            work_zayav_cn = zayavka_vr.objects.filter(otdel=otd).exclude(
                 tek_status__in=['Входящая заявка с сайта', 'Входящая заявка',
                                 'Показ/Встреча', 'Недозвон', 'Закрыта']).count()
-            pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=name)
-            pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=name).count()
-            nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=name)
-            nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=name).count()
-            zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), rielt=name)
+            pokaz_zayav = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=otd)
+            pokaz_zayav_cn = zayavka_vr.objects.filter(tek_status='Показ/Встреча', otdel=otd).count()
+            nd_zayav = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=otd)
+            nd_zayav_cn = zayavka_vr.objects.filter(tek_status='Недозвон', otdel=otd).count()
+            zakr_zayav = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'), otdel=otd)
             zakr_zayav_cn = zayavka_vr.objects.filter(Q(tek_status='Закрыта') | Q(tek_status='Закрыта(срыв)'),
-                                                      rielt=name).count()
+                                                      otdel=otd).count()
+
             gr = get_object_or_404(Group, name=otd)
+            n2 = name
             otssearch= OtdSearchForm(initial={'otdel':gr.id})
 
     rieltsearch = RieltSearchForm()
