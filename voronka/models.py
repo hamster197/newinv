@@ -55,6 +55,7 @@ class zayavka_vr(models.Model):
     estate = models.ForeignKey(zayavka_subj, on_delete=models.CASCADE, null=True, verbose_name='Что ищет:')
     otdel = models.CharField(max_length=55, verbose_name='Oтдел', default='')
     tek_status = models.CharField(max_length=55, verbose_name='Текущий статус', null=True)
+    tek_status_date = models.DateField(verbose_name='Текущий статус(Дата)', null=True)
     budget = models.IntegerField(verbose_name='Бюджет:', default=0,validators=[MinValueValidator(300000)])
     stat_zayv_spr = models.ManyToManyField(status_klienta_all, related_name='status_zayv_spr', blank=True)
     fio = models.CharField(max_length=85, verbose_name='ФИО Клиента', default='', blank=False, null=False)

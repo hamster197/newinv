@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 from material import Row, Layout
-
+from datetime import datetime, timedelta
 from voronka.models import comment, zadachi, status_klienta, zayavka_vr
 
 
@@ -58,3 +58,11 @@ class RieltSearchForm(forms.Form):
     a_choises = [(c.id, c.last_name + ' ' + c.first_name) for c in
                  User.objects.filter(is_active=True).exclude(username='sait').order_by('last_name')]
     rielt = forms.ChoiceField(choices=a_choises, label='Выберите нового ответсвенного:', )
+
+class MainVoronkaForm(forms.Form):
+    stdate = forms.DateField(label='Начало периода', initial=datetime.now() - timedelta(days=datetime.now().day - 1))
+    enddate = forms.DateField(widget=forms.SelectDateWidget())
+    #widgets = {'stdate': forms.TextInput(attrs={'type': 'date'}),
+    #               'enddate': forms.TextInput(attrs={'type': 'time'})}
+
+    layout = Layout(Row('stdate', 'enddate'),)

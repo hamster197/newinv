@@ -1,0 +1,30 @@
+{% extends 'crm/main.html' %}
+{% load material_form %}
+{% block content %}
+<div>
+        <form method="post" class="post-form">
+        {% csrf_token %}
+            {% form form=tdateform layout=form.layout%}{% endform %}
+        <div class="right-align"><button type="submit" name="otv_post" class="btn">Изменить отвественного</button><
+
+</div>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card ">
+        <div class="card-content ">
+          <span class="card-title">{{ sdate|date:"d F Y" }} - {{ edate|date:"d F Y" }}</span>
+          <p><blockquote>
+            Таблица в правом верхнем углу</br>
+            1 Строчка Общее кол-во заявок: {{ tall_zayav_count }}/{{ tall_zayav_sum }} rub</br>
+            2 строчка(2 ячейки) Заявок в работе: {{ twork_zayav_count }}/{{ twork_zayav_sum }} </br>
+            3 строчка(2 ячейки) Заявок закрыто: {{ tsdelka_zayav_count }}/{{ tsdelka_zayav_sum }} </br>
+            </blockquote></p>
+        </div>
+        <div class="card-action">
+          <a href="#">Рейтинг</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

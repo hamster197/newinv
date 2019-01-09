@@ -435,7 +435,7 @@ label{margin:0;}
                             <ul aria-expanded="false" class="collapse  first-level">
                                 <li class="sidebar-item">
                                     {% if request.user.groups.get.name == 'Администрация' %}
-                                    <a href="#" class="sidebar-link">
+                                    <a href="{% url 'voronka_ap:voronka_main_adm' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Воронка продаж </span>
                                     </a>

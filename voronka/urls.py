@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'^voronka/nedozvon/(?P<idd>[0-9]+)/$', views.NedozvZayvSaitView, name='voronka_nedozvon_zayav'),
     url(r'^voronka/index$', views.VoronkaIndexView, name='voronka_index'),
     url(r'^voronka/detail/(?P<idd>[0-9]+)/$', views.VoronkaDetailView, name='voronka_detail'),
+
+    url(r'^voronka/amain$', views.MainAdmVoronkaView, name='voronka_main_adm'),
     #url(r'^voronka/changestauszayav/(?P<idd>[0-9]+)/(?P<st_id>[0-9]+)/$',
     #    views.VoronkaChangeView, name='voronka_ChangeStatus'),
     #url(r'^avito/new$', views.newAvitoSub, name='Avito_new'),

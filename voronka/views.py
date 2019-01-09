@@ -2,11 +2,11 @@
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render, get_object_or_404, redirect
 
 from voronka.forms import ChangeRieltForm1, NewCommentForm, NewZadachaForm, StatusEdit, NewVhZayavForm, \
-    NewWorkZayavForm, EditVhZayavForm, RieltSearchForm, OtdSearchForm
+    NewWorkZayavForm, EditVhZayavForm, RieltSearchForm, OtdSearchForm, MainVoronkaForm
 from voronka.models import zayavka_vr, status_klienta, status_klienta_all
 
 
@@ -201,15 +201,6 @@ def VoronkaDetailView(request, idd):
     n2 = 'подробно'
 
     post = zayavka_vr.objects.get(pk=idd)
-    #status_k = post.stat_zayv_spr.all()
-    #coment = post.kom_id.all().order_by('date_sozd')
-    #zadachi = post.zadacha_id.all().order_by('-zadacha_date')
-
-    #names_to_exclude = []
-    #for i in status_klienta_all.objects.filter(zayavka_vr_id_id=post.pk):
-    #    names_to_exclude.append(i.status.status_nazv)
-    #status_zayav_vibor = status_klienta.objects.all().order_by('status_id').exclude(status_nazv__in=names_to_exclude)
-    #tek_status_zayav_vibor = status_klienta.objects.all().order_by('-status_id')[0]
 
     if 'otv_post' in request.POST:
         usr_form = ChangeRieltForm1(request.POST)
@@ -232,10 +223,13 @@ def VoronkaDetailView(request, idd):
             n2= status_pk.pk
             otd = get_object_or_404(status_klienta, pk=status_pk.pk)
             postkl = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd=datetime.now(),
-                                                     status_id=status_pk.pk, auth_id=auth_id, otdel=gr)#, tek_status='otd')
+                                                     status_id=status_pk.pk, auth_id=auth_id, otdel=gr)
             postkl.save()
             otd = get_object_or_404(status_klienta, pk=status_pk.pk)
             post.tek_status = otd.status_nazv
+            post.tek_status_date = datetime.now()
+            if name == 'Закрыта' or 'Закрыта(срыв)':
+                post.date_zakr = datetime.now()
             post.save()
             post = zayavka_vr.objects.get(pk=idd)
             return redirect('voronka_ap:voronka_index')
@@ -247,6 +241,7 @@ def VoronkaDetailView(request, idd):
             comment = com_form.save(commit=False)
             comment.komm_id_id = idd
             comment.save()
+
     if 'zadacha_post' in request.POST:
         z_form = NewZadachaForm(request.POST)
         if z_form.is_valid():
@@ -276,6 +271,7 @@ def NewZayavVhView(request):
             zayavka.rielt_id = request.user.id
             zayavka.otdel = request.user.groups.get().name
             zayavka.tek_status = 'Входящая заявка'
+            zayavka.tek_status_date = datetime.now()
             zayavka.save()
             idz = zayavka.pk
             auth = zayavka_vr.objects.get(pk=idz)
@@ -303,6 +299,7 @@ def EditZayavVhView(request, idd):
             zayavka.rielt_id = request.user.id
             zayavka.otdel = request.user.groups.get().name
             zayavka.tek_status = 'Входящая заявка'
+            zayavka.tek_status_date = datetime.now()
             zayavka.save()
             idz = zayavka.pk
             auth = zayavka_vr.objects.get(pk=idz)
@@ -333,6 +330,7 @@ def NewZayavWorkView(request):
             zayavka.rielt_id = request.user.id
             zayavka.otdel = request.user.groups.get().name
             zayavka.tek_status = 'Входящая заявка'
+            zayavka.tek_status_date = datetime.now()
             zayavka.save()
             idz = zayavka.pk
             auth = zayavka_vr.objects.get(pk=idz)
@@ -356,6 +354,7 @@ def VzZayvSaitView(request, idd):
     vpost.rielt = request.user
     vpost.date_vzatia = datetime.now()
     vpost.tek_status = 'Входящая заявка'
+    vpost.tek_status_date = datetime.now()
     vpost.save()
     auth = zayavka_vr.objects.get(pk=idz)
     auth_id = auth.rielt_id
@@ -376,6 +375,7 @@ def NedozvZayvSaitView(request, idd):
     vpost.rielt = request.user
     vpost.date_vzatia = datetime.now()
     vpost.tek_status = 'Недозвон'
+    vpost.tek_status_date = datetime.now()
     vpost.save()
     auth = zayavka_vr.objects.get(pk=idz)
     auth_id = auth.rielt_id
@@ -387,16 +387,44 @@ def NedozvZayvSaitView(request, idd):
     auth.tek_status = otd.status_nazv
     auth.save()
     return redirect('voronka_ap:voronka_index')
-#@login_required
-#def VoronkaChangeView(request, idd, st_id):
-#    auth = zayavka_vr.objects.get(pk=idd)
-#    auth_id = auth.rielt_id
-#    #gr = auth.rielt.groups.get().id
-#    gr = auth.rielt.groups.get().name
-#    post = status_klienta_all.objects.create(zayavka_vr_id_id=idd, date_sozd = datetime.now(),
-#                                             status_id=st_id, auth_id=auth_id, otdel=gr,)
-#    post.save()
-#    otd = get_object_or_404(status_klienta, pk = st_id)
-#    auth.tek_status = otd.status_nazv
-#    auth.save()
-#    return redirect('voronka_ap:voronka_detail', idd = idd)#render(request,'voronka/index.html')
+
+@login_required
+def MainAdmVoronkaView(request):
+    n1 = 'Воронка продаж'
+    n2 = 'компании'
+    start_date = datetime.now() - timedelta(days=datetime.now().day - 1)
+    end_date = datetime.now()
+    dateform = MainVoronkaForm()
+    if request.user.groups.get().name == 'Администрация':
+        ############################
+        ## Start for obshaya summa 1 tabl
+        ############################
+        all_zayav_count = zayavka_vr.objects.filter(date_sozd__gte=start_date, date_sozd__lte=end_date).count()
+        all_zayav_sum = zayavka_vr.objects.filter(date_sozd__gte=start_date,
+                                                    date_sozd__lte=end_date).aggregate(Sum("budget"))
+        if all_zayav_sum.get('budget__sum'):
+            all_zayav_sum = int(all_zayav_sum.get('budget__sum'))
+        else:
+            all_zayav_sum = '0'
+        #######################################
+        work_zayav_count = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                        'Закрыта', 'Закрыта(срыв)']).count()
+        work_zayav_sum = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                         'Закрыта', 'Закрыта(срыв)']).aggregate(Sum("budget"))
+        if work_zayav_sum.get('budget__sum'):
+            work_zayav_sum =int(work_zayav_sum.get('budget__sum'))
+        else:
+            work_zayav_sum = '0'
+        #######################################
+        sdelka_zayav_count = zayavka_vr.objects.filter(tek_status__in=['Закрыта'], #'Закрыта(срыв)'],
+                                                       date_sozd__gte=start_date, date_sozd__lte=end_date).count()
+        sdelka_zayav_sum = zayavka_vr.objects.filter(tek_status__in=['Закрыта'], #'Закрыта(срыв)'],
+                                            date_sozd__gte=start_date, date_sozd__lte=end_date).aggregate(Sum("budget"))
+        if sdelka_zayav_sum.get('budget__sum'):
+            sdelka_zayav_sum = int(sdelka_zayav_sum.get('budget__sum'))
+        else:
+            sdelka_zayav_sum = '0'
+        return render(request,'voronka/mainvoronka.html',{'tn1':n1,'tn2':n2,'sdate':start_date,'edate':end_date,'tdateform':dateform,
+                                                    'tall_zayav_count':all_zayav_count, 'tall_zayav_sum':all_zayav_sum,
+                                                    'twork_zayav_count':work_zayav_count, 'twork_zayav_sum':work_zayav_sum,
+                                                    'tsdelka_zayav_count':sdelka_zayav_count,'tsdelka_zayav_sum':sdelka_zayav_sum })
