@@ -42,21 +42,21 @@ def VoronkaIndexView(request):
     #########################################
     if request.user.groups.get().name == 'Администрация':
         work_zayav = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)'])
         work_zayav_cn = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)']).count()
     if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
         otd = request.user.groups.get().name
         work_zayav = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)'])
         work_zayav_cn = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)']).count()
     if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
         usr = request.user
         work_zayav = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта'])
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)'])
         work_zayav_cn = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
-                                                                      'Показ/Встреча','Недозвон','Закрыта']).count()
+                                                                      'Показ/Встреча','Недозвон','Закрыта', 'Закрыта(срыв)']).count()
 
 
     ##########################################
@@ -163,6 +163,26 @@ def VoronkaIndexView(request):
 
             rieltsearch = RieltSearchForm(initial={'rielt':name})
 
+    ##########################################
+    ### Start of zayavki in task list
+    #########################################
+    if request.user.groups.get().name == 'Администрация':
+        task_zayav = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)'])
+        task_zayav_cn = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)']).count()
+    if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
+        otd = request.user.groups.get().name
+        task_zayav = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)'])
+        task_zayav_cn = zayavka_vr.objects.filter(otdel = otd).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)']).count()
+    if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
+        usr = request.user
+        task_zayav = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)'])
+        task_zayav_cn = zayavka_vr.objects.filter(rielt = usr).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+                                                                      'Закрыта', 'Закрыта(срыв)']).count()
     date = datetime.now()
     zavtra_date = datetime.now()+timedelta(days=1)
     return render(request,'voronka/index.html',{'tvh_zayav':vh_zayav,'tvh_zayav_cn':vh_zayav_cn,
@@ -172,6 +192,7 @@ def VoronkaIndexView(request):
                                                 'tnd_zayav': nd_zayav, 'tnd_zayav_cn': nd_zayav_cn,
                                                 'tzakr_zayav':zakr_zayav, 'tzakr_zayav_cn':zakr_zayav_cn,
                                                 'totssearch':otssearch,'trieltsearch':rieltsearch,
+                                                'ttask_zayav':task_zayav,'ttask_zayav_cn':task_zayav_cn,
                                                 'tn1':n1, 'tn2':n2})
 
 @login_required

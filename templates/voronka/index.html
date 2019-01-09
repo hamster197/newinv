@@ -184,7 +184,7 @@
     {% if twork_zayav %}
           <li>Сегодня</li>
     {% endif %}
-    {% for tpost in twork_zayav %}
+    {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
             <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
@@ -194,7 +194,7 @@
     {% if twork_zayav %}
     </br><p>Завтра</p>
     {% endif %}
-    {% for tpost in twork_zayav %}
+    {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tzavtra_date|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
             <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
