@@ -456,8 +456,17 @@ def MainAdmVoronkaView(request):
             kl.voronka_counts = zayavka_vr.objects.filter(kanal_id=kl.id, date_sozd__gte=start_date, date_sozd__lte=end_date).count()
             kl.save()
         voronka_kanal = kanal_pr1.objects.all()
+
+        ##########################################################
+        ## Start of zayavki sochi-adler(3 voronka(statusi))
+        ##########################################################
+        sochi_zayav = zayavka_vr.objects.filter(otdel__contains='Сочи', date_sozd__gte=start_date,
+                                                date_sozd__lte=end_date).count()
+        adler_zayav = zayavka_vr.objects.filter(otdel__contains='Адлер', date_sozd__gte=start_date,
+                                                date_sozd__lte=end_date).count()
         return render(request,'voronka/mainvoronka.html',{'tn1':n1,'tn2':n2,'sdate':start_date,'edate':end_date,'tdateform':dateform,
                                                     'tall_zayav_count':all_zayav_count, 'tall_zayav_sum':all_zayav_sum,
                                                     'twork_zayav_count':work_zayav_count, 'twork_zayav_sum':work_zayav_sum,
                                                     'tsdelka_zayav_count':sdelka_zayav_count,'tsdelka_zayav_sum':sdelka_zayav_sum,
-                                                    'tvoronka_tmp':voronka_tmp, 'tvoronka_kanal':voronka_kanal,})
+                                                    'tvoronka_tmp':voronka_tmp, 'tvoronka_kanal':voronka_kanal,
+                                                          'tsochi_zayav':sochi_zayav,'tadler_zayav':adler_zayav,})
