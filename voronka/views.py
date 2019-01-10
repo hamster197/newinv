@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from voronka.forms import ChangeRieltForm1, NewCommentForm, NewZadachaForm, StatusEdit, NewVhZayavForm, \
     NewWorkZayavForm, EditVhZayavForm, RieltSearchForm, OtdSearchForm, MainVoronkaForm
-from voronka.models import zayavka_vr, status_klienta, status_klienta_all
+from voronka.models import zayavka_vr, status_klienta, status_klienta_all, kanal_pr1
 
 
 @login_required
@@ -448,8 +448,16 @@ def MainAdmVoronkaView(request):
         zakr.voronka_counts=all_zakr_sum
         zakr.save()
         voronka_tmp = status_klienta.objects.all().exclude(status_nazv__in=['Входящая заявка с сайта','Закрыта(срыв)'])
+
+        ##########################################################
+        ## Start of kanali prodaj voronka(2 voronka(statusi))
+        ##########################################################
+        for kl in kanal_pr1.objects.all():
+            kl.voronka_counts = zayavka_vr.objects.filter(kanal_id=kl.id, date_sozd__gte=start_date, date_sozd__lte=end_date).count()
+            kl.save()
+        voronka_kanal = kanal_pr1.objects.all()
         return render(request,'voronka/mainvoronka.html',{'tn1':n1,'tn2':n2,'sdate':start_date,'edate':end_date,'tdateform':dateform,
                                                     'tall_zayav_count':all_zayav_count, 'tall_zayav_sum':all_zayav_sum,
                                                     'twork_zayav_count':work_zayav_count, 'twork_zayav_sum':work_zayav_sum,
                                                     'tsdelka_zayav_count':sdelka_zayav_count,'tsdelka_zayav_sum':sdelka_zayav_sum,
-                                                    'tvoronka_tmp':voronka_tmp,})
+                                                    'tvoronka_tmp':voronka_tmp, 'tvoronka_kanal':voronka_kanal,})

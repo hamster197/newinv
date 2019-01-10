@@ -95,7 +95,7 @@ class stInline(admin.TabularInline):
 
 class voronka_fields(admin.ModelAdmin):
     inlines = [stInline]
-    list_display = ('pk','rielt','otdel','tek_status','tek_status_date','budget','date_sozd')
+    list_display = ('pk','rielt','otdel','kanal','tek_status','tek_status_date','budget','date_sozd')
 
 class status_kl_fields(admin.ModelAdmin):
     list_display = ('pk','status_id','status_nazv','voronka_counts',)
@@ -111,6 +111,9 @@ class zadachi_fields(admin.ModelAdmin):
 
 class zadachi_spr_fields(admin.ModelAdmin):
     list_display = ('zadacha',)
+
+class kanal_pr_fields(admin.ModelAdmin):
+    list_display = ('pk','kanal','voronka_counts')
 
 
 admin.site.register(flat_obj, flatfields, )
@@ -128,7 +131,7 @@ admin.site.register(avitoflats, AvitoFields)
 admin.site.register(zayavka_vr,voronka_fields)
 admin.site.register(status_klienta, status_kl_fields)
 admin.site.register(status_klienta_all, status_kl_all_fields)
-admin.site.register(kanal_pr1)
+admin.site.register(kanal_pr1, kanal_pr_fields)
 admin.site.register(comment, comment_fields)
 admin.site.register(zayavka_subj)#, zadachi_spr_fields)
 admin.site.register(zadachi, zadachi_fields)

@@ -28,9 +28,7 @@
             3 строчка(2 ячейки) Заявок закрыто: {{ tsdelka_zayav_count }}/{{ tsdelka_zayav_sum }} </br>
             </blockquote></p>
         </div>
-        <div class="card-action">
-          <a href="#">Рейтинг</a>
-        </div>
+
       </div>
     </div>
   </div>
@@ -44,23 +42,39 @@
     <div class="col s12 m6">
       <div class="card ">
         <div class="card-content ">
-          <span class="card-title">Воронка продаж:</span>
+          <span class="card-title">Воронка продаж(по статусам):(перевернутый треугольник)</span>
           <p><blockquote>
                 {% for voronka_tmp in tvoronka_tmp %}
                     <li>{{ voronka_tmp.status_nazv }}: {{ voronka_tmp.voronka_counts }} заявок.</li>
                 {% endfor %}
             </blockquote></p>
         </div>
-        <div class="card-action">
-          <a href="#">Рейтинг</a>
-        </div>
+
       </div>
     </div>
   </div>
-      </div>
-      <div class="col s1">2</div>
-      <div class="col s1">3</div>
-      <div
 
+
+      </div>
+      <div class="col s1">
+      <div class="card ">
+        <div class="card-content ">
+          <span class="card-title">Каналы поступления заявок:(круговая диаграмма)</span>
+          <p><blockquote>
+                {% for voronka_kanal in tvoronka_kanal %}
+                    <li>{{ voronka_kanal.kanal }}: {{ voronka_kanal.voronka_counts }} заявок.</li>
+                {% endfor %}
+            </blockquote></p>
+        </div>
+
+      </div>
+      </div>
+      <div class="col s1">3</div>
+      </div>
+
+
+    <div class="card-action">
+          <a href="#">Воронка по отделам</a>
+    </div>
 
 {% endblock %}
