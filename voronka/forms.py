@@ -1,6 +1,8 @@
 
 from django import forms
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import ValidationError
+from django.forms import extras, DateInput
 from material import Row, Layout
 from datetime import datetime, timedelta
 from voronka.models import comment, zadachi, status_klienta, zayavka_vr
@@ -60,9 +62,12 @@ class RieltSearchForm(forms.Form):
     rielt = forms.ChoiceField(choices=a_choises, label='Выберите нового ответсвенного:', )
 
 class MainVoronkaForm(forms.Form):
-    stdate = forms.DateField(label='Начало периода', initial=datetime.now() - timedelta(days=datetime.now().day - 1))
-    enddate = forms.DateField(widget=forms.SelectDateWidget())
-    #widgets = {'stdate': forms.TextInput(attrs={'type': 'date'}),
-    #               'enddate': forms.TextInput(attrs={'type': 'time'})}
-
-    layout = Layout(Row('stdate', 'enddate'),)
+    stdate = forms.DateField(label='Начало периода',widget=DateInput(attrs={'type': 'date'}),
+                             initial=datetime.now() - timedelta(days=datetime.now().day - 1))
+    enddate =  forms.DateField(label='Начало периода',widget=DateInput(attrs={'type': 'date'}),
+                             initial=datetime.now())
+    #def clean(self):
+    #    cleaned_data = super(MainVoronkaForm, self).clean()
+    #    if datetime(cleaned_data['stdate '])>datetime(cleaned_data['enddate']):
+    #            raise ValidationError('Этаж или Этажность равны 0!' , code='invalid')
+    #    return cleaned_data

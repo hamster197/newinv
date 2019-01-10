@@ -395,10 +395,16 @@ def MainAdmVoronkaView(request):
     start_date = datetime.now() - timedelta(days=datetime.now().day - 1)
     end_date = datetime.now()
     dateform = MainVoronkaForm()
+    if request.POST:
+        dform=MainVoronkaForm(request.POST)
+        if dform.is_valid():
+            start_date = dform.cleaned_data['stdate']
+            end_date = dform.cleaned_data['enddate']
+            n2 = str(start_date) + '/' + str(end_date)
     if request.user.groups.get().name == 'Администрация':
-        ############################
+        ####################################
         ## Start for obshaya summa 1 tabl
-        ############################
+        ####################################
         all_zayav_count = zayavka_vr.objects.filter(date_sozd__gte=start_date, date_sozd__lte=end_date).count()
         all_zayav_sum = zayavka_vr.objects.filter(date_sozd__gte=start_date,
                                                     date_sozd__lte=end_date).aggregate(Sum("budget"))
@@ -407,9 +413,11 @@ def MainAdmVoronkaView(request):
         else:
             all_zayav_sum = '0'
         #######################################
-        work_zayav_count = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+        work_zayav_count = zayavka_vr.objects.filter(tek_status_date__gte=start_date,tek_status_date__lte=end_date
+                                                     ).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
                                                         'Закрыта', 'Закрыта(срыв)']).count()
-        work_zayav_sum = zayavka_vr.objects.all().exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
+        work_zayav_sum = zayavka_vr.objects.filter(tek_status_date__gte=start_date,tek_status_date__lte=end_date
+                                                   ).exclude(tek_status__in=['Входящая заявка с сайта','Входящая заявка',
                                          'Закрыта', 'Закрыта(срыв)']).aggregate(Sum("budget"))
         if work_zayav_sum.get('budget__sum'):
             work_zayav_sum =int(work_zayav_sum.get('budget__sum'))
@@ -424,7 +432,24 @@ def MainAdmVoronkaView(request):
             sdelka_zayav_sum = int(sdelka_zayav_sum.get('budget__sum'))
         else:
             sdelka_zayav_sum = '0'
+        ################################################
+        ## Start of main voronka(1 voronka(statusi))
+        ################################################
+        for st in status_klienta.objects.all():
+            lid = status_klienta_all.objects.filter(status_id=st.id, date_sozd__gte=start_date, date_sozd__lte=end_date).count()
+            st.voronka_counts = int(lid)
+            st.save()
+        all_vh_sum = get_object_or_404(status_klienta, pk=1).voronka_counts+get_object_or_404(status_klienta, pk=5).voronka_counts
+        vh = get_object_or_404(status_klienta, pk=1)
+        vh.voronka_counts=all_vh_sum
+        vh.save()
+        all_zakr_sum = get_object_or_404(status_klienta, status_nazv='Закрыта').voronka_counts+get_object_or_404(status_klienta, status_nazv='Закрыта(срыв)').voronka_counts
+        zakr = get_object_or_404(status_klienta, status_nazv='Закрыта')
+        zakr.voronka_counts=all_zakr_sum
+        zakr.save()
+        voronka_tmp = status_klienta.objects.all().exclude(status_nazv__in=['Входящая заявка с сайта','Закрыта(срыв)'])
         return render(request,'voronka/mainvoronka.html',{'tn1':n1,'tn2':n2,'sdate':start_date,'edate':end_date,'tdateform':dateform,
                                                     'tall_zayav_count':all_zayav_count, 'tall_zayav_sum':all_zayav_sum,
                                                     'twork_zayav_count':work_zayav_count, 'twork_zayav_sum':work_zayav_sum,
-                                                    'tsdelka_zayav_count':sdelka_zayav_count,'tsdelka_zayav_sum':sdelka_zayav_sum })
+                                                    'tsdelka_zayav_count':sdelka_zayav_count,'tsdelka_zayav_sum':sdelka_zayav_sum,
+                                                    'tvoronka_tmp':voronka_tmp,})

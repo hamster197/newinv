@@ -98,7 +98,7 @@ class voronka_fields(admin.ModelAdmin):
     list_display = ('pk','rielt','otdel','tek_status','tek_status_date','budget','date_sozd')
 
 class status_kl_fields(admin.ModelAdmin):
-    list_display = ('pk','status_id','status_nazv')
+    list_display = ('pk','status_id','status_nazv','voronka_counts',)
 
 class status_kl_all_fields(admin.ModelAdmin):
     list_display = ('date_sozd','status','auth','otdel')

@@ -7,6 +7,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class status_klienta(models.Model):
     status_id = models.DecimalField(verbose_name='Статус заявки:(№ пп)', max_digits=5, decimal_places=2,null=True)
     status_nazv = models.CharField(verbose_name='Статус заявки:(Название)', max_length=40, default='')
+    voronka_counts = models.IntegerField(verbose_name='Кол статусов для воронки продаж', default=0)
     def __str__(self):
         return self.status_nazv
     class Meta:
