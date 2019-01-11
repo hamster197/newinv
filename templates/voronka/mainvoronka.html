@@ -1,47 +1,106 @@
 {% extends 'crm/main.html' %}
 {% load material_form %}
 {% block content %}
-<div>
-    <div class="row">
-        <div class="col s12 m3">
+<script src="/static/material/code/highcharts.js"></script>
+<script src="/static/material/code/modules/funnel.js"></script>
+<script src="/static/material/code/modules/exporting.js"></script>
+<script src="/static/material/code/modules/export-data.js"></script>
+<style>.btn, .btn-large, .btn-small, .btn-flat {
+    height: unset;}</style>
+<div class="row">
+    <div class="col-lg-8">
+	<div class="card">
+      <div class="card-body">
       <form method="post" class="post-form">
         {% csrf_token %}
     <div class="row">
-      <div class="col s1">{{ tdateform.stdate }}</div>
-      <div class="col s1">{{ tdateform.enddate }}</div>
-      <div class="col s1"><div class="right-align"><button type="submit" name="otv_post" class="btn">Поиск</button></div>
+      <div class="col-lg-4">{{ tdateform.stdate }}</div>
+      <div class="col-lg-4">{{ tdateform.enddate }}</div>
+      <div class="col-lg-4"><div class="right-align"><button type="submit" name="otv_post" class="btn btn-block btn-lg btn-primary">Поиск</button></div>
       </div>
       </div>
+	</div>
+	</div>
+	  
     </div>
 
-
-</div>
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card ">
-        <div class="card-content ">
-          <span class="card-title">{{ sdate|date:"d F Y" }} - {{ edate|date:"d F Y" }}</span>
-          <p><blockquote>
-            Таблица в правом верхнем углу</br>
-            1 Строчка Общее кол-во заявок: {{ tall_zayav_count }}/{{ tall_zayav_sum }} rub</br>
-            2 строчка(2 ячейки) Заявок в работе: {{ twork_zayav_count }}/{{ twork_zayav_sum }} </br>
-            3 строчка(2 ячейки) Заявок закрыто: {{ tsdelka_zayav_count }}/{{ tsdelka_zayav_sum }} </br>
-            </blockquote></p>
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body ">
+          <span class="font-medium">{{ sdate|date:"d F Y" }} - {{ edate|date:"d F Y" }}</span>
+          <p>
+		  <table class="table">
+		  <tbody>
+		  <tr>
+		  <td> Общее кол-во заявок:</td>
+		  <td> <b>{{ tall_zayav_count }}</b>/{{ tall_zayav_sum }} Р.</td>
+		  </tr>
+		  <tr>
+		  <td> Заявок в работе:</td>
+		  <td> <b>{{ twork_zayav_count }}</b>/{{ twork_zayav_sum }} Р.</td>
+		  </tr>
+		  <tr>
+		  <td> Заявок закрыто:</td>
+		  <td> <b>{{ tsdelka_zayav_count }}</b>/{{ tsdelka_zayav_sum }} Р.</td>
+		  </tr>
+		  </tbody>		  
+		  </table>
+		  </p>
         </div>
 
       </div>
     </div>
-  </div>
+ 
 
 </div>
 
-
-    <div class="row">
-      <div class="col s1">
-            <div class="row">
-    <div class="col s12 m6">
+<div class="row">
+    <div class="col-lg-6">
       <div class="card ">
         <div class="card-content ">
+		<div id="container"></div>
+
+
+
+		<script type="text/javascript">
+
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'funnel'
+    },
+    title: {
+        text: 'Sales funnel'
+    },
+    plotOptions: {
+        series: {
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                softConnector: true
+            },
+            center: ['40%', '50%'],
+            neckWidth: '30%',
+            neckHeight: '25%',
+            width: '80%'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    series: [{
+        name: 'Unique users',
+        data: [
+            ['Website visits', 15654],
+            ['Downloads', 4064],
+            ['Requested price list', 1987],
+            ['Invoice sent', 976],
+            ['Finalized', 846]
+        ]
+    }]
+});
+		</script>
           <span class="card-title">Воронка продаж(по статусам):(перевернутый треугольник)</span>
           <p><blockquote>
                 {% for voronka_tmp in tvoronka_tmp %}
@@ -52,11 +111,8 @@
 
       </div>
     </div>
-  </div>
 
-
-      </div>
-      <div class="col s1">
+      <div class="col-lg-3">
       <div class="card ">
         <div class="card-content ">
           <span class="card-title">Каналы поступления заявок:(круговая диаграмма)</span>
@@ -69,7 +125,8 @@
 
       </div>
       </div>
-      <div class="col s1">
+	  
+	        <div class="col-lg-3">
                 <div class="card ">
         <div class="card-content ">
           <span class="card-title">Заявки по филиалам:(круговая диаграмма)</span>
@@ -82,6 +139,12 @@
 
       </div>
       </div>
+
+</div>
+    
+
+
+
 </br>
 
     <div class="card-action">

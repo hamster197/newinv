@@ -1,20 +1,44 @@
 {% extends 'crm/main.html' %}
 {% load material_form %}
 {% block content %}
+<style>form.post-form {
+    margin: auto;
+}
+.card .card-title {
+    font-size: 0.9em;
+    font-weight: 500;}
+	
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating){
+color: #8BC34A;
+    text-transform: none;
+    font-weight: 500;
+	margin-right: auto;
+}
+b, strong {font-weight: 500;
+}
+</style>
     <div class="row">
-      <div class="col s1">
+      <div class="col-lg-6">
+	  <div class="card">
+      <div class="card-body">
 {% if request.user.groups.get.name == 'Администрация' %}
           <form method="post" class="post-form">
             {% csrf_token %}
             {% form form=totssearch layout=form.layout%}{% endform %}
           <div class="right-align"><button type="submit" name="otd_search" class="btn">Поиск по отделам</button></div>
       </div>
-    <div class="col s1">
+	  </div>
+	  </div>
+    <div class="col-lg-6">
+	<div class="card">
+      <div class="card-body">
                   <form method="post" class="post-form">
             {% csrf_token %}
             {% form form=trieltsearch layout=form.layout%}{% endform %}
           <div class="right-align"><button type="submit" name="rielt_search" class="btn">Поиск по риелторам</button></div>
       </div>
+	  </div>
+	  </div>
     </div>
 
      </div>
@@ -23,23 +47,27 @@
             start of vhodyashe zayavki
     {% endcomment %}
     <div class="row">
-      <div class="col s1">
-              <blockquote>
-                    Входящие ({{ tvh_zayav_cn }}) <a href="{% url 'voronka_ap:voronka_new_vh_zayav' %}" class="collection-item">
-                  <span class="new badge red" data-badge-caption="">Добавить заявку </span></a>
-              </blockquote>
+      <div class="col-lg-2">
+	  <div class="card text-left">
+      <div class="card-body">
+              
+                    Входящие ({{ tvh_zayav_cn }}) <br><a href="{% url 'voronka_ap:voronka_new_vh_zayav' %}" class="label label-danger">
+                  Добавить заявку </a>
+              	</div>
+	</div>
     {% for vh_zayav in tvh_zayav %}
+
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+    <div class="col-lg-12">
+      <div class="card text-left">
+        <div class="card-body">
           <span class="card-title">{% if vh_zayav.tek_status == 'Входящая заявка' %} {{ vh_zayav.tel }}
           {% else %}Заявка с сайта {% endif %}</span>
 
-            <li>{{ vh_zayav.date_sozd }}</li>
+            <ul><li>{{ vh_zayav.date_sozd }}</li>
         {% if vh_zayav.tek_status == 'Входящая заявка' %}
-            <li>Отвественный: <strong>{{ vh_zayav.rielt.first_name }} {{ vh_zayav.rielt.last_name }} </strong></li>
-            <li>Oтдел: <strong>{{ vh_zayav.otdel }} </strong></li>
+            <li>Отв.лицо: <br><strong>{{ vh_zayav.rielt.first_name }} {{ vh_zayav.rielt.last_name }} </strong></li>
+            <li>Oтдел: <br><strong>{{ vh_zayav.otdel }} </strong></li></ul>
         {% endif %}
         </div>
         <div class="card-action">
@@ -60,23 +88,25 @@
     {% comment %}
             start of zayavki in work
     {% endcomment %}
-      <div class="col s1">
-              <blockquote>
-                    В работе ({{ twork_zayav_cn }}) <a href="{% url 'voronka_ap:voronka_new_work_zayav' %}" class="collection-item">
-                  <span class="new badge red" data-badge-caption="">Добавить заявку </span></a>
-              </blockquote>
+      <div class="col-lg-2">
+	  <div class="card text-left">
+      <div class="card-body">
+                    В работе ({{ twork_zayav_cn }}) <br><a href="{% url 'voronka_ap:voronka_new_work_zayav' %}" class="label label-danger">
+                  Добавить заявку </a></div>
+	</div>
+              
     {% for work_zayav in twork_zayav %}
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+    <div class="col-lg-12">
+      <div class="card text-left">
+        <div class="card-body">
           <span class="card-title">{{ work_zayav.tel }}</span>
-            <li>Клиент: {{ work_zayav.fio }}</li>
-            <li>{{ work_zayav.estate }} {{ work_zayav.budget }} руб.</li>
-            <li>Дата создания: {{ work_zayav.date_sozd }}</li>
-            <li>Дата взятия: {{ work_zayav.date_vzatia }}</li>
-            <li>Текущий статус: <strong>{{ work_zayav.tek_status }}</strong></li>
-            <li>Ответственный: {{ work_zayav.rielt.first_name }} {{ work_zayav.rielt.last_name }}</li>
+            <ul><li>Клиент: <br> <b>{{ work_zayav.fio }}</b></li>
+            <li>{{ work_zayav.estate }}<br><b>{{ work_zayav.budget }} Р.</b></li>
+            <li>Создание: <br><b>{{ work_zayav.date_sozd }}</b></li>
+            <li>Взятие: <br><b>{{ work_zayav.date_vzatia }}</b></li>
+            <li>Статус: <br><b>{{ work_zayav.tek_status }}</b></li>
+            <li>Отв.лицо: <br> <b>{{ work_zayav.rielt.first_name }} {{ work_zayav.rielt.last_name }}</b></li></ul>
         </div>
         <div class="card-action">
           <a href="{% url 'voronka_ap:voronka_detail' idd=work_zayav.pk %}">Подробнее</a>
@@ -91,21 +121,23 @@
     {% comment %}
             start of zayavki vstrech
     {% endcomment %}
-      <div class="col s1">
-              <blockquote>
-                    Показ/Встреча ({{ tpokaz_zayav_cn }})
-              </blockquote>
+      <div class="col-lg-2">
+      <div class="card text-left">
+      <div class="card-body">
+                    Показ/Встреча ({{ tpokaz_zayav_cn }})<br>&nbsp;
+      </div>
+	  </div>
     {% for pokaz_zayav in tpokaz_zayav %}
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+    <div class="col-lg-12">
+      <div class="card text-left">
+        <div class="card-body">
           <span class="card-title">{{ pokaz_zayav.tel }}</span>
-            <li>Клиент: {{ pokaz_zayav.fio }}</li>
-            <li>{{ pokaz_zayav.estate }} {{ pokaz_zayav.budget }} руб.</li>
-            <li>Дата создания: {{ pokaz_zayav.date_sozd }}</li>
-            <li>Дата взятия: {{ pokaz_zayav.date_vzatia }}</li>
-            <li>Ответственный: {{ pokaz_zayav.rielt.first_name }} {{ pokaz_zayav.rielt.last_name }}</li>
+            <ul><li>Клиент: <br><b>{{ pokaz_zayav.fio }}</b></li>
+            <li>{{ pokaz_zayav.estate }} <br><b>{{ pokaz_zayav.budget }} Р.</b></li>
+            <li>Создание: <br><b>{{ pokaz_zayav.date_sozd }}</b></li>
+            <li>Взятие: <br><b>{{ pokaz_zayav.date_vzatia }}</b></li>
+            <li>Отв.лицо: <br><b>{{ pokaz_zayav.rielt.first_name }} {{ pokaz_zayav.rielt.last_name }}</b></li></ul>
         </div>
         <div class="card-action">
           <a href="{% url 'voronka_ap:voronka_detail' idd=pokaz_zayav.pk %}">Подробнее</a>
@@ -119,20 +151,22 @@
     {% comment %}
             start of nedozvon zayavki
     {% endcomment %}
-      <div class="col s1">
-              <blockquote>
-                    Недозвон ({{ tnd_zayav_cn }})
-              </blockquote>
+      <div class="col-lg-2">
+      <div class="card text-left">
+      <div class="card-body">
+                    Недозвон ({{ tnd_zayav_cn }})<br>&nbsp;
+      </div>
+	  </div>
     {% for nd_zayav in tnd_zayav %}
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+    <div class="col-lg-12">
+      <div class="card text-left">
+        <div class="card-body">
           <span class="card-title">{{ nd_zayav.tel }}</span>
-            <li>Дата создания: {{ nd_zayav.date_sozd }}</li>
-            {% if nd_zayav.date_vzatia %}<li>Дата взятия: {{ nd_zayav.date_vzatia }}</li>{% endif %}
-            <li>Ответственный: {{ nd_zayav.rielt.first_name }} {{ nd_zayav.rielt.last_name }}</li>
-            {% if nd_zayav.estate %}<li>{{ nd_zayav.estate }} {{ nd_zayav.budget }} руб.</li>{% endif %}
+            <ul><li>Создание: <br><b>{{ nd_zayav.date_sozd }}</b></li>
+            {% if nd_zayav.date_vzatia %}<li>Взятие: <br><b>{{ nd_zayav.date_vzatia }}</b></li>{% endif %}
+            <li>Отв.лицо: <br><b>{{ nd_zayav.rielt.first_name }} {{ nd_zayav.rielt.last_name }}</b></li>
+            {% if nd_zayav.estate %}<li>{{ nd_zayav.estate }} <br><b>{{ nd_zayav.budget }} Р.</b></li></ul>{% endif %}
         </div>
         <div class="card-action">
           <a href="{% url 'voronka_ap:voronka_detail' idd=nd_zayav.pk %}">Подробнее</a>
@@ -150,22 +184,24 @@
     {% comment %}
             start of Zakritie zayavki
     {% endcomment %}
-      <div class="col s1">
-              <blockquote>
-                    Закрытые ({{ tzakr_zayav_cn }})
-              </blockquote>
+      <div class="col-lg-2">
+      <div class="card text-left">
+      <div class="card-body">
+                    Закрытые ({{ tzakr_zayav_cn }})<br>&nbsp;
+      </div>
+	  </div>
     {% for zakr_zayav in tzakr_zayav %}
   <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
+    <div class="col-lg-12">
+      <div class="card text-left">
+        <div class="card-body">
           <span class="card-title">{{ zakr_zayav.tel }}</span>
-            <li>Дата создания: {{ zakr_zayav.date_sozd }}</li>
-            <li>Дата взятия: {{ zakr_zayav.date_vzatia }}</li>
-            <li>Дата закрытия: {{ zakr_zayav.date_vzatia }}</li>
-            <li>Текущий статус: <strong>{{ zakr_zayav.tek_status }}</strong></li>
-            <li>Ответственный: {{ zakr_zayav.rielt.first_name }} {{ zakr_zayav.rielt.last_name }}</li>
-            <li>{{ zakr_zayav.estate }} {{ zakr_zayav.budget }} руб.</li>
+            <ul><li>Создание: <br><b>{{ zakr_zayav.date_sozd }}</b></li>
+            <li>Взятие: <br><b>{{ zakr_zayav.date_vzatia }}</b></li>
+            <li>Закрытие: <br><b>{{ zakr_zayav.date_vzatia }}</b></li>
+            <li>Статус: <br><b>{{ zakr_zayav.tek_status }}</b></li>
+            <li>Отв.лицо: <br><b>{{ zakr_zayav.rielt.first_name }} {{ zakr_zayav.rielt.last_name }}</b></li>
+            <li>{{ zakr_zayav.estate }} <br><b>{{ zakr_zayav.budget }} Р.</b></li></ul>
         </div>
         <div class="card-action">
           <a href="{% url 'voronka_ap:voronka_detail' idd=zakr_zayav.pk %}">Подробнее</a>
@@ -176,31 +212,44 @@
   </div>
     {% endfor %}
       </div>
-        <div class="col s1">
-              <blockquote>
-                    Задачи:
-              </blockquote>
-          <div class="row">
+        <div class="col-lg-2">
+        <div class="card text-left">
+        <div class="card-body">
+                    Задачи: <br>&nbsp;
+        </div>
+		</div>
+    <div class="row">
+	<div class="col-lg-12">
+        <div class="card text-left">
+        <div class="card-body">
     {% if twork_zayav %}
-          <li>Сегодня</li>
+          <ul><li style="line-height: 1.8em;"><b>Сегодня</b></li>
     {% endif %}
     {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
-            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
+            <li style="font-size: 0.9em;line-height: 1.8em;"><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> <b>{{ c.zadacha_date|date:"d F Y" }}-{{ c.zadacha_time }}</b> <br>{{ c.zadacha }}</a></li>
                 {% endif %}
             {% endfor %}
         {% endfor %}
+		</div>
+	</div>
+	<div class="card text-left">
+        <div class="card-body">
     {% if twork_zayav %}
-    </br><p>Завтра</p>
+   <p><b>Завтра</b></p>
     {% endif %}
     {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tzavtra_date|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
-            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"><strong> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></a>
+            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }} <br>{{ c.zadacha }}</a></li></ul>
                 {% endif %}
             {% endfor %}
         {% endfor %}
+	</div>
+	</div>
+	</div>
+	
     </div>
     </div>
 
