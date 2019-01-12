@@ -228,7 +228,7 @@ b, strong {font-weight: 500;
     {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tdate|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
-            <li style="font-size: 0.9em;line-height: 1.8em;"><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> <b>{{ c.zadacha_date|date:"d F Y" }}-{{ c.zadacha_time }}</b> <br>{{ c.zadacha }}</a></li>
+            <li style="font-size: 0.9em;line-height: 1.8em;"><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> <b>{{ c.zadacha_date|date:"d F Y" }}-{{ c.zadacha_time }}</b> <br>{{ c.zadacha }}</a></li></ul>
                 {% endif %}
             {% endfor %}
         {% endfor %}
@@ -237,12 +237,12 @@ b, strong {font-weight: 500;
 	<div class="card text-left">
         <div class="card-body">
     {% if twork_zayav %}
-   <p><b>Завтра</b></p>
+   <ul><li style="line-height: 1.8em;"><b>Завтра</b></li>
     {% endif %}
     {% for tpost in ttask_zayav %}
             {% for c in  tpost.zadacha_id.all %}
                 {% if tzavtra_date|date:"d F Y" == c.zadacha_date|date:"d F Y"  %}
-            <li><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> {{ c.zadacha_date|date:"d F Y" }} в {{ c.zadacha_time }} <br>{{ c.zadacha }}</a></li></ul>
+            <li style="font-size: 0.9em;line-height: 1.8em;"><a href="{% url 'voronka_ap:voronka_detail' idd=c.zadacha_idd_id %}"> <b>{{ c.zadacha_date|date:"d F Y" }}-{{ c.zadacha_time }}</b> <br>{{ c.zadacha }}</a></li></ul>
                 {% endif %}
             {% endfor %}
         {% endfor %}

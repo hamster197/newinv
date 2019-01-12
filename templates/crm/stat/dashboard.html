@@ -2,78 +2,140 @@
 
 {% block content %}
 {% if request.user.groups.all.0.name == 'Администрация' %}
-
+<script src="/static/material/code/highcharts.js"></script>
+<script src="/static/material/code/highcharts-3d.js"></script>
+<script src="/static/material/code/modules/cylinder.js"></script>
+<style>.btn, .btn-large, .btn-small, .btn-flat {
+    height: unset;}
+text.highcharts-credits {
+    display: none;
+}
+svg.highcharts-root {
+    font-family: 'Montserrat', sans-serif !important;
+}	
+	</style>
 <div class="row">
                     <!-- column -->
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Однокомнатные: {{ tOneCrs }} руб.</h4>
-                                <div>
-                                    <div id="donutchart"></div>
-									    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Студии',      {{ tstcount }}],
-          ['Однокомнатные',     {{ tonecount }}],
-          ['Двухкомнатные',      {{ ttwo_count }}],
-          ['Трехкомнатные',      {{ ttreecount }}],
-          ['Многокомнатные',     {{ tmanycount }}],
-          ['Дома',      {{ thouse_count }}],
+		  <div id="container2" style="height: 400px; max-width: 500px; margin: 0 auto"></div>
+ 		<script type="text/javascript">
 
-        ]);
-
-        var options = {
-          title: 'Двухкомнатные: {{ tTwoCrs }}  руб. Трехкомнатные {{ tTreCrs }} руб.',
-          pieHole: 0.14,
-		  fontName: 'Open Sans',
-		  colors: ['#5ac146', '#2961ff', '#40c4ff', '#ff821c', '#7460ee', '#f62d51'],
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
-    </script>
+// Build the chart
+Highcharts.chart('container2', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Объекты в базе'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y} шт.</b>'
+    },
+    plotOptions: {
+        pie: {
+allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y} ',
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Объекты',
+        colorByPoint: true,
+        data: [{
+            name: 'Студии',
+            y: {{ tstcount }},
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Однокомнатные',
+            y: {{ tonecount }}
+        }, {
+            name: 'Двухкомнатные',
+            y: {{ ttwo_count }}
+        }, {
+            name: 'Трехкомнатные',
+            y: {{ ttreecount }}
+        }, {
+            name: 'Многокомнатные',
+            y: {{ tmanycount }}
+        }, {
+            name: 'Дома',
+            y: {{ thouse_count }}
+        }]
+    }]
+});
+		</script>
+	<!-- Однокомнатные: {{ tOneCrs }} руб. <br> Двухкомнатные: {{ tTwoCrs }}  руб. <br>Трехкомнатные {{ tTreCrs }} руб. -->	
+							
+ 
+	
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                     <!-- column -->
                     <!-- column -->
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Яндекс</h4>
-                                <div>
-                                    <div id="oil"></div>
-									           <script src="https://www.google.com/jsapi"></script>
-  <script>
-   google.load("visualization", "1", {packages:["corechart"]});
-   google.setOnLoadCallback(drawChart);
-   function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-     ['Даты', ''],
-     ['{{ y|safe }}', {{ tc|safe }}],
-     ['{{ y2|safe }}', {{ tc2|safe }}],
-     ['{{ y3|safe }}', {{ tc3|safe }}],
-     ['{{ y4|safe }}', {{ tc4|safe }}],
-    ]);
-    var options = {
-     title: 'Посещения за сегодня: {{ tc|safe }}' ,
-     hAxis: {title: 'Даты'},
-     vAxis: {title: 'посетителей'},
-	 fontName: 'Open Sans',
-	 colors: ['#5ac146']
-    };
+<div id="container" style="height: 400px; max-width: 500px; margin: 0 auto;"></div>
 
-    var chart = new google.visualization.ColumnChart(document.getElementById('oil'));
-    chart.draw(data, options);
-   }
-  </script>
+
+		<script type="text/javascript">
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'column',
+        options3d: {
+            enabled: true,
+            alpha: 7,
+            beta: -10,
+            depth: 70,
+			viewDistance: 25
+        }
+    },
+    title: {
+        text: 'Посетители'
+    },
+    subtitle: {
+        text: 'Посещения за сегодня: {{ tc|safe }}'
+    },
+    plotOptions: {
+        column: {
+            depth: 23
+        }
+    },
+    xAxis: {
+        categories: ['{{ y4|safe }}', '{{ y3|safe }}', '{{ y2|safe }}', '{{ y|safe }}'],
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Посетители'
+        }
+    },
+    series: [{
+        name: 'Посетители',
+        data: [{{ tc4|safe }}, {{ tc3|safe }}, {{ tc2|safe }}, {{ tc|safe }}],
+		showInLegend: false
+    }]
+});
+		</script>							
+ 
                                 </div>
                             </div>
                         </div>
@@ -82,111 +144,154 @@
 </div>					
 <div class="row">
                     <!-- column -->
-                    <div class="col-lg-4">
+                    <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">ЦИАН</h4>
-                                <div>
-								<div id="piechart"></div>
-								    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+							<div id="container4" style="height: 200px; max-width: 500px; margin: 0 auto;"></div>
 
-      function drawChart() {
 
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Адлер ',     {{ tcianA }}],
-          ['Сочи',    {{ tCianS  }}]
-        ]);
+		<script type="text/javascript">
 
-        var options = {
-          title: 'Обьявлений в ЦИАН: {{ tcianAll }}'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
-                                </div>
+Highcharts.chart('container4', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45,
+            beta: 0
+        }
+    },
+    title: {
+        text: 'Обьявлений в ЦИАН: {{ tcianAll }}'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 35,
+            dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+            }
+        }
+    },
+    series: [{
+        type: 'pie',
+        name: 'Объявлений',
+        data: [
+            {
+                name: 'Адлер',
+                y: {{ tcianA }},
+                sliced: true,
+                selected: true
+            },
+            ['Сочи', {{ tCianS  }}]
+        ],
+		showInLegend: true
+    }]
+});
+		</script>
                             </div>
                         </div>
-                    </div>
-                    <!-- column -->
-					<div class="col-lg-4">
+						
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Прибыль за полгода</h4>
-                                <div>
-								<div id="chart_div"></div>
-								   <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawVisualization);
+<div id="container6" style="height: 200px; max-width: 500px; margin: 0 auto;"></div>
 
-      function drawVisualization() {
-        // Some raw data (not necessarily accurate)
-        var data = google.visualization.arrayToDataTable([
-         ['Дата:', 'Прибыль'],
-         ['{{ tdm1|safe }}', {{ tdsum1|safe }}],
-         ['{{ tdm2|safe }}', {{ tdsum2|safe }}],
-         ['{{ tdm3|safe }}', {{ tdsum3|safe }}],
-         ['{{ tdm4|safe }}', {{ tdsum4|safe }}],
-         ['{{ tdm5|safe }}', {{ tdsum5|safe }}],
-         ['{{ tdm6|safe }}', {{ tdsum6|safe }}]
-      ]);
 
-    var options = {
-      title : 'Прибыль компании за полгода',
-      vAxis: {title: 'Сумма'},
-      hAxis: {title: 'Дата'},
-      seriesType: 'bars',
-      series: {5: {type: 'line'}},
-     fontName: 'Open Sans',
-	 colors: ['#26c6da']
-    };
+		<script type="text/javascript">
 
-    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-  }
-    </script>
+Highcharts.chart('container6', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45
+        }
+    },
+    title: {
+        text: 'Прибыль за месяц'
+    },
+    
+    plotOptions: {
+        pie: {
+            innerSize: 40,
+            depth: 45
+        }
+    },
+    series: [{
+        name: 'Сумма',
+		showInLegend: true, 
+        data: [
+            ['Сочи', {{ tssochi|safe  }}],
+            ['Адлер', {{ tsadler|safe  }}]
+			
+        ]
+    }]
+});
+		</script>							
+
+                            </div>
+                        </div>						
+                    </div>
+                    <!-- column -->
+					<div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+<div id="container3" style="height: 400px; max-width: 500px; margin: 0 auto;"></div>
+
+		<script type="text/javascript">
+
+Highcharts.chart('container3', {
+    chart: {
+        type: 'cylinder',
+        options3d: {
+            enabled: true,
+            alpha: 22,
+            beta: 10,
+            depth: 70,
+            viewDistance: 25
+        }
+    },
+    title: {
+        text: 'Прибыль компании за полгода'
+    },
+    plotOptions: {
+        series: {
+            depth: 25,
+            colorByPoint: true
+        }
+    },
+	xAxis: {
+        categories: ['{{ tdm1|safe }}', '{{ tdm2|safe }}', '{{ tdm3|safe }}', '{{ tdm4|safe }}', '{{ tdm5|safe }}', '{{ tdm6|safe }}'],
+        labels: {
+            skew3d: true,
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    yAxis: {
+        title: {
+            text: 'Сумма'
+        }
+    },
+    series: [{
+        data: [{{ tdsum1|safe }}, {{ tdsum2|safe }}, {{ tdsum3|safe }}, {{ tdsum4|safe }}, {{ tdsum5|safe }}, {{ tdsum6|safe }}],
+        name: 'Сумма',
+        showInLegend: false
+    }]
+});
+		</script>								
 					   </div>
                             </div>
                         </div>
                     </div>
                     <!-- column -->
-										<div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Прибыль за месяц</h4>
-                                <div>
-								<div id="piechart_3d"></div>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Сочи ',     {{ tssochi|safe  }}],
-          ['Адлер',      {{ tsadler|safe  }}],
-        ]);
 
-        var options = {
-          title: 'Прибыль компании в текущем месяце:',
-          is3D: true,
-		  	 fontName: 'Open Sans',
-	 colors: ['#5ac146', '#f62d51']
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-        chart.draw(data, options);
-      }
-    </script>
-					   </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- column -->
 </div>								
                  <!-- row -->
                 <div class="row">

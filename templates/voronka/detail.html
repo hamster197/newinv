@@ -4,6 +4,28 @@
 
 
 {% load material_form %}
+<style>form.post-form {
+    margin: auto;
+}
+.card .card-title {
+    font-size: 0.9em;
+    font-weight: 500;}
+	
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating){
+color: #8BC34A;
+    text-transform: none;
+    font-weight: 500;
+	margin-right: auto;
+}
+b, strong {font-weight: 500;
+}
+@-moz-document url-prefix()
+{
+.input-field > label{position: initial;
+font-size: 1em;
+}
+}
+</style>
 <div class="row">
 <div class="col-lg-12">
 <div class="card">
@@ -32,42 +54,32 @@
 <div class="col-lg-12">
 <div class="card">
 <div class="card-body">
-<blockquote>
         <div class="row">
-        <div class="col s1"><blockquote><h4>INFO:</h4>
-            <li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
+        <div class="col-lg-4"><blockquote><h4>Информация:</h4>
+            <ul><li>Дата создания:<strong> {{ tpost.date_sozd }} </strong></li>
             <li>Дата взятия в работу:<strong> {{ tpost.date_vzatia }} </strong></li>
             {% if tpost.date_zakr %}
             <li>Дата закрытия:<strong> {{ tpost.date_zakr }} </strong></li>
             {% endif %}
             <li>Текущий статус: <strong>{{ tpost.tek_status }}</strong></li>
-            <li>Отвественный: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
+            <li>Отв.лицо: <strong>{{ tpost.rielt.first_name }} {{ tpost.rielt.last_name }} </strong></li>
             <li>Oтдел: <strong>{{ tpost.otdel }} </strong></li>
             <li>Канал: <strong>{{ tpost.kanal.kanal }} </strong></li>
             <li>Что ищет: <strong>{{ tpost.estate }}</strong></li>
             <li>Бюджет: <strong>{{ tpost.budget }} руб.</strong></li>
             <li>ФИО Клиента:<strong> {{ tpost.fio }} </strong>
-            <li>тел.:<strong> {{ tpost.tel }} </strong></li>
+            <li>Тел.:<strong> {{ tpost.tel }} </strong></li>
             {% if tpost.tel_dop %}
-                <li>тел(доп).:<strong> {{ tpost.tel_dop }} </strong></li>
+                <li>Тел(доп).:<strong> {{ tpost.tel_dop }} </strong></li>
             {% endif %}
             {% if tpost.email %}
-                <li>email.:<strong> {{ tpost.email }} </strong></li>
+                <li>Email.:<strong> {{ tpost.email }} </strong></li></ul>
             {% endif %}
         </blockquote></div>
-        <div class="col s1"><blockquote><h4>Комментарии:
-            {% for c in  tpost.kom_id.all %}
-                <li><strong>{{ c.date_sozd }}</strong> {{ c.comment }}</li>
-            {% endfor %}
-            </br>
-            <form method="post" class="post-form">
-            {% csrf_token %}
-            {% form form=tcom_form layout=form.layout%}{% endform %}
-            <button type="submit" name="comment_post" class="btn">Добавить коментарий</button>
-        </h4></blockquote></div>
-        <div class="col s1"><blockquote><h4>Задачи:</h4>
+
+        <div class="col-lg-4"><blockquote><h4>Задачи:</h4>
             {% for c in  tpost.zadacha_id.all %}
-            <li><strong> {{ c.zadacha_date }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li>
+            <ul><li><strong> {{ c.zadacha_date }} в {{ c.zadacha_time }}</strong> {{ c.zadacha }}</li></ul>
             {% endfor %}
             <form method="post" class="post-form">
                 {% csrf_token %}{% comment %}
@@ -81,13 +93,31 @@
 
                 <button type="submit" name="zadacha_post" class="btn">Добавить задачу</button>
         </blockquote></div>
-        <div class="col s1"><blockquote><h4>История статусов:
+		
+        <div class="col-lg-4"><blockquote><h4>История статусов:</h4>
             {% for i in  tpost.idd_st.all %}
-                <li><strong>{{ i.date_sozd}}</strong> {{ i.status}} </li>
+                <ul><li><strong>{{ i.date_sozd}}</strong> {{ i.status}} </li></ul>
             {% endfor %}
-        </h4></blockquote></div>
+        </blockquote>
+		
+		<blockquote><h4>Комментарии:</h4>
+            {% for c in  tpost.kom_id.all %}
+                <ul><li><strong>{{ c.date_sozd }}</strong> {{ c.comment }}</li></ul>
+            {% endfor %}
+            </br>
+            <form method="post" class="post-form">
+            {% csrf_token %}
+            {% form form=tcom_form layout=form.layout%}{% endform %}
+            <button type="submit" name="comment_post" class="btn">Добавить коментарий</button>
+        </blockquote>
+		
+		</div>
+		
+		       
+		
+		
       </div>
-</blockquote>
+
 </div>
 </div>
 </div>
