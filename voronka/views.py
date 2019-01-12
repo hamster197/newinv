@@ -284,7 +284,8 @@ def NewZayavVhView(request):
             auth.tek_status = otd.status_nazv
             auth.save()
             return redirect('voronka_ap:voronka_index')
-    zform = NewVhZayavForm()
+    else:
+        zform = NewVhZayavForm()
     return render(request,'voronka/newzayav.html',{'tn1':n1,'tn2':n2,'tform':zform})
 
 @login_required
@@ -343,8 +344,8 @@ def NewZayavWorkView(request):
             auth.tek_status = otd.status_nazv
             auth.save()
             return redirect('voronka_ap:voronka_index')
-
-    zform = NewWorkZayavForm()
+    else:
+        zform = NewWorkZayavForm()
     return render(request,'voronka/newzayav.html',{'tn1':n1,'tn2':n2,'tform':zform})
 
 @login_required
@@ -394,7 +395,7 @@ def MainAdmVoronkaView(request):
     n2 = 'компании'
     start_date = datetime.now() - timedelta(days=datetime.now().day - 1)
     end_date = datetime.now()
-    dateform = MainVoronkaForm()
+
     if request.POST:
         dform=MainVoronkaForm(request.POST)
         if dform.is_valid():
@@ -464,6 +465,8 @@ def MainAdmVoronkaView(request):
                                                 date_sozd__lte=end_date).count()
         adler_zayav = zayavka_vr.objects.filter(otdel__contains='Адлер', date_sozd__gte=start_date,
                                                 date_sozd__lte=end_date).count()
+        dateform = MainVoronkaForm(
+            initial={'stdate': start_date.strftime('%Y-%m-%d'), 'enddate': end_date.strftime('%Y-%m-%d')})
         return render(request,'voronka/mainvoronka.html',{'tn1':n1,'tn2':n2,'sdate':start_date,'edate':end_date,'tdateform':dateform,
                                                     'tall_zayav_count':all_zayav_count, 'tall_zayav_sum':all_zayav_sum,
                                                     'twork_zayav_count':work_zayav_count, 'twork_zayav_sum':work_zayav_sum,
