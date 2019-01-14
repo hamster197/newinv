@@ -42,7 +42,7 @@ def v404_view(request):
         if request.user.groups.get().name == 'Администрация':
             return redirect('crm:DashBoard')
         else:
-            return redirect('crm:news_index')
+            return redirect('voronka_ap:voronka_index')
     else:
         form=loginform()
     return render(request,'crm/login.html',{'tpform':form})
@@ -61,7 +61,7 @@ def ch_pass_view(request):
                 u = User.objects.get(username__contains=request.user)
                 u.set_password(p1)
                 u.save()
-                return redirect('crm:news_index')
+                return redirect('voronka_ap:voronka_index')
     else:
         form=chpassform()
     return render(request, 'crm/ch_pass_tmp.html', {'tpform':form,'tn1':n1,'tn2':n2})

@@ -51,14 +51,12 @@ def main(request):
                 ).count()
         if request.user.userprofile1.nach_otd == 'Да' and request.user.groups.get().name != 'Администрация':
             otd = request.user.groups.get().name
-            n3 = zayavka_vr.objects.filter(
-                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                otdel=otd).count()
+            n3 = zayavka_vr.objects.filter(tek_status='Входящая заявка с сайта').count()
+            n3 = n3 + zayavka_vr.objects.filter(tek_status='Входящая заявка', otdel=otd).count()
         if request.user.userprofile1.nach_otd != 'Да' and request.user.groups.get().name != 'Администрация':
             usr = request.user
-            n3 = zayavka_vr.objects.filter(
-                Q(tek_status='Входящая заявка с сайта') | Q(tek_status='Входящая заявка'),
-                rielt=usr).count()
+            n3 = zayavka_vr.objects.filter(tek_status='Входящая заявка с сайта').count()
+            n3 = n3+zayavka_vr.objects.filter(tek_status='Входящая заявка', rielt=usr).count()
         vestum_count = str(request.user.userprofile1.vestum_count_ads)
         my_ya_obj = flat_obj.objects.filter(author=request.user).count()
         d11 =timezone.datetime.now().date()-timedelta(days=timezone.datetime.now().weekday())
