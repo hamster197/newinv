@@ -4553,7 +4553,7 @@ def reyting_po_sdelkam_4Kvartal_view(request, year_pr):
     good_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn).order_by(
         '-sdelok_sum').exclude(auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo' ])
     great_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn).order_by('-sdelok_sum').exclude(
-        auth_group__in=['Офис в Адлере', 'Администрация Адлер'])
+        auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo' ])
     ###########################
     # all For Adler
     ###########################
