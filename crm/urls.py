@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'^logout/', views.logoutview, name='logout'),
 
     #news
-    url(r'^news/$', views.zaiyavka_Index_view, name='news_index'),
+    url(r'^news/$', views.DashBoardView, name='news_index'),
+    #url(r'^news/$', views.zaiyavka_Index_view, name='news_index'),
     url(r'^news/(?P<idd>[0-9]+)/$',views.news_detail_view, name='news_detail'),
     url(r'^news/edit(?P<idd>[0-9]+)/$', views.news_edit_view, name='news_edit'),
     url(r'^news/newnews/$', views.news_postform, name='news_newpost'),
