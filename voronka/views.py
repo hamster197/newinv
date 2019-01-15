@@ -241,6 +241,7 @@ def VoronkaDetailView(request, idd):
             comment = com_form.save(commit=False)
             comment.komm_id_id = idd
             comment.save()
+            return redirect('voronka_ap:voronka_detail', idd=idd)
 
     if 'zadacha_post' in request.POST:
         z_form = NewZadachaForm(request.POST)
@@ -248,6 +249,7 @@ def VoronkaDetailView(request, idd):
             zadacha = z_form.save(commit=False)
             zadacha.zadacha_idd_id = idd
             zadacha.save()
+            return redirect('voronka_ap:voronka_detail', idd=idd)
 
     com_form = NewCommentForm()
     zad_form = NewZadachaForm()
