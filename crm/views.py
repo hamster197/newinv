@@ -3413,7 +3413,7 @@ def reyting_po_sdelkam_view(request):
 ### 1 kvartal
 ############################################
 @login_required
-def reyting_po_sdelkam_mSearch_view(request):
+def reyting_po_sdelkam_mSearch_view(request, year_pr):
     n1 = 'Рейтинг компании'
     date_end = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day)
     n2 ='C '+str(timezone.datetime.now().year)+'-01-01'+ ' по '+ str(timezone.datetime.now().year)+'-03-'+str(calendar.monthrange(timezone.datetime.now().year,1)[1])
@@ -3459,9 +3459,17 @@ def reyting_po_sdelkam_mSearch_view(request):
             prizn = 1
             SearchMonthForm = search_by_moth_form(initial={'year': yearf, 'month': mothf1})
     else:
-        date_start = str(timezone.datetime.now().year) + '-01-01'
-        date_end = str(timezone.datetime.now().year) + '-03-' + str(
-            calendar.monthrange(timezone.datetime.now().year, 3)[1])
+        #date_start = str(timezone.datetime.now().year) + '-01-01'
+        #date_end = str(timezone.datetime.now().year) + '-03-' + str(
+        #    calendar.monthrange(timezone.datetime.now().year, 3)[1])
+        if year_pr == '1':
+            date_start = str(int(timezone.datetime.now().year)- 1) + '-01-01'
+            date_end = str(int(timezone.datetime.now().year)-1) + '-03-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 3)[1])
+        else:
+            date_start = str(timezone.datetime.now().year) + '-01-01'
+            date_end = str(timezone.datetime.now().year) + '-03-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 3)[1])
         n2 = 'c ' + date_start + ' по ' + date_end + '(1 Квартал)'
         prizn = 3
 
@@ -3705,7 +3713,7 @@ def reyting_po_sdelkam_mSearch_view(request):
 ### 2 kvartal
 ############################################
 @login_required
-def reyting_po_sdelkam_2Kvartal_view(request):
+def reyting_po_sdelkam_2Kvartal_view(request, year_pr):
     n1 = 'Рейтинг компании'
     date_end = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day)
     n2 ='C '+str(timezone.datetime.now().year)+'-01-01'+ ' по '+ str(timezone.datetime.now().year)+'-03-'+str(calendar.monthrange(timezone.datetime.now().year,1)[1])
@@ -3751,9 +3759,17 @@ def reyting_po_sdelkam_2Kvartal_view(request):
             prizn = 1
             SearchMonthForm = search_by_moth_form(initial={'year': yearf, 'month': mothf1})
     else:
-        date_start = str(timezone.datetime.now().year) + '-04-01'
-        date_end = str(timezone.datetime.now().year) + '-06-' + str(
-            calendar.monthrange(timezone.datetime.now().year, 6)[1])
+        #date_start = str(timezone.datetime.now().year) + '-04-01'
+        #date_end = str(timezone.datetime.now().year) + '-06-' + str(
+        #    calendar.monthrange(timezone.datetime.now().year, 6)[1])
+        if year_pr == '1':
+            date_start = str(int(timezone.datetime.now().year)- 1) + '-04-01'
+            date_end = str(int(timezone.datetime.now().year)-1) + '-06-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 6)[1])
+        else:
+            date_start = str(timezone.datetime.now().year) + '-04-01'
+            date_end = str(timezone.datetime.now().year) + '-06-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 6)[1])
         n2 = 'c ' + date_start + ' по ' + date_end + '(2 Квартал)'
         prizn = 3
 
@@ -3999,7 +4015,7 @@ def reyting_po_sdelkam_2Kvartal_view(request):
 ### 3 kvartal
 ############################################
 @login_required
-def reyting_po_sdelkam_3Kvartal_view(request):
+def reyting_po_sdelkam_3Kvartal_view(request, year_pr):
     n1 = 'Рейтинг компании'
     date_end = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day)
     n2 ='C '+str(timezone.datetime.now().year)+'-01-01'+ ' по '+ str(timezone.datetime.now().year)+'-03-'+str(calendar.monthrange(timezone.datetime.now().year,1)[1])
@@ -4045,8 +4061,16 @@ def reyting_po_sdelkam_3Kvartal_view(request):
             prizn = 1
             SearchMonthForm = search_by_moth_form(initial={'year': yearf, 'month': mothf1})
     else:
-        date_start = str(timezone.datetime.now().year) + '-07-01'
-        date_end = str(timezone.datetime.now().year) + '-09-' + str(
+        #date_start = str(timezone.datetime.now().year) + '-07-01'
+        #date_end = str(timezone.datetime.now().year) + '-09-' + str(
+        #    calendar.monthrange(timezone.datetime.now().year, 9)[1])
+        if year_pr == '1':
+            date_start = str(int(timezone.datetime.now().year)- 1) + '-07-01'
+            date_end = str(int(timezone.datetime.now().year)-1) + '-09-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 9)[1])
+        else:
+            date_start = str(timezone.datetime.now().year) + '-07-01'
+            date_end = str(timezone.datetime.now().year) + '-09-' + str(
             calendar.monthrange(timezone.datetime.now().year, 9)[1])
         n2 = 'c ' + date_start + ' по ' + date_end + '(3 Квартал)'
         prizn = 3
@@ -4292,7 +4316,7 @@ def reyting_po_sdelkam_3Kvartal_view(request):
 ### 4 kvartal
 ############################################
 @login_required
-def reyting_po_sdelkam_4Kvartal_view(request):
+def reyting_po_sdelkam_4Kvartal_view(request, year_pr):
     n1 = 'Рейтинг компании'
     date_end = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day)
     n2 ='C '+str(timezone.datetime.now().year)+'-01-01'+ ' по '+ str(timezone.datetime.now().year)+'-03-'+str(calendar.monthrange(timezone.datetime.now().year,1)[1])
@@ -4338,9 +4362,17 @@ def reyting_po_sdelkam_4Kvartal_view(request):
             prizn = 1
             SearchMonthForm = search_by_moth_form(initial={'year': yearf, 'month': mothf1})
     else:
-        date_start = str(timezone.datetime.now().year) + '-10-01'
-        date_end = str(timezone.datetime.now().year) + '-12-' + str(
-            calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        #date_start = str(timezone.datetime.now().year) + '-10-01'
+        #date_end = str(timezone.datetime.now().year) + '-12-' + str(
+        #    calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        if year_pr == '1':
+            date_start = str(int(timezone.datetime.now().year)- 1) + '-10-01'
+            date_end = str(int(timezone.datetime.now().year)-1) + '-12-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        else:
+            date_start = str(timezone.datetime.now().year) + '-10-01'
+            date_end = str(timezone.datetime.now().year) + '-12-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 12)[1])
         n2 = 'c ' + date_start + ' по ' + date_end +'(4 Квартал)'
         prizn = 3
 
@@ -4585,7 +4617,7 @@ def reyting_po_sdelkam_4Kvartal_view(request):
 ### Tekushiy god
 ############################################
 @login_required
-def reyting_po_sdelkam_tek_god(request):
+def reyting_po_sdelkam_tek_god(request, year_pr):
     n1 = 'Рейтинг компании'
     date_end = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day)
     n2 = 'текущий год'
@@ -4632,9 +4664,17 @@ def reyting_po_sdelkam_tek_god(request):
             prizn = 1
             SearchMonthForm = search_by_moth_form(initial={'year': yearf, 'month': mothf1})
     else:
-        date_start = str(timezone.datetime.now().year) + '-01-01'
-        date_end = str(timezone.datetime.now().year) + '-12-' + str(
-            calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        #date_start = str(timezone.datetime.now().year) + '-01-01'
+        #date_end = str(timezone.datetime.now().year) + '-12-' + str(
+        #    calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        if year_pr == '1':
+            date_start = str(int(timezone.datetime.now().year)- 1) + '-01-01'
+            date_end = str(int(timezone.datetime.now().year)-1) + '-12-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 12)[1])
+        else:
+            date_start = str(timezone.datetime.now().year) + '-01-01'
+            date_end = str(timezone.datetime.now().year) + '-12-' + str(
+                calendar.monthrange(timezone.datetime.now().year, 12)[1])
         n2 = 'c ' + date_start + ' по ' + date_end +'(4 Квартал)'
         #n2 = 'текущий год'
         prizn = 12
