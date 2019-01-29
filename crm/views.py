@@ -3171,7 +3171,14 @@ def reyting_po_sdelkam_view(request):
     #SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name=='Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -3476,7 +3483,14 @@ def reyting_po_sdelkam_mSearch_view(request, year_pr):
         SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -3791,7 +3805,14 @@ def reyting_po_sdelkam_2Kvartal_view(request, year_pr):
         SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -4106,7 +4127,14 @@ def reyting_po_sdelkam_3Kvartal_view(request, year_pr):
         SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -4421,7 +4449,14 @@ def reyting_po_sdelkam_4Kvartal_view(request, year_pr):
         SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -4738,7 +4773,14 @@ def reyting_po_sdelkam_tek_god(request, year_pr):
         SearchMonthForm = search_by_moth_form()
     reyting_po_sdelkam.objects.all().delete()
     for user in User.objects.all():
-        if user.is_active:
+        sdelki_count = otchet_nov.objects.filter(
+            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+            sdelka_zakrita__contains='Да',
+            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+
+        if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count>0):
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
