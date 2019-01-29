@@ -205,6 +205,7 @@ def VoronkaDetailView(request, idd):
     if 'otv_post' in request.POST:
         usr_form = ChangeRieltForm1(request.POST)
         if usr_form.is_valid():
+            n2 = request.POST
             usrid = usr_form.cleaned_data['rielt']
             post.rielt_id = usrid
             post.otdel = post.rielt.groups.get().name
@@ -254,7 +255,6 @@ def VoronkaDetailView(request, idd):
     com_form = NewCommentForm()
     zad_form = NewZadachaForm()
     st_form = StatusEdit(initial={'status_f': status_klienta_all, })
-    
     return render(request,'voronka/detail.html',{'tn1':n1, 'tn2':n2, 'tpost':post,
                                                  #'tek_status_zayav_vibor':tek_status_zayav_vibor,
                                                   #'tstatus_zayav_vibor':status_zayav_vibor, #'ss':st,
