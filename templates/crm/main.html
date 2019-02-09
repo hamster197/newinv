@@ -482,7 +482,7 @@ label{margin:0;}
                         </li>
 						{% comment %} {% if request.user.groups.get.name == 'Администрация' or request.user.groups.get.name == 'Администрация Адлер' %}{% endcomment %}
 						<li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:otch_all_reelt'%}" aria-expanded="false">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:otch_all_reelt' tpr_tab=1 %}" aria-expanded="false">
                                 <i class="mdi mdi-file-document"></i>
                                 <span class="hide-menu">Мои сделки</span>
                             </a>

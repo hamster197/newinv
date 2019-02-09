@@ -1,6 +1,20 @@
 {% extends 'crm/main.html' %}
 {% block content %}
     <div class="row">
+<ul class="uk-nav">
+    {% if tsdelka.sdelka_zakrita == 'Нет' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='1' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Да' or tsdelka.sdelka_zakrita == 'Да-Рассрочка' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='2' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Срыв' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='3' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Рассрочка' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='4' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+</ul>
 <div class="col-lg-12">
 <div class="card">
         <div class="card-body">
@@ -206,6 +220,20 @@
                            <tr>
                       </tbody>
                    </table>
+<ul class="uk-nav">
+    {% if tsdelka.sdelka_zakrita == 'Нет' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='1' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Да' or tsdelka.sdelka_zakrita == 'Да-Рассрочка' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='2' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Срыв' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='3' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+    {% if tsdelka.sdelka_zakrita == 'Рассрочка' %}
+        <a href="{% url 'crm:otch_all_reelt' tpr_tab='4' %}" class="uk-icon-small uk-icon-hover uk-icon-twitter">< Вернуться к списку сделок</a>
+    {% endif %}
+</ul>
         </div>
 		</div>
 		</div>

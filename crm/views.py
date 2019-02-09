@@ -1712,9 +1712,9 @@ def new_otchet_view_All(request):
             if request.user.groups.get().name=='Офис в Адлере' or request.user.groups.get().name=='Администрация Адлер':
                 send_mail(fiok + '(Отчет об открытой сделке Адлер)', ss, 'zhem-otchet@mail.ru', ['hamster197@mail.ru'], fail_silently=False, html_message=ss)
                           #['2376361@zhem-realty.ru'], fail_silently=False, html_message=ss)
-            return redirect('crm:otch_all_reelt')
+            return redirect('crm:otch_all_reelt', tpr_tab='1')
     else:
-        otchetFormAllF = otchet_all_form()
+        otchetFormAllF = otchet_all_form(initial={'reelt1':request.user})
 
 
     return render(request,'any/newotchet.html', {'tpotchformall':otchetFormAllF, 'tn1':n1, 'tn2':n2, 'tsave':save, 'tn3':n3,
@@ -1722,7 +1722,7 @@ def new_otchet_view_All(request):
 
 
 @login_required
-def reeelt_otchet_all_view(request):
+def reeelt_otchet_all_view(request, tpr_tab):
     n1 ='Отчеты '
     #n2 =request.user.groups.get().name
     n3 = zayavka.objects.filter(status='Свободен').count()
@@ -2053,7 +2053,8 @@ def reeelt_otchet_all_view(request):
                                                            'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,'trec':rec, 'tpform':form, 'tgroup':group, 'tyandex':Yandex,
                                                            'tdomclick':domclick, 'tdate':date, 'tSRotchet':sriv_otchet, 'tRasrOtchet':rasr_otchet,
                                                            'topen_otchet_sum':open_otchet_sum,'tcloset_otchet_sum':closet_otchet_sum,'tsriv_otchet_sum':sriv_otchet_sum,
-                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj})
+                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj,
+                                                           'tpr_tab':tpr_tab,})
     #if request.user.groups.get().name =='Администрация Адлер':
     #if request.user.UserProfile1.nach_otd == 'Да':
     if request.user.userprofile1.nach_otd == 'Да':
@@ -2148,7 +2149,8 @@ def reeelt_otchet_all_view(request):
                                                            'tAvitoTurbo':AvitoTurbo,'tgroup':group, 'tCian':Cian,'tsait':sait,'trec':rec, 'tpform':form,
                                                            'tyandex':Yandex, 'tdomclick':domclick, 'tRasrOtchet':rasr_otchet,
                                                            'topen_otchet_sum': open_otchet_sum,'tcloset_otchet_sum': closet_otchet_sum,
-                                                           'tsriv_otchet_sum': sriv_otchet_sum,'trasr_otchet_sum': rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj})
+                                                           'tsriv_otchet_sum': sriv_otchet_sum,'trasr_otchet_sum': rasr_otchet_sum,
+                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab,})
     else:
         open_otchet = otchet_nov.objects.filter(Q(reelt1=request.user) | Q(reelt2=request.user) | Q(reelt3=request.user)
             | Q(reelt4=request.user) | Q(reelt5=request.user) | Q(reelt6=request.user) | Q(reelt7=request.user)
@@ -2248,10 +2250,11 @@ def reeelt_otchet_all_view(request):
                                                            'tdomclick':domclick,
                                                            'tpform':form, 'tSRotchet':sriv_otchet,
                                                            'tRasrOtchet': rasr_otchet,'topen_otchet_sum':open_otchet_sum,'tcloset_otchet_sum':closet_otchet_sum,'tsriv_otchet_sum':sriv_otchet_sum,
-                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj,'tcrm_obj_week_count':crm_obj_week_count,})
+                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj,
+                                                           'tcrm_obj_week_count':crm_obj_week_count, 'tpr_tab' : tpr_tab})
 
 @login_required
-def reelt_sdelka_otchet_detail_view(request, idd):
+def reelt_sdelka_otchet_detail_view(request, idd, ):
     n1 ='Отчет по сделке'
     sdelka = get_object_or_404(otchet_nov, pk=idd)
     my_ya_obj = flat_obj.objects.filter(author=request.user).count()
@@ -2484,7 +2487,15 @@ def otchet_edit_view(request, idd):
             otchet.save()
             otchet=form.save(commit=False)
             otchet.save()
-            return redirect('crm:otch_all_reelt')
+            if otchet.sdelka_zakrita == 'Нет':
+                tpr_tab = '1'
+            if otchet.sdelka_zakrita == 'Да' or otchet.sdelka_zakrita == 'Да-Рассрочка':
+                tpr_tab = '2'
+            if otchet.sdelka_zakrita == 'Срыв':
+                tpr_tab = '3'
+            if otchet.sdelka_zakrita == 'Рассрочка':
+                tpr_tab = '4'
+            return redirect('crm:otch_all_reelt',tpr_tab=tpr_tab)
     else:
         n1 = 'Отчет по сделке'
         n2 = 'редакция'
@@ -2495,7 +2506,8 @@ def otchet_edit_view(request, idd):
             rasr_pr = 'rasr'
         else:
             rasr_pr = 'No_rasr'
-    return render(request, 'any/newotchet.html',{'tpotchformall':form,'tn11': n1, 'tn22': n2,  'tsave':save, 'tgroup':group, 'tid':id, 'tRasrPr':rasr_pr})
+    return render(request, 'any/newotchet.html',{'tpotchformall':form,'tn11': n1, 'tn22': n2,
+                                                 'tsave':save, 'tgroup':group, 'tid':id, 'tRasrPr':rasr_pr})
 
 def sdelka_zakritie_view(request, idd):
     sdelka = get_object_or_404(otchet_nov, pk = idd)
@@ -2505,20 +2517,38 @@ def sdelka_zakritie_view(request, idd):
         sdelka.sdelka_zakrita='Да'
     sdelka.date_zakr = timezone.localdate()
     sdelka.save()
-    return redirect('crm:otch_all_reelt')
+    if sdelka.sdelka_zakrita == 'Да' or sdelka.sdelka_zakrita == 'Да-Рассрочка':
+        tpr_tab = '2'
+    if sdelka.sdelka_zakrita == 'Срыв':
+        tpr_tab = '3'
+    if sdelka.sdelka_zakrita == 'Рассрочка':
+        tpr_tab = '4'
+    return redirect('crm:otch_all_reelt', tpr_tab=tpr_tab)
 
 def sdelka_sriv_view(request, idd):
     sdelka = get_object_or_404(otchet_nov, pk = idd)
     sdelka.sdelka_zakrita='Срыв'
     sdelka.date_zakr = timezone.datetime.now()
     sdelka.save()
-    return redirect('crm:otch_all_reelt')
+    if sdelka.sdelka_zakrita == 'Да' or sdelka.sdelka_zakrita == 'Да-Рассрочка':
+        tpr_tab = '2'
+    if sdelka.sdelka_zakrita == 'Срыв':
+        tpr_tab = '3'
+    if sdelka.sdelka_zakrita == 'Рассрочка':
+        tpr_tab = '4'
+    return redirect('crm:otch_all_reelt', tpr_tab=tpr_tab)
 
 def sdelka_rasroch_view(request, idd):
     sdelka = get_object_or_404(otchet_nov, pk = idd)
     sdelka.sdelka_zakrita='Рассрочка'
     sdelka.save()
-    return redirect('crm:otch_all_reelt')
+    if sdelka.sdelka_zakrita == 'Да' or sdelka.sdelka_zakrita == 'Да-Рассрочка':
+        tpr_tab = '2'
+    if sdelka.sdelka_zakrita == 'Срыв':
+        tpr_tab = '3'
+    if sdelka.sdelka_zakrita == 'Рассрочка':
+        tpr_tab = '4'
+    return redirect('crm:otch_all_reelt', tpr_tab=tpr_tab)
 
 def sdelka_delete_view(request, idd):
     sdelka = get_object_or_404(otchet_nov, pk = idd)

@@ -117,12 +117,12 @@ class kanal_pr_fields(admin.ModelAdmin):
 
 
 admin.site.register(flat_obj, flatfields, )
-#admin.site.register(otchet_nov, sdelka_nov)
+admin.site.register(otchet_nov, sdelka_nov)
 admin.site.register(zayavka, zayavkaFields)
 admin.site.register(feed, feedfelds)
 admin.site.register(feed_gallery, feedgalfelds)
 admin.site.register(stat_obj_crm, statistika_fields)
-#admin.site.register(reyting_po_sdelkam, reytingFields)
+admin.site.register(reyting_po_sdelkam, reytingFields)
 admin.site.register(reyt_sdelka_otd, OtdReytFields)
 admin.site.register(cachestvoDomCl, cashDomClickFields)
 admin.site.register(TmpCianCount, CianFields)
