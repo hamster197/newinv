@@ -71,5 +71,5 @@ class MainVoronkaForm(forms.Form):
     def clean(self):
         cleaned_data = super(MainVoronkaForm, self).clean()
         if cleaned_data['stdate']>cleaned_data['enddate']:
-                raise ValidationError('Этаж или Этажность равны 0!' , code='invalid')
+                raise ValidationError('Начало периода больше конца периода!' , code='invalid')
         return cleaned_data

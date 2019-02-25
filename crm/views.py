@@ -1731,7 +1731,6 @@ def reeelt_otchet_all_view(request, tpr_tab):
     crm_obj_week_count = flat_obj.objects.filter(author_id=request.user.id, date_sozd__gte=d11).count()
     n2 = 'Период'
     date = timezone.datetime.now()
-
     if request.POST:
         dform = all_otchet_filtr_form(request.POST)
         if dform.is_valid():
@@ -1776,14 +1775,11 @@ def reeelt_otchet_all_view(request, tpr_tab):
 
     else:
         ds = fdate = str(timezone.datetime.now().year)+'-'+ str(timezone.datetime.now().month) + '-' + '01'
-        #de =timezone.datetime.now()
         de = str(timezone.datetime.now().year)+'-'+str(timezone.datetime.now().month)+'-'+str(timezone.datetime.now().day)
 
         ds1 = fdate = '1'+'-'+ str(timezone.datetime.now().month) + '-' + str(timezone.datetime.now().year)
-        #de =timezone.datetime.now()
         de1 = str(timezone.datetime.now().day)+'-'+str(timezone.datetime.now().month)+'-'+str(timezone.datetime.now().year)
         form = all_otchet_filtr_form()
-    #form = all_otchet_filtr_form()
 
     if request.user.groups.get().name == 'Администрация':
         open_otchet = otchet_nov.objects.filter(sdelka_zakrita='Нет').order_by('-date_sozd','-pk')
@@ -1843,12 +1839,12 @@ def reeelt_otchet_all_view(request, tpr_tab):
         rec = str(rec +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='По рекомендации').count()))
 ######################################################################################################################
         domclick = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
-                                              ot_kuda_kl='Cian').count()
+                                              ot_kuda_kl='Домклик(Сбер)').count()
         domclick = domclick +(otchet_nov.objects.filter(date_sozd__gte=ds, date_sozd__lte=de, sdelka_zakrita='Рассрочка',
-                                              ot_kuda_kl='Cian').count())
+                                              ot_kuda_kl='Домклик(Сбер)').count())
         domclick = domclick+(otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Срыв',
-                                              ot_kuda_kl='Cian').count())
-        domclick = str(domclick +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='Cian').count()))
+                                              ot_kuda_kl='Домклик(Сбер)').count())
+        domclick = str(domclick +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='Домклик(Сбер)').count()))
 ######################################################################################################################
         Yandex = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
                                               ot_kuda_kl='Yandex Недвижимость').count()
@@ -1858,208 +1854,373 @@ def reeelt_otchet_all_view(request, tpr_tab):
                                               ot_kuda_kl='Yandex Недвижимость').count())
         Yandex = str(Yandex +(otchet_nov.objects.filter(sdelka_zakrita='Нет',  ot_kuda_kl='Yandex Недвижимость').count()))
 ######################################################################################################################
-        sum =otchet_nov.objects.filter(date_zakr__gte=ds,date_zakr__lte=de, sdelka_zakrita='Да').aggregate(Sum("komisia"))
-        sum_rasr1 = otchet_nov.objects.filter(Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                              vneseno_komisii_date__gte=ds, vneseno_komisii_date__lte=de,
-                                              ).aggregate(Sum("vneseno_komisii"))
-        sum_rasr2 = otchet_nov.objects.filter(Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                              vneseno_komisii_date2__gte=ds, vneseno_komisii_date2__lte=de,
-                                              ).aggregate(Sum("vneseno_komisii2"))
-        sum_rasr3 = otchet_nov.objects.filter(Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                              vneseno_komisii_date3__gte=ds, vneseno_komisii_date3__lte=de,
-                                              ).aggregate(Sum("vneseno_komisii3"))
-        sum_rasr4 = otchet_nov.objects.filter(Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                              vneseno_komisii_date4__gte=ds, vneseno_komisii_date4__lte=de,
-                                              ).aggregate(Sum("vneseno_komisii4"))
-        sum_rasr5 = otchet_nov.objects.filter(Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                              vneseno_komisii_date5__gte=ds, vneseno_komisii_date5__lte=de,
-                                              ).aggregate(Sum("vneseno_komisii5"))
-        #sum_adler = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, adler_pr='Адлер',\
-                                                #sdelka_zakrita = 'Да').aggregate(Sum("komisia"))
+        all_tel = otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
+                                           ot_kuda_kl='Звонок с общего телефона').count()
+        all_tel = all_tel + (otchet_nov.objects.filter(date_sozd__gte=ds, date_sozd__lte=de, sdelka_zakrita='Рассрочка',
+                                                     ot_kuda_kl='Звонок с общего телефона').count())
+        all_tel = all_tel + (otchet_nov.objects.filter(date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Срыв',
+                                                     ot_kuda_kl='Звонок с общего телефона').count())
+        all_tel = str(
+            all_tel + (otchet_nov.objects.filter(sdelka_zakrita='Нет', ot_kuda_kl='Звонок с общего телефона').count()))
+######################################################################################################################
         grp = 'Адлер'
         sum_adler = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, date_zakr__lte=de,
-                                             sdelka_zakrita = 'Да').aggregate(Sum("komisia"))
+                                             sdelka_zakrita = 'Да')#.aggregate(Sum("komisia"))
         sum_adler_rasr1 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
                                              vneseno_komisii_date__gte=ds, vneseno_komisii_date__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii"))
+                                            )#.aggregate(Sum("vneseno_komisii"))
         sum_adler_rasr2 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                              Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
                                             vneseno_komisii_date2__gte=ds, vneseno_komisii_date2__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii2"))
+                                            )#.aggregate(Sum("vneseno_komisii2"))
         sum_adler_rasr3 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                              Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
                                             vneseno_komisii_date3__gte=ds, vneseno_komisii_date3__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii3"))
+                                            )#.aggregate(Sum("vneseno_komisii3"))
         sum_adler_rasr4 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
                                             ,vneseno_komisii_date4__gte=ds,  vneseno_komisii_date4__lte=de,
-                                             ).aggregate(Sum("vneseno_komisii4"))
+                                             )#.aggregate(Sum("vneseno_komisii4"))
         sum_adler_rasr5 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
                                             ,vneseno_komisii_date5__gte=ds, vneseno_komisii_date5__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii5"))
-
+                                            )#.aggregate(Sum("vneseno_komisii5"))
+         #############################################################################
+         ### For Adler Summ ( New! )
+         #############################################################################
+        s_adler = 0
+        for sum in sum_adler:
+            if grp in sum.otd_reelt1:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc1/100)
+            if grp in sum.otd_reelt2:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc2/100)
+            if grp in sum.otd_reelt3:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc3/100)
+            if grp in sum.otd_reelt4:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc4/100)
+            if grp in sum.otd_reelt5:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc5/100)
+            if grp in sum.otd_reelt6:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc6/100)
+            if grp in sum.otd_reelt7:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc7/100)
+            if grp in sum.otd_reelt8:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc8/100)
+            if grp in sum.otd_reelt9:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc9/100)
+            if grp in sum.otd_reelt10:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc10/100)
+        for rasr in sum_adler_rasr1:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr2:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr3:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr4:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr5:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        #############################################################################
+        ### For Sochi Summ ( New! )
+        #############################################################################
         grp = 'Отдел'
         sum_sochi = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, date_zakr__lte=de,
-                                             sdelka_zakrita = 'Да').aggregate(Sum("komisia"))
+                                             sdelka_zakrita = 'Да')
 
         sum_sochi_rasr1 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita = 'Рассрочка') | Q(sdelka_zakrita = 'Да-Рассрочка')
                                             ,vneseno_komisii_date__gte=ds, vneseno_komisii_date__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii"))
+                                            )
         sum_sochi_rasr2 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
                                             , vneseno_komisii_date2__gte=ds, vneseno_komisii_date2__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii2"))
+                                            )
         sum_sochi_rasr3 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
                                             ,vneseno_komisii_date3__gte=ds, vneseno_komisii_date3__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii3"))
+                                            )
         sum_sochi_rasr4 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
                                             vneseno_komisii_date4__gte=ds, vneseno_komisii_date4__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii4"))
+                                            )
         sum_sochi_rasr5 = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
                                             Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
                                             vneseno_komisii_date5__gte=ds, vneseno_komisii_date5__lte=de,
-                                            ).aggregate(Sum("vneseno_komisii5"))
-        ### For all Summ
-        #############################################################################
-        if sum.get('komisia__sum'):
-            s_sochi_m=str(sum.get('komisia__sum')*60/100)
-        else:
-            s_sochi_m='0'
-
-        if sum_rasr1.get('vneseno_komisii__sum'):
-            s_sochi_m=str(float(s_sochi_m)+float(sum_rasr1.get('vneseno_komisii__sum')*60/100))
-        else:
-            s_sochi_m=s_sochi_m
-
-        if sum_rasr2.get('vneseno_komisii2__sum'):
-            s_sochi_m=str(float(s_sochi_m)+float(sum_rasr2.get('vneseno_komisii2__sum')*60/100))
-        else:
-            s_sochi_m=s_sochi_m
-
-        if sum_rasr3.get('vneseno_komisii3__sum'):
-            s_sochi_m=str(float(s_sochi_m)+float(sum_rasr3.get('vneseno_komisii3__sum')*60/100))
-        else:
-            s_sochi_m=s_sochi_m
-
-        if sum_rasr4.get('vneseno_komisii__sum4'):
-            s_sochi_m=str(float(s_sochi_m)+float(sum_rasr4.get('vneseno_komisii4__sum')*60/100))
-        else:
-            s_sochi_m=s_sochi_m
-
-        if sum_rasr5.get('vneseno_komisii5__sum'):
-            s_sochi_m=str(float(s_sochi_m)+int(sum_rasr5.get('vneseno_komisii5__sum')*60/100))
-        else:
-            s_sochi_m=s_sochi_m
-        #############################################################################
-        ### For SOchi Summ
-        #############################################################################
-        if sum_sochi.get('komisia__sum'):
-            s_sochi=str(sum_sochi.get('komisia__sum')*60/100)
-        else:
-            s_sochi='0'
-        if sum_sochi_rasr1.get('vneseno_komisii__sum'):
-            s_sochi = str(float(s_sochi)+float(sum_sochi_rasr1.get('vneseno_komisii__sum')*60/100))
-        else:
-            s_sochi=s_sochi
-
-        if sum_sochi_rasr2.get('vneseno_komisii2__sum'):
-            s_sochi=str(float(s_sochi)+float(sum_sochi_rasr2.get('vneseno_komisii2__sum')*60/100))
-        else:
-            s_sochi=s_sochi
-
-        if sum_sochi_rasr3.get('vneseno_komisii3__sum'):
-            s_sochi=str(float(s_sochi)+float(sum_sochi_rasr3.get('vneseno_komisii3__sum')*60/100))
-        else:
-            s_sochi=s_sochi
-
-        if sum_sochi_rasr4.get('vneseno_komisii4__sum'):
-            s_sochi=str(float(s_sochi)+float(sum_sochi_rasr4.get('vneseno_komisii4__sum')*60/100))
-        else:
-            s_sochi=s_sochi
-
-        if sum_sochi_rasr5.get('vneseno_komisii5__sum'):
-            s_sochi=str(float(s_sochi)+float(sum_sochi_rasr1.get('vneseno_komisii5__sum')*60/100))
-        else:
-            s_sochi=s_sochi
+                                            )
 
         #############################################################################
-        ### For Adler Summ
+        ### For Sochi Summ ( New! )
         #############################################################################
-        if sum_adler.get('komisia__sum'):
-            s_adler=str(sum_adler.get('komisia__sum')*60/100)
-        else:
-            s_adler='0'
+        s_sochi = 0
+        for sum in sum_sochi:
+            if grp in sum.otd_reelt1:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc1 / 100)
+            if grp in sum.otd_reelt2:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc2 / 100)
+            if grp in sum.otd_reelt3:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc3 / 100)
+            if grp in sum.otd_reelt4:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc4 / 100)
+            if grp in sum.otd_reelt5:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc5 / 100)
+            if grp in sum.otd_reelt6:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc6 / 100)
+            if grp in sum.otd_reelt7:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc7 / 100)
+            if grp in sum.otd_reelt8:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc8 / 100)
+            if grp in sum.otd_reelt9:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc9 / 100)
+            if grp in sum.otd_reelt10:
+                s_sochi = s_sochi + (sum.komisia * 45 / 100) * (sum.rielt_proc10 / 100)
+        for rasr in sum_sochi_rasr1:
+            if grp in rasr.otd_reelt1:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt10:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_sochi_rasr2:
+            if grp in rasr.otd_reelt1:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_sochi_rasr3:
+            if grp in rasr.otd_reelt1:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_sochi_rasr4:
+            if grp in rasr.otd_reelt1:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_sochi_rasr5:
+            if grp in rasr.otd_reelt1:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_sochi = s_sochi + ((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc10 / 100))
 
-        if sum_adler_rasr1.get('vneseno_komisii__sum'):
-            s_adler=str(float(s_adler)+float(sum_adler_rasr1.get('vneseno_komisii__sum')*60/100))
-        else:
-            s_adler=s_adler
-
-        if sum_adler_rasr2.get('vneseno_komisii2__sum'):
-            s_adler=str(float(s_adler)+float(sum_adler_rasr2.get('vneseno_komisii2__sum')*60/100))
-        else:
-            s_adler=s_adler
-
-        if sum_adler_rasr3.get('vneseno_komisii3__sum'):
-            s_adler=str(float(s_adler)+float(sum_adler_rasr3.get('vneseno_komisii3__sum')*60/100))
-        else:
-            s_adler=s_adler
-
-        if sum_adler_rasr4.get('vneseno_komisii4__sum'):
-            s_adler=str(float(s_adler)+float(sum_adler_rasr4.get('vneseno_komisii4__sum')*60/100))
-        else:
-            s_adler=s_adler
-
-        if sum_adler_rasr5.get('vneseno_komisii5__sum'):
-            s_adler=str(float(s_adler)+float(sum_adler_rasr1.get('vneseno_komisii5__sum')*60/100))
-        else:
-            s_adler=s_adler
-
-
-        n2 = n2 +' c '+str(ds1)+' по '+str(de1)+';  ' +'     '+'     '+' Прибыль компании: '+ s_sochi_m+';(Сочи: '\
-             +s_sochi+'/Адлер: '+s_adler+')'
+        s_sochi_m = s_sochi + s_adler
+        n2 = n2 +' c '+str(ds1)+' по '+str(de1)+';  ' +'     '+'     '+' Прибыль компании: '+ str(round(s_sochi_m))+';(Сочи: '\
+             +str(round(s_sochi))+'/Адлер: '+str(round(s_adler))+')'
         group = request.user.groups.get().name
 
-        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
-                                                           'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,'trec':rec, 'tpform':form, 'tgroup':group, 'tyandex':Yandex,
-                                                           'tdomclick':domclick, 'tdate':date, 'tSRotchet':sriv_otchet, 'tRasrOtchet':rasr_otchet,
-                                                           'topen_otchet_sum':open_otchet_sum,'tcloset_otchet_sum':closet_otchet_sum,'tsriv_otchet_sum':sriv_otchet_sum,
-                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj,
-                                                           'tpr_tab':tpr_tab,})
-    #if request.user.groups.get().name =='Администрация Адлер':
-    #if request.user.UserProfile1.nach_otd == 'Да':
+        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,
+                                                           'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
+                                                           'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,
+                                                           'trec':rec, 'tpform':form, 'tgroup':group, 'tyandex':Yandex,
+                                                           'tdomclick':domclick, 'tdate':date, 'tSRotchet':sriv_otchet,
+                                                           'tall_tel':all_tel,'tRasrOtchet':rasr_otchet,
+                                                           'topen_otchet_sum':open_otchet_sum,
+                                                           'tcloset_otchet_sum':closet_otchet_sum,
+                                                           'tsriv_otchet_sum':sriv_otchet_sum,
+                                                           'trasr_otchet_sum':rasr_otchet_sum,
+                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab})
+
+
+
     if request.user.userprofile1.nach_otd == 'Да':
         if request.user.groups.get().name =='Администрация Адлер':
-            grp = 'Адлер'#request.user.groups.get().name
+            grp = 'Адлер'
         else:
             grp = request.user.groups.get().name
         open_otchet = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
@@ -2067,22 +2228,23 @@ def reeelt_otchet_all_view(request, tpr_tab):
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, sdelka_zakrita='Нет' ).order_by('-pk')
 
         closet_otchet = otchet_nov.objects.filter(Q(sdelka_zakrita='Да') | Q(sdelka_zakrita='Да-Рассрочка'),
-                                                  Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
-                                                  date_zakr__gte=ds,date_zakr__lte=de).order_by('-pk')
+                                                  date_zakr__gte=ds, date_zakr__lte=de).order_by('-pk')
 
         sriv_otchet = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
-            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),sdelka_zakrita='Срыв', date_zakr__gte=ds, date_zakr__lte=de).order_by('-pk')
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),sdelka_zakrita='Срыв',
+                                                date_zakr__gte=ds, date_zakr__lte=de).order_by('-pk')
         rasr_otchet = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp), sdelka_zakrita='Рассрочка').order_by('-pk')
 
         open_otchet_sum = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
-            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
-                                                    date_zakr__gte=ds, sdelka_zakrita='Нет').order_by('-pk').count()
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, sdelka_zakrita='Нет').order_by('-pk').count()
         closet_otchet_sum = otchet_nov.objects.filter(Q(sdelka_zakrita='Да') | Q(sdelka_zakrita='Да-Рассрочка'),
                                                       Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
@@ -2090,7 +2252,8 @@ def reeelt_otchet_all_view(request, tpr_tab):
                                                       date_zakr__gte=ds,date_zakr__lte=de).order_by('-pk').count()
         sriv_otchet_sum = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
-            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),sdelka_zakrita='Срыв', date_zakr__gte=ds, date_zakr__lte=de).order_by('-pk').count()
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+                                                    sdelka_zakrita='Срыв', date_zakr__gte=ds, date_zakr__lte=de).order_by('-pk').count()
         rasr_otchet_sum = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),sdelka_zakrita='Рассрочка').order_by('-pk').count()
@@ -2132,25 +2295,199 @@ def reeelt_otchet_all_view(request, tpr_tab):
             | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
             | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, date_zakr__lte=de, sdelka_zakrita='Да',
                                               ot_kuda_kl='Yandex Недвижимость').count())
-        sum_adler = otchet_nov.objects.filter(Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
-            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(otd_reelt7__contains=grp)
-            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),date_zakr__gte=ds, date_zakr__lte=de,
-                                             sdelka_zakrita = 'Да').aggregate(Sum("komisia"))
 
-        if sum_adler.get('komisia__sum'):
-            s_adler=str(sum_adler.get('komisia__sum')*60/100)
-        else:
-            s_adler='0'
 
-        n2 = n2 + '; c ' + str(ds1) + ' по ' + str(de1) + ' Кол-во сделок: ' + str(
-            closet_otchet.count()) + ', Прибыль филиала: ' + s_adler
+
+        sum_adler = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            date_zakr__gte=ds, date_zakr__lte=de,
+            sdelka_zakrita='Да')
+        sum_adler_rasr1 = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
+            vneseno_komisii_date__gte=ds, vneseno_komisii_date__lte=de,
+            )
+        sum_adler_rasr2 = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
+            vneseno_komisii_date2__gte=ds, vneseno_komisii_date2__lte=de,
+            )
+        sum_adler_rasr3 = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка'),
+            vneseno_komisii_date3__gte=ds, vneseno_komisii_date3__lte=de,
+            )
+        sum_adler_rasr4 = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
+            , vneseno_komisii_date4__gte=ds, vneseno_komisii_date4__lte=de,
+            )
+        sum_adler_rasr5 = otchet_nov.objects.filter(
+            Q(otd_reelt1__contains=grp) | Q(otd_reelt2__contains=grp) | Q(otd_reelt3__contains=grp)
+            | Q(otd_reelt4__contains=grp) | Q(otd_reelt5__contains=grp) | Q(otd_reelt6__contains=grp) | Q(
+                otd_reelt7__contains=grp)
+            | Q(otd_reelt8__contains=grp) | Q(otd_reelt9__contains=grp) | Q(otd_reelt10__contains=grp),
+            Q(sdelka_zakrita='Рассрочка') | Q(sdelka_zakrita='Да-Рассрочка')
+            , vneseno_komisii_date5__gte=ds, vneseno_komisii_date5__lte=de,
+            )
+
+         #############################################################################
+         ### For Adler Summ ( New! )
+         #############################################################################
+        s_adler = 0
+        for sum in sum_adler:
+            if grp in sum.otd_reelt1:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc1/100)
+            if grp in sum.otd_reelt2:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc2/100)
+            if grp in sum.otd_reelt3:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc3/100)
+            if grp in sum.otd_reelt4:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc4/100)
+            if grp in sum.otd_reelt5:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc5/100)
+            if grp in sum.otd_reelt6:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc6/100)
+            if grp in sum.otd_reelt7:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc7/100)
+            if grp in sum.otd_reelt8:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc8/100)
+            if grp in sum.otd_reelt9:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc9/100)
+            if grp in sum.otd_reelt10:
+                s_adler = s_adler + (sum.komisia * 45 / 100) * (sum.rielt_proc10/100)
+        for rasr in sum_adler_rasr1:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr2:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii2 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr3:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii3 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr4:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii4 * 45 / 100) * (rasr.rielt_proc10 / 100))
+        for rasr in sum_adler_rasr5:
+            if grp in rasr.otd_reelt1:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc1 / 100))
+            if grp in rasr.otd_reelt2:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc2 / 100))
+            if grp in rasr.otd_reelt3:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc3 / 100))
+            if grp in rasr.otd_reelt4:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc4 / 100))
+            if grp in rasr.otd_reelt5:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc5 / 100))
+            if grp in rasr.otd_reelt6:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc6 / 100))
+            if grp in rasr.otd_reelt7:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc7 / 100))
+            if grp in rasr.otd_reelt8:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc8 / 100))
+            if grp in rasr.otd_reelt9:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc9 / 100))
+            if grp in rasr.otd_reelt10:
+                s_adler = s_adler +((rasr.vneseno_komisii5 * 45 / 100) * (rasr.rielt_proc10 / 100))
+
+        n2 = n2 + '; c ' + str(ds1) + ' по ' + str(de1) + ' Кол-во сделок: ' + str(closet_otchet.count()) + \
+             ', Прибыль филиала: ' + str(round(s_adler))
         group = request.user.groups.get().name
-        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito, 'tSRotchet':sriv_otchet,
-                                                           'tAvitoTurbo':AvitoTurbo,'tgroup':group, 'tCian':Cian,'tsait':sait,'trec':rec, 'tpform':form,
+        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,
+                                                           'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
+                                                           'tSRotchet':sriv_otchet, 'tAvitoTurbo':AvitoTurbo,'tgroup':group,
+                                                           'tCian':Cian,'tsait':sait,'trec':rec, 'tpform':form,
                                                            'tyandex':Yandex, 'tdomclick':domclick, 'tRasrOtchet':rasr_otchet,
                                                            'topen_otchet_sum': open_otchet_sum,'tcloset_otchet_sum': closet_otchet_sum,
                                                            'tsriv_otchet_sum': sriv_otchet_sum,'trasr_otchet_sum': rasr_otchet_sum,
-                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab,})
+                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab})
     else:
         open_otchet = otchet_nov.objects.filter(Q(reelt1=request.user) | Q(reelt2=request.user) | Q(reelt3=request.user)
             | Q(reelt4=request.user) | Q(reelt5=request.user) | Q(reelt6=request.user) | Q(reelt7=request.user)
@@ -2245,13 +2582,15 @@ def reeelt_otchet_all_view(request, tpr_tab):
             closet_otchet.count()) #+ ' Коммисия:' + s
 
 
-        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
-                                                           'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,'trec':rec,'tyandex':Yandex,
-                                                           'tdomclick':domclick,
-                                                           'tpform':form, 'tSRotchet':sriv_otchet,
-                                                           'tRasrOtchet': rasr_otchet,'topen_otchet_sum':open_otchet_sum,'tcloset_otchet_sum':closet_otchet_sum,'tsriv_otchet_sum':sriv_otchet_sum,
-                                                           'trasr_otchet_sum':rasr_otchet_sum,'tde':date,'t_my_ya_obj':my_ya_obj,
-                                                           'tcrm_obj_week_count':crm_obj_week_count, 'tpr_tab' : tpr_tab})
+        return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,
+                                                           'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
+                                                           'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,'trec':rec,
+                                                           'tyandex':Yandex, 'tdomclick':domclick, 'tpform':form,
+                                                           'tSRotchet':sriv_otchet, 'tRasrOtchet': rasr_otchet,
+                                                           'topen_otchet_sum':open_otchet_sum,'tcloset_otchet_sum':closet_otchet_sum,
+                                                           'tsriv_otchet_sum':sriv_otchet_sum, 'trasr_otchet_sum':rasr_otchet_sum,
+                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tcrm_obj_week_count':crm_obj_week_count,
+                                                           'tpr_tab':tpr_tab})
 
 @login_required
 def reelt_sdelka_otchet_detail_view(request, idd, ):
