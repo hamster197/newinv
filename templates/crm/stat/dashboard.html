@@ -299,11 +299,14 @@ Highcharts.chart('container3', {
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title m-b-40">Статистика</h4>
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item"> <a class="nav-link active" id="test1-tab" data-toggle="tab" href="#test1" role="tab" aria-controls="test1" aria-expanded="true"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Рейтинг по отделам</span></a> </li>
-                                    <li class="nav-item"> <a class="nav-link" id="test2-tab" data-toggle="tab" href="#test2" role="tab" aria-controls="test2"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Сочи</span></a></li>
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">{
+                                    {% comment %}
+                                    <li class="nav-item"> <a class="nav-link" id="test1-tab" data-toggle="tab" href="#test1" role="tab" aria-controls="test1" aria-expanded="true"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Рейтинг по отделам</span></a> </li>
+                                    {% endcomment %}
+                                    <li class="nav-item"> <a class="nav-link active" id="test2-tab" data-toggle="tab" href="#test2" role="tab" aria-controls="test2"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Сочи</span></a></li>
+                                    {% comment %}
                                     <li class="nav-item"> <a class="nav-link" id="test3-tab" data-toggle="tab" href="#test3" role="tab" aria-controls="test3"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Адлер</span></a></li>
-
+                                    {% endcomment %}
                                 </ul>
                                 <div class="tab-content tabcontent-border p-20" id="myTabContent">
                                     <div role="tabpanel" class="tab-pane fade show active" id="test1" aria-labelledby="test1-tab">
