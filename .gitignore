@@ -7,7 +7,7 @@ image/*.*
 *~
 __pycache__
 myvenv
-db.sqlite3
+#db.sqlite3
 /static1
 /zhem/settings.py
 .DS_Store
