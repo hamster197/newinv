@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from django.utils import timezone
 from material import *
 from django import forms

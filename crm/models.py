@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import timezone, datetime
 #import datetime
 from django_resized import ResizedImageField

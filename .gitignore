@@ -9,6 +9,6 @@ __pycache__
 myvenv
 db.sqlite3
 /static1
-#/zhem/settings.py
+zhem/settings.py
 .DS_Store
 .idea
