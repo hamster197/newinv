@@ -11,10 +11,10 @@
     <country>Россия</country>
     <region>Краснодарский край</region>
     <locality-name>Сочи</locality-name>
-    <address>{{ post.adress }} {{ post.dom_numb }} </address>
+    <address>{{ post.adress }} {{ post.dom_numb }} </address>{% comment %}
     {% if post.kvart_numb  %}
         <apartment>{{  post.kvart_numb }}</apartment>
-    {% endif %}
+    {% endif %}{% endcomment %}
 </location>
 <sales-agent>
     <phone>+7({{ post.author.userprofile1.tel|get_digit:"10" }}{{ post.author.userprofile1.tel|get_digit:"9"}}{{post.author.userprofile1.tel|get_digit:"8" }}){{post.author.userprofile1.tel|get_digit:"7" }}{{post.author.userprofile1.tel|get_digit:"6" }}{{post.author.userprofile1.tel|get_digit:"5" }}-{{post.author.userprofile1.tel|get_digit:"4" }}{{post.author.userprofile1.tel|get_digit:"3" }}-{{post.author.userprofile1.tel|get_digit:"2" }}{{post.author.userprofile1.tel|get_digit:"1" }}

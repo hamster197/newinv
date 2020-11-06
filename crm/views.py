@@ -2273,8 +2273,8 @@ def reeelt_otchet_all_view(request, tpr_tab):
         n2 = n2 +' c '+str(ds1)+' по '+str(de1)+';  ' +'     '+'     '+' Прибыль компании: '+ str(round(s_sochi_m))+';(Сочи: '\
              +str(round(s_sochi))+'/Адлер: '+str(round(s_adler))+')'
         group = request.user.groups.get().name
-        print(open_otchet.count())
-        print(tpr_tab)
+        # print(open_otchet.count())
+        # print(tpr_tab)
         return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,
                                                            'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
                                                            'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,
