@@ -1093,11 +1093,34 @@ def YandexFeedview(request):
     return render(request,'any/YandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
 
+# ## New Yandex for all(with out feiks)
+# def NewYandexFeedview(request):
+#     post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')[:20]
+#     doma = flat_obj.objects.filter(domclick='Да1', type='house').order_by('-datep')
+#     uchastoc = flat_obj.objects.filter(domclick='Да1', type='uchastok').order_by('-datep')
+#     gal = flat_obj_gal.objects.all()
+#     #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
+#     #post = flat_obj.objects.order_by('-datep')
+#     #ручной ввод текста сео
+#     date = datetime.now()
+#     #dm = domclickText.objects.all().order_by('-dates')[0]
+#     # end of ручной ввод текста сео
+#     # auto ввод текста сео
+#     date1 = timezone.now().day
+#     #dm = get_object_or_404(domclickText, day = int(date1))
+#     dm = ''
+#     # end of autoручной ввод текста сео
+#     return render(request,'any/YandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
+#                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
+
+
+
 ## New Yandex for all(with out feiks)
 def NewYandexFeedview(request):
     post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')[:20]
-    doma = flat_obj.objects.filter(domclick='Да1', type='house').order_by('-datep')
-    uchastoc = flat_obj.objects.filter(domclick='Да1', type='uchastok').order_by('-datep')
+    #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
+    doma = flat_obj.objects.filter(domclick='Да', type='house').order_by('-datep')[:20]
+    uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok').order_by('-datep')
     gal = flat_obj_gal.objects.all()
     #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
     #post = flat_obj.objects.order_by('-datep')
@@ -1107,10 +1130,36 @@ def NewYandexFeedview(request):
     # end of ручной ввод текста сео
     # auto ввод текста сео
     date1 = timezone.now().day
-    #dm = get_object_or_404(domclickText, day = int(date1))
-    dm = ''
+    if domclickText.objects.filter(day = int(date1)).exists():
+        dm = get_object_or_404(domclickText, day = int(date1))
+    else:
+        dm = ''
     # end of autoручной ввод текста сео
-    return render(request,'any/YandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
+    return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
+                                                 'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
+
+
+## Afy for all(with out feiks)
+def AfyFeedview(request):
+    post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')[:20]
+    #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
+    doma = flat_obj.objects.filter(domclick='Да', type='house').order_by('-datep')[:20]
+    uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok').order_by('-datep')
+    gal = flat_obj_gal.objects.all()
+    #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
+    #post = flat_obj.objects.order_by('-datep')
+    #ручной ввод текста сео
+    date = datetime.now()
+    #dm = domclickText.objects.all().order_by('-dates')[0]
+    # end of ручной ввод текста сео
+    # auto ввод текста сео
+    date1 = timezone.now().day
+    if domclickText.objects.filter(day = int(date1)).exists():
+        dm = get_object_or_404(domclickText, day = int(date1))
+    else:
+        dm = ''
+    # end of autoручной ввод текста сео
+    return render(request,'any/AfyFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
 
 #for Mail ru & ula
@@ -1707,10 +1756,13 @@ def new_otchet_view_All(request):
             if otchet_nov.reelt10:
                 name = get_object_or_404(User, username = otchet_nov.reelt10)
                 ss = ss+'</br>'+str(name.first_name)+' '+str(name.last_name)+' '+str(otchet_nov.rielt_proc10)+'%'
-            send_mail(fiok+'(Отчет об открытой сделке)', ss, 'zhem-otchet@mail.ru', ['hamster197@mail.ru'], fail_silently=False, html_message=ss)
+            from zhem import settings
+            send_mail(fiok+'(Отчет об открытой сделке)', ss, settings.EMAIL_HOST_USER, #'zhem-otchet@mail.ru',
+                      ['21insochi@gmail.com'], fail_silently=False, html_message=ss)
                       #['otchet-zhem@mail.ru'], fail_silently=False, html_message=ss)
             if request.user.groups.get().name=='Офис в Адлере' or request.user.groups.get().name=='Администрация Адлер':
-                send_mail(fiok + '(Отчет об открытой сделке Адлер)', ss, 'zhem-otchet@mail.ru', ['hamster197@mail.ru'], fail_silently=False, html_message=ss)
+                send_mail(fiok + '(Отчет об открытой сделке Адлер)', ss, settings.EMAIL_HOST_USER,#'zhem-otchet@mail.ru',
+                          ['21insochi@gmail.com'], fail_silently=False, html_message=ss)
                           #['2376361@zhem-realty.ru'], fail_silently=False, html_message=ss)
             return redirect('crm:otch_all_reelt', tpr_tab='1')
     else:
@@ -2221,7 +2273,8 @@ def reeelt_otchet_all_view(request, tpr_tab):
         n2 = n2 +' c '+str(ds1)+' по '+str(de1)+';  ' +'     '+'     '+' Прибыль компании: '+ str(round(s_sochi_m))+';(Сочи: '\
              +str(round(s_sochi))+'/Адлер: '+str(round(s_adler))+')'
         group = request.user.groups.get().name
-
+        print(open_otchet.count())
+        print(tpr_tab)
         return render(request,'any/reel_otchet_all.html', {'tn1':n1, 'tn2':n2, 'tn3':n3, 'tOpOtchet':open_otchet,
                                                            'tClOtchet':closet_otchet, 'trazn':razn_otch, 'tavito':Avito,
                                                            'tAvitoTurbo':AvitoTurbo, 'tCian':Cian,'tsait':sait,

@@ -64,6 +64,8 @@ urlpatterns = [
     url(r'^vestum300.xml$', views.vestumfeedview300, name='vestumFeed300'),  # for Vestum 300
     url(r'^vestumHouses.xml$', views.vestumFeedViewHouses, name='vestumHouses'),  # for Vestum Houses
     url(r'^sait.xml$', views.sait_vigr_view, name='domclick'), #for sait_feed
+    url(r'^newyandex.xml$', views.NewYandexFeedview, name='NewYandex'),  # for New yandex feed(no Fakes)
+    url(r'^afy.xml$', views.AfyFeedview, name='Afy'),  # for New yandex feed(no Fakes)
     ##any
     url(r'^domclick_index/$', views.domclick_Index_view, name='domclick_index'),
     url(r'^kdastr/(?P<idd>[0-9]+)/$', views.kadastr_edit, name='new_kadastr'),# new_kadastr_numb
