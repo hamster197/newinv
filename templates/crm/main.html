@@ -247,6 +247,7 @@ label{margin:0;}
                                 <span class="hide-menu">Квартиры </span>
                             </a>
 							<ul aria-expanded="false" class="collapse  first-level">
+                                {% comment %}
 						        <li class="sidebar-item">
                                     <a href="{% url 'crm:newvigr' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
@@ -259,18 +260,21 @@ label{margin:0;}
                                         <span class="hide-menu">Циан новостройка</span>
                                     </a>
                                 </li>
+                                {% endcomment %}
                                 <li class="sidebar-item">
                                     <a href="{% url 'crm:new_flat' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu">ЦРМ</span>
                                     </a>
                                 </li>
+                                {% comment %}
                                 <li class="sidebar-item">
                                     <a href="{% url 'avito_ap:Avito_new' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu">Avito</span>
                                     </a>
                                 </li>
+                                {% endcomment %}
                             </ul>	
                         </li>
 						<li class="sidebar-item">
@@ -348,7 +352,7 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> в Вестум</span>
                                     </a>
-                                </li>{% endcomment %}
+                                    </li>
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:cianindex' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
@@ -360,7 +364,7 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> в Avito </span>
                                     </a>
-                                </li>
+                                </li>{% endcomment %}
                             </ul>
                         </li>
 						<li class="sidebar-item">
@@ -406,7 +410,7 @@ label{margin:0;}
                                 <span class="hide-menu"> SEO </span>
                             </a>
                             <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item">
+                                <li class="sidebar-item">{% comment %}
                                     <a href="{% url 'crm:seo_flat_pub'%}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Квартиры на сайте </span>
@@ -417,13 +421,13 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Квартиры не на сайте </span>
                                     </a>
-                                </li>{% comment %}
+                                </li>{% endcomment %}
                                  <li class="sidebar-item">
                                     <a href="{% url 'crm:dm_index'%}" class="sidebar-link">
                                         <i class="mdi mdi-format-align-right"></i>
                                         <span class="hide-menu"> Текст для ДомКлик </span>
                                     </a>
-                                </li>{% endcomment %}
+                                </li>
                             </ul>
                         </li>
 						
@@ -452,7 +456,7 @@ label{margin:0;}
                                         <span class="hide-menu"> Мои клиенты </span>
                                     </a>
                                 </li>
-								{% if request.user.groups.get.name == 'Офис-менеджер' %}
+								{% if request.user.groups.get.name == 'Офис-менеджер' or request.user.groups.get.name == 'Администрация'%}
                                 <li class="sidebar-item">
                                     <a href="{% url 'crm:NewZayavNov' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
