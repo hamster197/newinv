@@ -3700,6 +3700,7 @@ def new_reyting_po_sdelkam(request, year_pr):
                 reelt10=user.username), sdelka_zakrita__contains='Да',
             date_zakr__lte=date_end, date_zakr__gte=date_start).count()
         if (user.is_active and user.userprofile1.tech_zap == 'Нет')or(sdelki_count > 0):
+            #print(user)
             if (not user.groups.get().name == 'Администрация'):
                 if (not user.groups.get().name == 'Юристы'):
                     if not user.groups.get().name == 'Офис-менеджер':
@@ -3938,38 +3939,52 @@ def new_reyting_po_sdelkam(request, year_pr):
     # all For Sochi
     #########################
     zero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, ).exclude(
-        auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)', '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+        auth_group__in=['Офис в Адлере',
                         'Администрация Адлер', 'seo'])
     udl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000 * prizn, sdelok_sum__gt=1).order_by(
         '-sdelok_sum').exclude(
-        auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)', '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+        auth_group__in=['Офис в Адлере',
                         'Администрация Адлер', 'seo'])
     good_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000 * prizn, sdelok_sum__gt=80000 * prizn).order_by(
         '-sdelok_sum').exclude(
-        auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)', '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+        auth_group__in=['Офис в Адлере',
                         'Администрация Адлер', 'seo'])
     great_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000 * prizn).order_by('-sdelok_sum').exclude(
         auth_group__in=['Офис в Адлере', 'Администрация Адлер'])
     ###########################
     # all For Adler
     ###########################
-    Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)',
-                                                                                '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+    Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['Офис в Адлере',
                                                                                 'Администрация Адлер'])
     Audl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000 * prizn, sdelok_sum__gt=1,
-                                                 auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)',
-                                                                 '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+                                                 auth_group__in=['Офис в Адлере',
                                                                  'Администрация Адлер']).order_by(
         '-sdelok_sum')
     Agood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000 * prizn, sdelok_sum__gt=80000 * prizn,
-                                                  auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)',
-                                                                  '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+                                                  auth_group__in=['Офис в Адлере',
                                                                   'Администрация Адлер']).order_by(
         '-sdelok_sum')
     Agreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000 * prizn,
-                                                   auth_group__in=['1 Отдел (Адлер)', '2 Отдел (Адлер)',
-                                                                   '3 Отдел (Адлер)', '4 Отдел (Адлер)',
+                                                   auth_group__in=['Офис в Адлере',
                                                                    'Администрация Адлер']).order_by(
+        '-sdelok_sum')
+    ###########################
+    # all For Krsnodar
+    ###########################
+    Kzero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['Отдел Краснодар 1 (Сметанина)',
+                                                                                'Отдел Краснодар 2 (Трущева)'])
+
+    Kudl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000 * prizn, sdelok_sum__gt=1,
+                                                 auth_group__in=['Отдел Краснодар 1 (Сметанина)',
+                                                                                'Отдел Краснодар 2 (Трущева)']).order_by(
+        '-sdelok_sum')
+    Kgood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000 * prizn, sdelok_sum__gt=80000 * prizn,
+                                                  auth_group__in=['Отдел Краснодар 1 (Сметанина)',
+                                                                                'Отдел Краснодар 2 (Трущева)']).order_by(
+        '-sdelok_sum')
+    Kgreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000 * prizn,
+                                                   auth_group__in=['Отдел Краснодар 1 (Сметанина)',
+                                                                                'Отдел Краснодар 2 (Трущева)']).order_by(
         '-sdelok_sum')
     ##########################
     # reiting in otdel for nach otdel
@@ -3987,10 +4002,11 @@ def new_reyting_po_sdelkam(request, year_pr):
     # reiting in otdel for Administraciya
     #########################
     reyt_sdelka_otd.objects.all().delete()
-    for i in Group.objects.all():
-        if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)' \
-                or i.name == '1 Отдел' or i.name == '2 Отдел' or i.name == '3 Отдел' or i.name == '4 Отдел' or i.name == '5 Отдел':
-            if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)':
+    for i in Group.objects.all().order_by('name'):
+        if i.name == 'Администрация Адлер' or i.name == 'Офис в Адлере' or i.name == 'Администрация' or i.name == 'Отдел 1 (Гаджиева)' \
+                    or i.name == 'Отдел 2 (Габриелян)' or i.name == 'Отдел 3 (Надыров)' or i.name == 'Отдел Краснодар 1 (Сметанина)' \
+                or i.name == 'Отдел Краснодар 2 (Трущева)':# or i.name == '5 Отдел':
+            if i.name == 'Администрация Адлер' or i.name == 'Офис в Адлере':# or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)':
                 Ssum = reyting_po_sdelkam.objects.filter(auth_group=i.name).aggregate(Sum('sdelok_sum'))
                 sum = str(Ssum.get('sdelok_sum__sum'))
                 if str(sum) == 'None':
@@ -4013,9 +4029,10 @@ def new_reyting_po_sdelkam(request, year_pr):
     otd_reit = reyt_sdelka_otd.objects.all().order_by('-kommisia')
     form = search_by_moth_form()
     return render(request,'crm/stat/sdelkareyting.html', {'MForm': form, 'tn1':n1, 'tn2':n2, 'tnach':nach_pr,
-                'zero':zero_bal, 'udl':udl_bal, 'good':good_bal,'great':great_bal,
+                'zero':zero_bal, 'udl':udl_bal, 'good':good_bal,'great':great_bal, 't':date_end,
                 'Azero': Azero_bal, 'Audl': Audl_bal, 'Agood': Agood_bal, 'Agreat': Agreat_bal,
-                 'Nzero': Nzero_bal, 'Nudl': Nudl_bal, 'Ngood': Ngood_bal, 'Ngreat': Ngreat_bal,'todtd':otd_reit, 't':date_end })
+                 'Kzero_bal':Kzero_bal, 'Kudl_bal':Kudl_bal, 'Kgood_bal':Kgood_bal,'Kgreat_bal':Kgreat_bal,
+                 'Nzero': Nzero_bal, 'Nudl': Nudl_bal, 'Ngood': Ngood_bal, 'Ngreat': Ngreat_bal,'todtd':otd_reit, })
 #############################################
 ###             END
 ### Statistica po kol-vu objects & SDELKI
