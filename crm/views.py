@@ -3979,18 +3979,19 @@ def new_reyting_po_sdelkam(request, year_pr):
     ###########################
     # all For Adler
     ###########################
-    Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['Офис в Адлере',
+    Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['Отдел Адлер (Калина)',
+                                                                                'Отдел Адлер (Полякова)',
                                                                                 'Администрация Адлер'])
     Audl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000 * prizn, sdelok_sum__gt=1,
-                                                 auth_group__in=['Офис в Адлере',
+                                                 auth_group__in=['Отдел Адлер (Калина)','Отдел Адлер (Полякова)',
                                                                  'Администрация Адлер']).order_by(
         '-sdelok_sum')
     Agood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000 * prizn, sdelok_sum__gt=80000 * prizn,
-                                                  auth_group__in=['Офис в Адлере',
+                                                  auth_group__in=['Отдел Адлер (Калина)', 'Отдел Адлер (Полякова)',
                                                                   'Администрация Адлер']).order_by(
         '-sdelok_sum')
     Agreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000 * prizn,
-                                                   auth_group__in=['Офис в Адлере',
+                                                   auth_group__in=['Отдел Адлер (Калина)','Отдел Адлер (Полякова)',
                                                                    'Администрация Адлер']).order_by(
         '-sdelok_sum')
     ###########################
