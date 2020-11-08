@@ -3293,6 +3293,7 @@ def zayavka_sriv_view(request, idd):
 def stat_count_crm_obj(request):
     d1 = timezone.datetime.now().date()
     d11 =timezone.datetime.now().date()-timedelta(days=timezone.datetime.now().weekday())
+    #print(d11)
     crm_obj_week_count = flat_obj.objects.filter(author_id=request.user.id, date_sozd__gte=d11).count()
     n1 = 'Статистика'
     n2 = 'CRM текущая неделя Сочи'
@@ -3323,8 +3324,8 @@ def stat_count_crm_obj(request):
     otdel3 = stat_obj_crm.objects.filter(auth_group='Отдел 3 (Надыров)').order_by('-crm_calc')
     otdel4 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 1 (Сметанина)').order_by('-crm_calc')
     otdel5 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 2 (Трущева)').order_by('-crm_calc')
-    AdlOtdel = stat_obj_crm.objects.filter(auth_group__contains='Офис в Адлере').order_by(('-crm_calc'))
-    #AdlOtdel2 = stat_obj_crm.objects.filter(auth_group__contains='2 Отдел (Адлер)').order_by(('-crm_calc'))
+    AdlOtdel = stat_obj_crm.objects.filter(auth_group__contains='Отдел Адлер (Калина)').order_by(('-crm_calc'))
+    AdlOtdel2 = stat_obj_crm.objects.filter(auth_group__contains='Отдел Адлер (Полякова)').order_by(('-crm_calc'))
 
     otdel1_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел 1 (Гаджиева)').aggregate(Sum('crm_calc'))
     otdel1_cn = str(otdel1_cn1.get('crm_calc__sum'))
@@ -3340,11 +3341,14 @@ def stat_count_crm_obj(request):
     otdel4_cn = str(otdel4_cn1.get('crm_calc__sum'))
     if otdel4_cn == 'None':
         otdel4_cn = 0
-    AdlOtdel_cn1 = stat_obj_crm.objects.filter(auth_group='Офис в Адлере').aggregate(Sum('crm_calc'))
+    AdlOtdel_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Адлер (Калина)').aggregate(Sum('crm_calc'))
     AdlOtdel_cn = str(AdlOtdel_cn1.get('crm_calc__sum'))
-    #AdlOtdel2_cn1 = stat_obj_crm.objects.filter(auth_group='2 Отдел (Адлер)').aggregate(Sum('crm_calc'))
-    #AdlOtdel2_cn = str(AdlOtdel2_cn1.get('crm_calc__sum'))
-
+    if AdlOtdel_cn == 'None':
+        otdel4_cn = 0
+    AdlOtdel2_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Адлер (Полякова)').aggregate(Sum('crm_calc'))
+    AdlOtdel2_cn = str(AdlOtdel2_cn1.get('crm_calc__sum'))
+    if AdlOtdel2_cn == 'None':
+        otdel4_cn = 0
     vestum = flat_obj.objects.filter(status_gilya='Нежилое помещение').exclude(kadastr='').count()
     egr = flat_obj.objects.all().exclude(kadastr='').count()
     all1 = stat_obj_crm.objects.all().aggregate(Sum('crm_calc'))
@@ -3352,7 +3356,7 @@ def stat_count_crm_obj(request):
     return render(request,'crm/stat/crm_obj_index.html',
                     {'tOtd1':otdel1,'tOtd2':otdel2,'tOtd3':otdel3,'tOtd4':otdel4, 'tOtd5':otdel5,
                    'tOtd1_cn':otdel1_cn,'tOtd2_cn':otdel2_cn,'tOtd3_cn':otdel3_cn, 'tOtd5_cn':otdel5_cn,
-                   'tAdlOtdel':AdlOtdel,# 'tAdlOtdel2':AdlOtdel2, 'tOtdAdl2_cn': AdlOtdel2_cn,
+                   'tAdlOtdel':AdlOtdel, 'tAdlOtdel2':AdlOtdel2, 'tOtdAdl2_cn': AdlOtdel2_cn,
                    'tOtd4_cn': otdel4_cn, 'tOtdAdl_cn': AdlOtdel_cn,'tall':all,
                      't_my_ya_obj': my_ya_obj,'tNach_otd':nach_otd, 'tegr':egr,'tvs':vestum,
                      'tn1': n1, 'tn2': n2, 'tn3': n3, 'td1':d1, 'td11':d11,'tcrm_obj_week_count':crm_obj_week_count,
@@ -3467,8 +3471,8 @@ def stat_count_crm_obj_past(request):
     otdel3 = stat_obj_crm.objects.filter(auth_group='Отдел 3 (Надыров)').order_by('-crm_calc')
     otdel4 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 1 (Сметанина)').order_by('-crm_calc')
     otdel5 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 2 (Трущева)').order_by('-crm_calc')
-    AdlOtdel = stat_obj_crm.objects.filter(auth_group__contains='Офис в Адлере').order_by(('-crm_calc'))
-    #AdlOtdel2 = stat_obj_crm.objects.filter(auth_group__contains='2 Отдел (Адлер)').order_by(('-crm_calc'))
+    AdlOtdel = stat_obj_crm.objects.filter(auth_group__contains='Отдел Адлер (Калина)').order_by(('-crm_calc'))
+    AdlOtdel2 = stat_obj_crm.objects.filter(auth_group__contains='Отдел Адлер (Полякова)').order_by(('-crm_calc'))
 
     otdel1_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел 1 (Гаджиева)').aggregate(Sum('crm_calc'))
     otdel1_cn = str(otdel1_cn1.get('crm_calc__sum'))
@@ -3484,8 +3488,14 @@ def stat_count_crm_obj_past(request):
     otdel4_cn = str(otdel4_cn1.get('crm_calc__sum'))
     if otdel4_cn == 'None':
         otdel4_cn = 0
-    AdlOtdel_cn1 = stat_obj_crm.objects.filter(auth_group='Офис в Адлере').aggregate(Sum('crm_calc'))
+    AdlOtdel_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Адлер (Калина)').aggregate(Sum('crm_calc'))
     AdlOtdel_cn = str(AdlOtdel_cn1.get('crm_calc__sum'))
+    if AdlOtdel_cn == 'None':
+        otdel4_cn = 0
+    AdlOtdel2_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Адлер (Полякова)').aggregate(Sum('crm_calc'))
+    AdlOtdel2_cn = str(AdlOtdel2_cn1.get('crm_calc__sum'))
+    if AdlOtdel2_cn == 'None':
+        otdel4_cn = 0
 
     vestum = flat_obj.objects.filter(vestum_pub='Да').count()
     egr = flat_obj.objects.all().exclude(kadastr='').count()
@@ -3494,7 +3504,7 @@ def stat_count_crm_obj_past(request):
     return render(request,'crm/stat/crm_obj_index.html',
                     {'tOtd1':otdel1,'tOtd2':otdel2,'tOtd3':otdel3,'tOtd4':otdel4, 'tOtd5':otdel5,
                    'tOtd1_cn':otdel1_cn,'tOtd2_cn':otdel2_cn,'tOtd3_cn':otdel3_cn, 'tOtd5_cn':otdel5_cn,
-                   'tAdlOtdel':AdlOtdel, # 'tAdlOtdel2':AdlOtdel2,'tOtdAdl2_cn': AdlOtdel2_cn,
+                   'tAdlOtdel':AdlOtdel,  'tAdlOtdel2':AdlOtdel2,'tOtdAdl2_cn': AdlOtdel2_cn,
                    'tOtd4_cn': otdel4_cn, 'tOtdAdl_cn': AdlOtdel_cn,'tall':all,
                      't_my_ya_obj': my_ya_obj,'tNach_otd':nach_otd, 'tegr':egr,'tvs':vestum,
                      'tn1': n1, 'tn2': n2, 'tn3': n3, 'td1':d1, 'td11':d11,'tcrm_obj_week_count':crm_obj_week_count,

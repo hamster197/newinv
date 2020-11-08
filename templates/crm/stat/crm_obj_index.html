@@ -14,10 +14,12 @@
         <li class="nav-item"><a class="nav-link" data-toggle="tab" aria-expanded="false" href="#test1">1 отдел <span class="new badge blue" data-badge-caption="">{{ tOtd1_cn }}</span></a></li>
         <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">2 отдел <span class="new badge blue" data-badge-caption="">{{ tOtd2_cn }}</span></a></li>
         <li class="nav-item"><a href="#test3" class="nav-link" data-toggle="tab" aria-expanded="false">3 отдел <span class="new badge blue" data-badge-caption="">{{ tOtd3_cn }}</span></a></li>
-        <li class="nav-item"><a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="false">Отдел Краснодар 1 (Сметанина) <span class="new badge blue" data-badge-caption="">{{ tOtd4_cn }}</span></a></li>
-         <li class="nav-item"><a href="#test6" class="nav-link" data-toggle="tab" aria-expanded="false">Отдел Краснодар 2 (Трущева) <span class="new badge blue" data-badge-caption="">{{ tOtd5_cn }}</span></a></li>
+        <li class="nav-item"><a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="false">Краснодар 1 (Сметанина) <span class="new badge blue" data-badge-caption="">{{ tOtd4_cn }}</span></a></li>
+         <li class="nav-item"><a href="#test6" class="nav-link" data-toggle="tab" aria-expanded="false">Краснодар 2 (Трущева) <span class="new badge blue" data-badge-caption="">{{ tOtd5_cn }}</span></a></li>
 
-          <li class="nav-item"><a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="false">Офис в Адлере <span class="new badge blue" data-badge-caption="">{{ tOtdAdl_cn }}</span></a></li>
+          <li class="nav-item"><a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="false">Адлер (Калина) <span class="new badge blue" data-badge-caption="">{{ tOtdAdl_cn }}</span></a></li>
+          <li class="nav-item"><a href="#test7" class="nav-link" data-toggle="tab" aria-expanded="false">Адлер (Полякова) <span class="new badge blue" data-badge-caption="">{{ tOtdAdl2_cn }}</span></a></li>
+
       {% comment %}
           <li class="nav-item"><a class="nav-link" data-toggle="tab" aria-expanded="false"> <span class="new badge" data-badge-caption="">Циан {{ tvs }}/ЦРМ {{ tegr }}</span></a></li>
       {% endcomment %}
@@ -151,6 +153,30 @@
 
     </div>
 
+    <div id="test7" class="tab-pane ">
+	<div class="p-20" ><p> </p></div>
+              <table class="table">
+        <thead>
+          <tr>
+              <th><strong>Ф.И.О.</strong></th>
+              <th><strong>Кол-во обьектов в CRM</strong></th>
+              <th><strong>Кол-во обьектов в CRM(за неделю)</strong></th>
+              {% comment %}<th><strong>кол-во обьектов в ЦИАН</strong></th>{% endcomment %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for otd in tAdlOtdel2 %}
+          <tr>
+            <td>{{ otd.auth_ful_name }}</td>
+            <td>{{ otd.crm_calc }}/( C № кадастра:{{otd.crm_calc_kadastr }} )</td>
+            <td>{{ otd.crm_calc_week }}</td>
+            {% comment %}<td>{{ otd.cian_calc }}</td>{% endcomment %}
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
 
     <div id="test5" class=" tab-pane ">
 	<div class="p-20" ><p> </p></div>
@@ -179,7 +205,8 @@
     </div>
   </div>
   </div>
-  
+
+
   
 </div>
 </div>
