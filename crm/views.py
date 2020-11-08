@@ -3483,6 +3483,8 @@ def stat_count_crm_obj_past(request):
     otdel4_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 1 (Сметанина)').aggregate(Sum('crm_calc'))
     otdel5_cn1 = stat_obj_crm.objects.filter(auth_group='Отдел Краснодар 2 (Трущева)').aggregate(Sum('crm_calc'))
     otdel5_cn = str(otdel5_cn1.get('crm_calc__sum'))
+    if otdel3_cn == 'None':
+        otdel3_cn = 0
     if otdel5_cn == 'None':
         otdel5_cn = 0
     otdel4_cn = str(otdel4_cn1.get('crm_calc__sum'))
