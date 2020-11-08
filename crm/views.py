@@ -216,37 +216,38 @@ def logoutview(request):
     # all For Sochi
     #########################
     prizn=1
-    zero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, ).exclude(
-        auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
-    udl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1).order_by(
-        '-sdelok_sum').exclude(auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
-    good_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn).order_by(
-        '-sdelok_sum').exclude(auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
-    great_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn).order_by('-sdelok_sum').exclude(
-        auth_group__in=['Офис в Адлере', 'Администрация Адлер'])
+    # zero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, ).exclude(
+    #     auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
+    # udl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1).order_by(
+    #     '-sdelok_sum').exclude(auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
+    # good_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn).order_by(
+    #     '-sdelok_sum').exclude(auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер','seo'])
+    # great_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn).order_by('-sdelok_sum').exclude(
+    #     auth_group__in=['Офис в Адлере', 'Администрация Адлер'])
     ###########################
     # all For Adler
     ###########################
-    Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер'])
-    Audl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1,
-                                                 auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер']).order_by(
-        '-sdelok_sum')
-    Agood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn,
-                                                  auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер']).order_by(
-        '-sdelok_sum')
-    Agreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn,
-                                                   auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер'] ).order_by(
-        '-sdelok_sum')
+    # Azero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0,
+    #     auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер'])
+    # Audl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1,
+    #                                              auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер']).order_by(
+    #     '-sdelok_sum')
+    # Agood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn,
+    #                                               auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер']).order_by(
+    #     '-sdelok_sum')
+    # Agreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn,
+    #                                                auth_group__in=['1 Отдел (Адлер)','2 Отдел (Адлер)','3 Отдел (Адлер)','4 Отдел (Адлер)','Администрация Адлер'] ).order_by(
+    #     '-sdelok_sum')
     ##########################
     # reiting in otdel for nach otdel
     #########################
     gr = request.user.groups.get().name
-    Nzero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group=gr)
-    Nudl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1, auth_group=gr).order_by(
-        '-sdelok_sum')
-    Ngood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn, auth_group=gr).order_by(
-        '-sdelok_sum')
-    Ngreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn, auth_group=gr).order_by('-sdelok_sum')
+    # Nzero_bal = reyting_po_sdelkam.objects.filter(sdelok_sum=0, auth_group=gr)
+    # Nudl_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=80000*prizn, sdelok_sum__gt=1, auth_group=gr).order_by(
+    #     '-sdelok_sum')
+    # Ngood_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__lte=120000*prizn, sdelok_sum__gt=80000*prizn, auth_group=gr).order_by(
+    #     '-sdelok_sum')
+    # Ngreat_bal = reyting_po_sdelkam.objects.filter(sdelok_sum__gt=120000*prizn, auth_group=gr).order_by('-sdelok_sum')
     ##########################
     # reiting in otdel for Administraciya
     #########################
@@ -4232,18 +4233,18 @@ def DashBoardView(request):
     y12 = str((timezone.datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d'))
     y13 = str((timezone.datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d'))
     y14 = str((timezone.datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d'))
-    d1 = requests.get(
-        'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y11 + '&date2=' + y11 + '&metrics=ym:s:visits&oauth_token=' + atoken)
-    d2 = requests.get(
-        'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y12 + '&date2=' + y12 + '&metrics=ym:s:visits&oauth_token=' + atoken)
-    d3 = requests.get(
-        'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y13 + '&date2=' + y13 + '&metrics=ym:s:visits&oauth_token=' + atoken)
-    d4 = requests.get(
-        'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y14 + '&date2=' + y14 + '&metrics=ym:s:visits&oauth_token=' + atoken)
-    parsed1 = json.loads(d1.text)
-    parsed2 = json.loads(d2.text)
-    parsed3 = json.loads(d3.text)
-    parsed4 = json.loads(d4.text)
+    # d1 = requests.get(
+    #     'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y11 + '&date2=' + y11 + '&metrics=ym:s:visits&oauth_token=' + atoken)
+    # d2 = requests.get(
+    #     'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y12 + '&date2=' + y12 + '&metrics=ym:s:visits&oauth_token=' + atoken)
+    # d3 = requests.get(
+    #     'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y13 + '&date2=' + y13 + '&metrics=ym:s:visits&oauth_token=' + atoken)
+    # d4 = requests.get(
+    #     'https://api-metrika.yandex.ru/stat/v1/data?&id=46923189&accuracy=full&date1=' + y14 + '&date2=' + y14 + '&metrics=ym:s:visits&oauth_token=' + atoken)
+    # parsed1 = json.loads(d1.text)
+    # parsed2 = json.loads(d2.text)
+    # parsed3 = json.loads(d3.text)
+    # parsed4 = json.loads(d4.text)
     #if parsed1['data']:
     ##    c1 = parsed1['data'][0]['metrics'][0]
     #if c1 == 'ym:s:visits':

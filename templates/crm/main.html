@@ -188,9 +188,9 @@ label{margin:0;}
                             <a class="nav-link dropdown-toggle waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="/static/material/imgs/user.png" alt="user" class="rounded-circle" width="40">
                                 <span class="m-l-5 font-medium d-none d-sm-inline-block">{% if user.is_authenticated %}
-                                    {{ user.last_name }} {{ user.first_name }} (Avito:
+                                    {{ user.last_name }} {{ user.first_name }} {% comment %}(Avito:
                                     {{ tvestum_count }}
-                                    )
+                                    ){% endcomment %}
                                 {% endif %} <i class="mdi mdi-chevron-down"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
