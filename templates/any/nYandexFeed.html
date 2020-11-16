@@ -120,7 +120,7 @@
   <unit>кв. м</unit>
 </area>
 <lot-area>
-  <value>{{ doma.h_ploshad_uch|cut:" " }}</value>
+  <value>{{ doma.h_ploshad_uch|cut:" " }} {{ doma.average_ploshad }}</value>
   <unit>кв. м</unit>
 </lot-area>
 {%  if doma.h_tip_doma_choises == 'Монолитный' %}
@@ -150,8 +150,8 @@
 <rooms>{{ doma.h_komnat }}</rooms>
 
 <lot-area>
-    <value>{{ doma.h_ploshad_uch|cut:" " }}</value>
-    <unit>cотка</unit>
+    <value>{{ doma.h_ploshad_uch|cut:" " }} </value>
+    <unit>кв. м</unit>
 </lot-area>
 
 {% for i in doma.idd_gal.all %}
