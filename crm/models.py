@@ -144,7 +144,7 @@ class flat_obj(models.Model):
                        ('Поселок Индустриальный', 'Поселок Индустриальный'), ('Поселок Колосистый', 'Поселок Колосистый'),
                        ('Станица Старокорсунская', 'Станица Старокорсунская'),
     )
-    #kr_raion=models.CharField('Район', choices=kr_raion_choise, max_length=40 , default='', blank=True)
+    kr_raion=models.CharField('Район', choices=kr_raion_choise, max_length=40 , default='', blank=True)
     adress = models.CharField(max_length=70, verbose_name='Улица:', help_text='например: Гагарина')
     adress_utf = models.CharField(max_length=270, verbose_name='Улица UTF:', help_text='например: Гагарина', default='')
     dom_numb = models.CharField(max_length=37, verbose_name='Номер дома:',
