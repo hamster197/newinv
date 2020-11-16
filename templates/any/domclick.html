@@ -6,7 +6,7 @@
     <ExternalId>{{ post.pk }}</ExternalId>
     <RoomType>both</RoomType>
     <Description>{{ post.prim }}</Description>
-    <Address>Сочи, {{ post.adress }} {{ post.dom_numb }} {{ post.kvart_numb }}</Address>
+    <Address>{% if post.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}, {{ post.adress }} {{ post.dom_numb }} {{ post.kvart_numb }}</Address>
     <FlatRoomsCount>{{ post.komnat }}</FlatRoomsCount>
         <Phones>
       <PhoneSchema>

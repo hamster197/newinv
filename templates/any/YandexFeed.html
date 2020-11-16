@@ -10,8 +10,8 @@
  <location>
     <country>Россия</country>
     <region>Краснодарский край</region>
-    <locality-name>Сочи</locality-name>
-    <sub-locality-name>post.raion</sub-locality-name>
+    <locality-name>{% if post.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>{% comment %}
+    <sub-locality-name>post.raion</sub-locality-name>{% endcomment %}
     <address>{{ post.adress }} {{ post.dom_numb }} </address>
 </location>
 <sales-agent>
@@ -98,7 +98,7 @@
  <location>
     <country>Россия</country>
     <region>Краснодарский край</region>
-    <locality-name>Сочи</locality-name>
+    <locality-name>{% if doma.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ doma.adress }}</address>
 </location>
 <sales-agent>
@@ -175,7 +175,7 @@
  <location>
     <country>Россия</country>
     <region>Краснодарский край</region>
-    <locality-name>Сочи</locality-name>
+    <locality-name>{% if uchastoc.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ uchastoc.adress }} {{ uchastoc.uc_dom_nunb }}</address>
 </location>
 <sales-agent>

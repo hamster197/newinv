@@ -28,7 +28,7 @@
             <td>{{ uc.date_sozd }}</td>
             <td><strong> {{ uc.pk }}</strong></td>
             <td><strong> {{ uc.cena_agenstv }}</strong></td>
-            <td><strong> {{ uc.raion }}</strong></td>
+            <td><strong> {{ uc.raion }} {{ uc.kr_raion }}</strong></td>
             <th><a href="{% url 'crm:uc_detail' idd=uc.pk %}"><button type="submit" class="waves-effect waves-light btn"></span> Подробнее</button></a></th>
           </tr>
 

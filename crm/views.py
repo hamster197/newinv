@@ -18,7 +18,8 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     yandex_flateditform, all_otchet_filtr_form, otchet_all_form1, Urist_new_zayavka_Form, sriv_zayavka_form, \
     nov_new_zayv_form, all_zayav_form, reelt_lich_new_zayv_form, search_by_moth_form, seo_pub_form, kadastr_form, \
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
-    BallForm
+    BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
+    kr_uc_edit_form
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -340,6 +341,8 @@ def flat_postForm(request):
     if request.POST:
         if request.user.userprofile1.ya == 'Да':
             form=yandex_flatform(request.POST)
+            if request.user.groups.get().name.find('Краснодар')==6:
+                form = kr_yandex_flatform(request.POST)
         else:
             if request.user.groups.get().name =='Офис-менеджер':
                 form = resep_flatform(request.POST)
@@ -369,6 +372,8 @@ def flat_postForm(request):
     else:
         if request.user.userprofile1.ya == 'Да':
             form = yandex_flatform()
+            if request.user.groups.get().name.find('Краснодар')==6:
+                form = kr_yandex_flatform()
         else:
             if request.user.groups.get().name =='Офис-менеджер':
                 form = resep_flatform()
@@ -433,7 +438,10 @@ def my_flatview_edit(request,idd):
     post = get_object_or_404(flat_obj, pk=idd)
     if request.POST:
         if request.user.userprofile1.ya=='Да':
-            flat=yandex_flateditform(request.POST, instance=post)
+            if request.user.groups.get().name.find('Краснодар')==6:
+                flat = kr_yandex_flateditform(request.POST, instance=post)
+            else:
+                flat=yandex_flateditform(request.POST, instance=post)
         else:
             flat = flateditform(request.POST, instance=post)
         if flat.is_valid():
@@ -444,7 +452,10 @@ def my_flatview_edit(request,idd):
             #return redirect('crm:flat_edit', idd=post.pk)
     else:
         if request.user.userprofile1.ya == 'Да':
-            flat=yandex_flateditform(instance=post)
+            if request.user.groups.get().name.find('Краснодар')==6:
+                flat = kr_yandex_flateditform(instance=post)
+            else:
+                flat=yandex_flateditform(instance=post)
         else:
             flat=flateditform(instance=post)
         return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': flat,'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj
@@ -535,15 +546,27 @@ def my_flatview_pub(request):
                                               'search_minc': us.search_minc, 'search_maxc': us.search_maxc,
                                               'search_raion': us.search_raion})
         if raionc == 'Любой':
-            flatlist = flat_obj.objects.filter(status_obj='Опубликован',
+            if request.user.groups.get().name.find('Краснодар')==6:
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован',
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                           type='flat').order_by('-date_sozd')
+                                           type='flat').exclude(kr_raion='').order_by('-date_sozd')
+            else:
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован',
+                                                   cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
+                                                   ploshad__gte=int(minp), ploshad__lte=int(maxp),
+                                                   type='flat').exclude(raion='').order_by('-date_sozd')
         else:
-            flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
+            if request.user.groups.get().name.find('Краснодар')==6:
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                           type='flat').order_by('-date_sozd')
+                                           type='flat').exclude(kr_raion='').order_by('-date_sozd')
+            else:
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
+                                                   cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
+                                                   ploshad__gte=int(minp), ploshad__lte=int(maxp),
+                                                   type='flat').exclude(raion='').order_by('-date_sozd')
         if request.user.groups.get().name == 'Офис-менеджер' :
             flatlist = flat_obj.objects.filter(kadastr_pr='Нет', kadastr='').order_by('-date_sozd')
     return render(request,'crm/flat/all_flat_index.html',{'tpflatlist':flatlist,'tpaFlatSearch':aFlatSearch,'tn1':n1,'tn2':n2, 'tn3':n3,
@@ -1298,7 +1321,10 @@ def new_dom_view(request):
     n1='Дома'
     n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
-        form = doma_new_post(request.POST)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_doma_new_post(request.POST)
+        else:
+            form = doma_new_post(request.POST)
         if form.is_valid():
             flat_obj=form.save(commit=False)
             flat_obj.author=request.user
@@ -1312,7 +1338,10 @@ def new_dom_view(request):
             flat_obj.save()
             return redirect('crm:newFlatgal',  idd=flat_obj.pk)
     else:
-        form=doma_new_post()
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_doma_new_post()
+        else:
+            form = doma_new_post()
     return render(request,'crm/doma/new_dom.html',{'tpform':form,'tn1':n1,'tn2':n2 })
 
 def domaeditview(request,idd):
@@ -1320,12 +1349,18 @@ def domaeditview(request,idd):
     n2='редакция'
     domform= get_object_or_404(flat_obj, pk = idd)
     if request.POST:
-        form = doma_edit_form(request.POST, instance=domform)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_doma_edit_form(request.POST, instance=domform)
+        else:
+            form = doma_edit_form(request.POST, instance=domform)
         if form.is_valid():
             form.save()
             return redirect('crm:newFlatgal',  idd=domform.pk)
     else:
-        form=doma_edit_form(instance=domform)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_doma_edit_form(instance=domform)
+        else:
+            form=doma_edit_form(instance=domform)
     return render(request,'crm/doma/new_dom.html',{'tpform':form,'tn1':n1,'tn2':n2 })
 
 #############################################################################
@@ -1400,7 +1435,10 @@ def mu_pob_doma_view(request):
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
     else:
         form = flat_search_form()
-        doms = flat_obj.objects.filter(type='house').order_by('-date_sozd')
+        if request.user.groups.get().name.find('Краснодар')==6:
+            doms = flat_obj.objects.filter(type='house').exclude(kr_raion='').order_by('-date_sozd')
+        else:
+            doms = flat_obj.objects.filter(type='house').exclude(raion='').order_by('-date_sozd')
         return render(request, 'crm/doma/index_dom.html', {'tpdoms': doms, 'tpform':form,'tn1':n1,'tn2':n2})
 #############################################################################
 #### End of All Houses
@@ -1429,7 +1467,10 @@ def new_uc_view(request):
     n1='Участки'
     n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
-        form=uc_new_post(request.POST)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_uc_new_post(request.POST)
+        else:
+            form=uc_new_post(request.POST)
         if form.is_valid():
             flat_obj = form.save(commit=False)
             flat_obj.date_sozd = timezone.datetime.now()
@@ -1442,7 +1483,10 @@ def new_uc_view(request):
             #return redirect('crm:uc_detail', idd=flat_obj.pk)
             return redirect('crm:newFlatgal', idd=flat_obj.pk)
     else:
-        form=uc_new_post()
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_uc_new_post()
+        else:
+            form=uc_new_post()
     return render(request,'crm/uchastok/new_uch.html',{'tpform':form,'tn1':n1,'tn2':n2})
 
 def ucheditview(request,idd):
@@ -1451,13 +1495,19 @@ def ucheditview(request,idd):
     form =  get_object_or_404(flat_obj, pk = idd)
     id_uch=idd
     if request.POST:
-        form = uc_edit_form(request.POST, instance=form)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_uc_edit_form(request.POST, instance=form)
+        else:
+            form = uc_edit_form(request.POST, instance=form)
         if form.is_valid():
             form.save()
             #return redirect('crm:uc_detail', idd=id_uch)
             return redirect('crm:newFlatgal', idd=idd)
     else:
-        form=uc_edit_form(instance=form)
+        if request.user.groups.get().name.find('Краснодар')==6:
+            form = kr_uc_edit_form(instance=form)
+        else:
+            form = uc_edit_form(instance=form)
     return render(request,'crm/uchastok/new_uch.html',{'tpform':form,'tn1':n1,'tn2':n2})
 
 @login_required
@@ -1486,7 +1536,10 @@ def pup_uchastki(request):
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
     else:
         form = flat_search_form()
-        uc = flat_obj.objects.filter(status_obj='Опубликован',type='uchastok').order_by('-date_sozd')
+        if request.user.groups.get().name.find('Краснодар')==6:
+            uc = flat_obj.objects.filter(status_obj='Опубликован',type='uchastok').exclude(kr_raion='').order_by('-date_sozd')
+        else:
+            uc = flat_obj.objects.filter(status_obj='Опубликован', type='uchastok').exclude(raion='').order_by('-date_sozd')
         return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
 
 @login_required

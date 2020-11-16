@@ -67,7 +67,7 @@
 
                 <state>Краснодарский край</state>
 
-                <town>Сочи</town>
+                <town>{% if post.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</town>
 
                 <town-region>{{ post.raion }}</town-region>
 
@@ -186,7 +186,7 @@
 
                 <state>Краснодарский край</state>
 
-                <town>Сочи</town>
+                <town>{% if post.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</town>
 
                 <town-region>{{ doma.raion }}</town-region>
 

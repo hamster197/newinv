@@ -26,7 +26,7 @@
             <td> {{ doms.date_sozd }} </td>
             <td>{{ doms.pk }}</td>
             <td> {{ doms.cena_agenstv }} </td>
-            <td> {{ doms.raion }}</td>
+            <td> {{ doms.raion }} {{ doms.kr_raion }}</td>
             <td><a href="{% url 'crm:dom_detail' idd=doms.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Подробнее</button></a></td>
           </tr>
 
