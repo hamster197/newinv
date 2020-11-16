@@ -550,7 +550,7 @@ def my_flatview_pub(request):
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                           type='flat').exclude(kr_raion='').order_by('-date_sozd')
+                                           type='flat')#.exclude(kr_raion='').order_by('-date_sozd')
             else:
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',
                                                    cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
@@ -561,7 +561,7 @@ def my_flatview_pub(request):
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                           type='flat').exclude(kr_raion='').order_by('-date_sozd')
+                                           type='flat')#.exclude(kr_raion='').order_by('-date_sozd')
             else:
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
                                                    cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
@@ -1436,7 +1436,7 @@ def mu_pob_doma_view(request):
     else:
         form = flat_search_form()
         if request.user.groups.get().name.find('Краснодар')==6:
-            doms = flat_obj.objects.filter(type='house').exclude(kr_raion='').order_by('-date_sozd')
+            doms = flat_obj.objects.filter(type='house')#.exclude(kr_raion='').order_by('-date_sozd')
         else:
             doms = flat_obj.objects.filter(type='house').exclude(raion='').order_by('-date_sozd')
         return render(request, 'crm/doma/index_dom.html', {'tpdoms': doms, 'tpform':form,'tn1':n1,'tn2':n2})
@@ -1537,7 +1537,7 @@ def pup_uchastki(request):
     else:
         form = flat_search_form()
         if request.user.groups.get().name.find('Краснодар')==6:
-            uc = flat_obj.objects.filter(status_obj='Опубликован',type='uchastok').exclude(kr_raion='').order_by('-date_sozd')
+            uc = flat_obj.objects.filter(status_obj='Опубликован',type='uchastok')#.exclude(kr_raion='').order_by('-date_sozd')
         else:
             uc = flat_obj.objects.filter(status_obj='Опубликован', type='uchastok').exclude(raion='').order_by('-date_sozd')
         return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
