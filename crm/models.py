@@ -179,7 +179,8 @@ class flat_obj(models.Model):
     etap_sdachi_choise=(('Не сдан','Не сдан'),('Рег.УФРС','Рег.УФРС'),('ФЗ-214','ФЗ-214'),('ФЗ-215','ФЗ-215'),('Сдан','Сдан'))
     etap_sdachi=models.CharField('Этап сдачи',max_length=40,choices=etap_sdachi_choise)
 
-    status_gilya_choises=(('Жилое помещение','Жилое помещение'),('Нежилое помещение','Нежилое помещение'),
+    status_gilya_choises=(('Жилое помещение','Жилое помещение'),
+                          ('Нежилое помещение((Апартаменты, подвал, коммерция))','Нежилое помещение((Апартаменты, подвал, коммерция))'),
                           ('Часть жил.дома','Часть жил.дома'),('Квартира','Квартира'),('Комната','Комната'))
     status_gilya=models.CharField('Статус жилья',max_length=40,choices=status_gilya_choises)
 
@@ -191,7 +192,8 @@ class flat_obj(models.Model):
                      ('Рассрочка', 'Рассрочка'), ('Только наличные', 'Только наличными'))
     kredit=MultiSelectField('Усл.Кредита',  choices=krdedit_choises, default='Ипотека СберБанк')
 
-    remont_choises=(('Черновой','Черновой'),('Чистовой','Чистовой'),('Дизайнерский','Дизайнерский'),('Жилой','Жилой'),('Новый','Новый'))
+    remont_choises=(('Черновой','Черновой'),('Чистовой','Чистовой'),('Дизайнерский','Дизайнерский'),('Жилой','Жилой'),
+                    ('Новый','Новый'), ('Косметический','Косметический'),('Евроремонт','Евроремонт'),)
     remont=models.CharField('Ремонт',max_length=25,choices=remont_choises)
 
     gaz_choises=(('Нет','Нет'),('Есть','Есть'),('Можно подключить','Можно подключить'),('В процессе подключения','В процессе подключения'))
@@ -205,7 +207,8 @@ class flat_obj(models.Model):
     etag=models.IntegerField('Этаж',default=0)
     etagnost = models.IntegerField('Этажность',default=0)
 
-    vid_is_okon_choises=(('Обычный','Обычный'),('На стену','На стену'),('На море','На море'),('На горы','На горы'))
+    vid_is_okon_choises=(('Обычный','Обычный'),('На стену','На стену'),('На море','На море'),('На горы','На горы'),
+                         ('Во двор','Во двор'),('На улицу','На улицу'),('На две стороны ','На две стороны '),)
     vid_is_okon = models.CharField('Вид из окон', max_length=25, choices=vid_is_okon_choises)
 
     san_usel_choises=(('Совмещенный','Совмещенный'),('Раздельный','Раздельный'))
@@ -219,7 +222,7 @@ class flat_obj(models.Model):
     rubbish_chute = models.CharField(max_length=3, choices=ch, verbose_name='Мусоропровод:', default='нет')
     lift = models.CharField(max_length=3, choices=ch, verbose_name='Лифт:', default='нет')
 
-    bch = (('да','да'),('нет','нет'),('2 балкона','2 балкона'),('2 лоджии','2 лоджии'))
+    bch = (('да','да'),('нет','нет'),('2 балкона','2 балкона'),('1 лоджия','1 лоджия'),('2 лоджии','2 лоджии'))
     balcony = models.CharField(max_length=15, choices=bch, verbose_name='Балконы:', default='нет')
 
     nov_nazv = models.CharField(verbose_name='Название новостройки:',
@@ -261,11 +264,14 @@ class flat_obj(models.Model):
     h_etagnost_choises = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
     h_etagnost = models.CharField(max_length=3, verbose_name='Этажность:', choices=h_etagnost_choises, default='n/a')
 
-    h_komnat_choises = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
+    h_komnat_choises = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8'),('9','9'),('10','10'),
+                        ('11','11'),('12','12'),('13','13'),('14','14'),('15','15'),('16','16'),('17','17'),('18','18'),
+                        ('19','19'),('20','20'),)
     h_komnat = models.CharField(max_length=3, verbose_name='Комнат:', choices=h_komnat_choises, default='n/a')
 
     h_tip_doma_choises = (('Монолитный','Монолитный'),('Блочный','Блочный'),('Каркасно-монолитный','Каркасно-монолитный'),
-                          ('Кирпичный','Кирпичный'),('Деревянный','Деревянный'),('Панельный','Панельный'))
+                          ('Кирпичный','Кирпичный'),('Деревянный','Деревянный'),('Панельный','Панельный'),
+                          ('Монолитно-кирпичный','Монолитно-кирпичный'))
     h_tip_doma = models.CharField(max_length=25, verbose_name='Тип дома', choices= h_tip_doma_choises,default='n/a')
 
     h_ploshad_uch = models.DecimalField(default='0', decimal_places=1, max_digits=8, verbose_name='Площадь участка (В МЕТРАХ!)')
@@ -285,7 +291,8 @@ class flat_obj(models.Model):
     vid_razr = models.CharField(verbose_name='Вид разрешеного использования:',max_length=25,default='--',choices=vid_razr_ch)
     relef_ch =(('Ровный','Ровный'),('Уклон','Уклон'))
     relef = models.CharField(verbose_name='Вид рельефа:',max_length=25,default='--',choices=relef_ch)
-    vid_prava_ch = (('Собственность','Собственность'),('Аренда (49лет)','Аренда (49лет)'))
+    vid_prava_ch = (('Собственность','Собственность'),('Аренда (49лет)','Аренда (49лет)'),
+                    ('Долевая собственность','Долевая собственность'))
     vid_prava = models.CharField(verbose_name='Вид права:',max_length=25,default='--',choices=vid_prava_ch)
     vid_ch = (('На море','На море'),('На горы','На горы'),('На море и горы','На море и горы'))
     vid = models.CharField(verbose_name='Вид',max_length=25, default='--',choices=vid_ch)
