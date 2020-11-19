@@ -182,7 +182,7 @@ class flat_obj(models.Model):
     status_gilya_choises=(('Жилое помещение','Жилое помещение'),
                           ('Нежилое помещение((Апартаменты, подвал, коммерция))','Нежилое помещение((Апартаменты, подвал, коммерция))'),
                           ('Часть жил.дома','Часть жил.дома'),('Квартира','Квартира'),('Комната','Комната'))
-    status_gilya=models.CharField('Статус жилья',max_length=40,choices=status_gilya_choises)
+    status_gilya=models.CharField('Статус жилья',max_length=140,choices=status_gilya_choises)
 
     klass_gilya_choises=(('Эконом','Эконом'),('Комфорт','Комфорт'),('Бизнес','Бизнес'),('Элит','Элит'))
     klass_gilya=models.CharField('Класс жилья', max_length=45,choices=klass_gilya_choises)
