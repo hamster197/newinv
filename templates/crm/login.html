@@ -73,10 +73,27 @@
   {% form form=tpform %}{% endform %}
   <div class="form-group text-center">
                                     <div class="col-xs-12 p-b-20">
-                                        <button class="btn btn-block btn-lg btn-info" type="submit" name="_submit" class="btn">Войти</button>
+                                        <button class="btn btn-block btn-lg btn-info" type="submit" name="_login" class="btn">Войти</button>
                                     </div>
                                 </div>
     
+</form>
+ <form method="post" class="post-form">
+  {% csrf_token %}
+
+  <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons"></i>Забыли пароль? {{ rezult }}</div>
+      <div class="collapsible-body"><span>
+          <p>Введите логин:</p>
+          <p>{{ ch_form.as_p }}</p>
+          <button class="btn btn-block btn-lg btn-info" type="submit" name="_change_password" class="btn">
+          Отправить пароль на почту
+      </button></span></div>
+    </li>
+
+  </ul>
+
 </form>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
@@ -128,5 +145,17 @@
         $("#loginform").slideUp();
         $("#recoverform").fadeIn();
     });
+    </script>
+    <script>
+          document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
+
+  // Or with jQuery
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
     </script>
 <div class="hiddendiv common"></div></body></html>

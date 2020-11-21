@@ -538,7 +538,7 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Качество обьявлений </span>
                                     </a>
-                                </li>{% if request.user.username == 'homka' %}
+                                </li>{% if request.user.groups.get.name == 'Администрация' %}
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:myadm'%}" class="sidebar-link">
                                         <i class="mdi mdi-buffer"></i>

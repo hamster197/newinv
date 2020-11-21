@@ -7,3 +7,6 @@ class loginform(forms.Form):
 class chpassform(forms.Form):
     ps1 = forms.CharField(max_length=25, label='Введите пароль:')
     ps2 = forms.CharField(max_length=25, label='Повторите пароль:')
+
+class UserChpassForm(forms.Form):
+    username=forms.CharField(max_length=50, label='Login')

@@ -32,6 +32,7 @@ class UserProfile1(models.Model):
     nach_otd = models.CharField('Начальник отдела', default='Нет', max_length=3, choices=ya_choises)
     tech_zap = models.CharField('Техническая запись?', choices=ya_choises, max_length=3, default='Нет')
     #joomla_usr_id = models.CharField(verbose_name='ID пользователя в Joomla', max_length=10, default='')
+    avatar = models.ImageField(verbose_name='Фото', upload_to='image/%Y/%m/%d/real', default='/static/material/dist/logo21.png')
     search_minp = models.IntegerField(default=0, verbose_name='Мин.площадь')
     search_maxp = models.IntegerField(default=5000, verbose_name='Макс.площадь')
     search_minc = models.IntegerField(default=0, verbose_name='Мин.цена')

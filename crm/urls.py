@@ -137,9 +137,14 @@ urlpatterns = [
     url(r'^sdelkaReiting/(?P<year_pr>[0-9]+)/$', views.new_reyting_po_sdelkam,
         name='New_Sdelka_Reit'),
 
+
     #for homka admin
     url(r'^myadm/$', views.my_admi_view, name = 'myadm'),
     url(r'^myadm/usrbals/(?P<idd>[0-9]+)/$',views.UserBallsAddView, name='usrbalsadd'),
+    url(r'^myadm/agent_id/(?P<agent_id>[\w\-]+)/$', views.AgentObjectsView, name='agent_id_url'),
+    url(r'^myadm/admin/agent_id/(?P<agent_id>[\w\-]+)/$', views.AdminAgentObjectsView, name='admin_agent_id_url'),
+    url(r'^myadm/user_edit/(?P<agent_id>[\w\-]+)/$', views.UserEditView, name='user_edit_url'),
+    url(r'^myadm/user_new/$', views.UserNewView, name='user_new_url'),
 
     # for Dashboard
     url(r'^dashboard/$', views.DashBoardView, name='DashBoard'),

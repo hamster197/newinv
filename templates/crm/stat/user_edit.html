@@ -1,0 +1,39 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+{% load material_form %}
+<div class="row">
+   <div class="col s12">
+      <div class="card">
+         <div class="card-content">
+            <h1>Редактировать профиль</h1>
+            <form enctype="multipart/form-data" method="post" class="post-form">
+               {% csrf_token %}
+               {% if rezult != 'new_user' %} {{ rezult }}{% endif %}
+                {{ user_group_form.as_p }}
+                {{ user_form.as_p }}
+                {% if rezult != 'new_user' %} <img
+                           class="materialboxed1"
+                           rel="gallery"
+                           height="250"
+                           src="http://77.222.52.20{{ agent.userprofile1.avatar }}">{% endif %}
+                {{ user_userprofile_form.as_p }}
+               <button type="submit" name="_user_profile_save" class="btn">Сохранить</button>
+         </div>
+
+         </form>
+         <div class="card-content">
+             {% if rezult != 'new_user' %}
+            <h1>Сменить пароль</h1>
+            <form method="post" class="post-form">
+               {% csrf_token %}
+                {{ rezult }}
+                {{ user_change_password_form.as_p }}
+               <button type="submit" name="_change_password" class="btn">Сохранить</button>
+                {% endif %}
+         </div>
+
+         </form>
+      </div>
+   </div>
+</div>
+{% endblock %}

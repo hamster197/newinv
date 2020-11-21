@@ -19,7 +19,7 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     nov_new_zayv_form, all_zayav_form, reelt_lich_new_zayv_form, search_by_moth_form, seo_pub_form, kadastr_form, \
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
     BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
-    kr_uc_edit_form
+    kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -46,173 +46,173 @@ def login_view(request):
     #logout(request)
     #return redirect('crm:login')
 def logoutview(request):
-    date_end = timezone.datetime.now()
-    date_start = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day-1)
-    reyting_po_sdelkam.objects.all().delete()
-    for user in User.objects.all():
-        if user.is_active:
-            if (not user.groups.get().name == 'Администрация'):
-                if (not user.groups.get().name == 'Юристы'):
-                    if not user.groups.get().name == 'Офис-менеджер':
-                        name = user.last_name + ' '+ user.first_name
-                        sdelki_count = otchet_nov.objects.filter(
-                            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                            sdelka_zakrita__contains='Да',
-                            date_zakr__lte=date_end, date_zakr__gte=date_start).count()
-                        #################################################
-                        ##### Kol _subj_Cian                            ###
-                        #################################################
-                        cian_counts = feed.objects.filter(author=user.id,
-                                                          date_sozd__lte=date_end, date_sozd__gte=date_start).count()
-                        #################################################
-                        ##### Kol Subj CRM                            ###
-                        #################################################
-                        crm_counts = flat_obj.objects.filter(author=user.id,).count()
-                                                             #date_sozd__lte=date_end, date_sozd__gte=date_start).count()
-
-                        #################################################
-                        ##### Summa Sdelok                            ###
-                        #################################################
-                        sdelki_sum = otchet_nov.objects.filter(
-                            Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                            sdelka_zakrita='Да',
-                            date_zakr__lte=date_end, date_zakr__gte=date_start)
-                        r_sum=0
-                        rasr_sum1 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
-                                                             vneseno_komisii_date__lte= date_end,
-                                                             vneseno_komisii_date__gte=date_start)
-                        if rasr_sum1:
-                            rasr_sum1 = otchet_nov.objects.filter(
-                                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                    reelt7=user.username)
-                                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                                sdelka_zakrita__contains='Рассрочка',
-                                vneseno_komisii_date__lte=date_end,
-                                vneseno_komisii_date__gte=date_start).aggregate(Sum("vneseno_komisii"))
-                            if rasr_sum1.get('vneseno_komisii__sum'):
-                                r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii__sum') * 50 / 100))
-                            else:
-                                r_sum = r_sum
-                        else:
-                            r_sum=0
-
-                        rasr_sum2 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
-                                                             vneseno_komisii_date2__lte= date_end,
-                                                             vneseno_komisii_date2__gte=date_start)
-                        if rasr_sum2:
-                            rasr_sum2 = otchet_nov.objects.filter(
-                                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                    reelt7=user.username)
-                                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                                sdelka_zakrita__contains='Рассрочка',
-                                vneseno_komisii_date2__lte=date_end,
-                                vneseno_komisii_date2__gte=date_start
-                                ).aggregate(Sum("vneseno_komisii2"))
-                            if rasr_sum2.get('vneseno_komisii2__sum'):
-                                r_sum = str(int(r_sum) + int(rasr_sum2.get('vneseno_komisii2__sum') * 50 / 100))
-                            else:
-                                r_sum = r_sum
-
-
-                        rasr_sum3 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
-                                                             vneseno_komisii_date3__lte= date_end,
-                                                             vneseno_komisii_date3__gte=date_start)
-                        if rasr_sum3:
-                            rasr_sum3 = otchet_nov.objects.filter(
-                                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                    reelt7=user.username)
-                                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                                sdelka_zakrita__contains='Рассрочка',
-                                vneseno_komisii_date3__lte=date_end,
-                                vneseno_komisii_date3__gte=date_start).aggregate(Sum("vneseno_komisii3"))
-                            if rasr_sum3.get('vneseno_komisii3__sum'):
-                                r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii3__sum') * 50 / 100))
-                            else:
-                                r_sum = r_sum
-
-                        rasr_sum4 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
-                                                             vneseno_komisii_date4__lte= date_end,
-                                                            vneseno_komisii_date4__gte=date_start)
-                        if rasr_sum4:
-                            rasr_sum4 = otchet_nov.objects.filter(
-                                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                    reelt7=user.username)
-                                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                                sdelka_zakrita__contains='Рассрочка',
-                                vneseno_komisii_date4__lte=date_end,
-                                vneseno_komisii_date4__gte=date_start).aggregate(Sum("vneseno_komisii4"))
-                            if rasr_sum4.get('vneseno_komisii4__sum'):
-                                r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii4__sum') * 50 / 100))
-                            else:
-                                r_sum = r_sum
-
-                        rasr_sum5 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
-                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
-                                                             vneseno_komisii_date5__lte= date_end,
-                                                             vneseno_komisii_date5__gte=date_start)
-                        if rasr_sum5:
-                            rasr_sum5 = otchet_nov.objects.filter(
-                                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
-                                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
-                                    reelt7=user.username)
-                                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
-                                sdelka_zakrita__contains='Рассрочка',
-                                vneseno_komisii_date5__lte=date_end,
-                                vneseno_komisii_date5__gte=date_start).aggregate(Sum("vneseno_komisii5"))
-                            if rasr_sum5.get('vneseno_komisii5__sum'):
-                                r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii5__sum') * 50 / 100))
-                            else:
-                                r_sum = r_sum
-
-                        sum=0
-                        #sum = sum + int(r_sum)
-                        for i in sdelki_sum:
-                            if i.reelt1 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc1 / 100) * 2
-                            if i.reelt2 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc2 / 100) * 2
-                            if i.reelt3 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc3 / 100) * 2
-                            if i.reelt4 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc4 / 100) * 2
-                            if i.reelt5 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc5 / 100) * 2
-                            if i.reelt6 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc6 / 100) * 2
-                            if i.reelt7 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc7 / 100) * 2
-                            if i.reelt8 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc8 / 100) * 2
-                            if i.reelt9 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc9 / 100) * 2
-                            if i.reelt10 == user.username:
-                                sum = sum + ((i.komisia / 2) * i.rielt_proc10 / 100) * 2
-                            sum=sum+int(r_sum)
-                            r_sum=0
-                        s = reyting_po_sdelkam(auth_nic=user.username, auth_group=user.groups.get(), auth_ful_name=name,
-                                               sdelok_calc=sdelki_count,
-                                               sdelok_sum=sum, cian_count=cian_counts, crm_count=crm_counts)
-                        s.save()
-    nach_pr = request.user.userprofile1.nach_otd
+    # date_end = timezone.datetime.now()
+    # date_start = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day-1)
+    # reyting_po_sdelkam.objects.all().delete()
+    # for user in User.objects.all():
+    #     if user.is_active:
+    #         if (not user.groups.get().name == 'Администрация'):
+    #             if (not user.groups.get().name == 'Юристы'):
+    #                 if not user.groups.get().name == 'Офис-менеджер':
+    #                     name = user.last_name + ' '+ user.first_name
+    #                     sdelki_count = otchet_nov.objects.filter(
+    #                         Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                             reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                         sdelka_zakrita__contains='Да',
+    #                         date_zakr__lte=date_end, date_zakr__gte=date_start).count()
+    #                     #################################################
+    #                     ##### Kol _subj_Cian                            ###
+    #                     #################################################
+    #                     cian_counts = feed.objects.filter(author=user.id,
+    #                                                       date_sozd__lte=date_end, date_sozd__gte=date_start).count()
+    #                     #################################################
+    #                     ##### Kol Subj CRM                            ###
+    #                     #################################################
+    #                     crm_counts = flat_obj.objects.filter(author=user.id,).count()
+    #                                                          #date_sozd__lte=date_end, date_sozd__gte=date_start).count()
+    #
+    #                     #################################################
+    #                     ##### Summa Sdelok                            ###
+    #                     #################################################
+    #                     sdelki_sum = otchet_nov.objects.filter(
+    #                         Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                             reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                         sdelka_zakrita='Да',
+    #                         date_zakr__lte=date_end, date_zakr__gte=date_start)
+    #                     r_sum=0
+    #                     rasr_sum1 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
+    #                                                          vneseno_komisii_date__lte= date_end,
+    #                                                          vneseno_komisii_date__gte=date_start)
+    #                     if rasr_sum1:
+    #                         rasr_sum1 = otchet_nov.objects.filter(
+    #                             Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                             | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                                 reelt7=user.username)
+    #                             | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                             sdelka_zakrita__contains='Рассрочка',
+    #                             vneseno_komisii_date__lte=date_end,
+    #                             vneseno_komisii_date__gte=date_start).aggregate(Sum("vneseno_komisii"))
+    #                         if rasr_sum1.get('vneseno_komisii__sum'):
+    #                             r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii__sum') * 50 / 100))
+    #                         else:
+    #                             r_sum = r_sum
+    #                     else:
+    #                         r_sum=0
+    #
+    #                     rasr_sum2 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
+    #                                                          vneseno_komisii_date2__lte= date_end,
+    #                                                          vneseno_komisii_date2__gte=date_start)
+    #                     if rasr_sum2:
+    #                         rasr_sum2 = otchet_nov.objects.filter(
+    #                             Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                             | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                                 reelt7=user.username)
+    #                             | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                             sdelka_zakrita__contains='Рассрочка',
+    #                             vneseno_komisii_date2__lte=date_end,
+    #                             vneseno_komisii_date2__gte=date_start
+    #                             ).aggregate(Sum("vneseno_komisii2"))
+    #                         if rasr_sum2.get('vneseno_komisii2__sum'):
+    #                             r_sum = str(int(r_sum) + int(rasr_sum2.get('vneseno_komisii2__sum') * 50 / 100))
+    #                         else:
+    #                             r_sum = r_sum
+    #
+    #
+    #                     rasr_sum3 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
+    #                                                          vneseno_komisii_date3__lte= date_end,
+    #                                                          vneseno_komisii_date3__gte=date_start)
+    #                     if rasr_sum3:
+    #                         rasr_sum3 = otchet_nov.objects.filter(
+    #                             Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                             | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                                 reelt7=user.username)
+    #                             | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                             sdelka_zakrita__contains='Рассрочка',
+    #                             vneseno_komisii_date3__lte=date_end,
+    #                             vneseno_komisii_date3__gte=date_start).aggregate(Sum("vneseno_komisii3"))
+    #                         if rasr_sum3.get('vneseno_komisii3__sum'):
+    #                             r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii3__sum') * 50 / 100))
+    #                         else:
+    #                             r_sum = r_sum
+    #
+    #                     rasr_sum4 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
+    #                                                          vneseno_komisii_date4__lte= date_end,
+    #                                                         vneseno_komisii_date4__gte=date_start)
+    #                     if rasr_sum4:
+    #                         rasr_sum4 = otchet_nov.objects.filter(
+    #                             Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                             | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                                 reelt7=user.username)
+    #                             | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                             sdelka_zakrita__contains='Рассрочка',
+    #                             vneseno_komisii_date4__lte=date_end,
+    #                             vneseno_komisii_date4__gte=date_start).aggregate(Sum("vneseno_komisii4"))
+    #                         if rasr_sum4.get('vneseno_komisii4__sum'):
+    #                             r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii4__sum') * 50 / 100))
+    #                         else:
+    #                             r_sum = r_sum
+    #
+    #                     rasr_sum5 = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                         | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+    #                         | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username), sdelka_zakrita__contains='Рассрочка',
+    #                                                          vneseno_komisii_date5__lte= date_end,
+    #                                                          vneseno_komisii_date5__gte=date_start)
+    #                     if rasr_sum5:
+    #                         rasr_sum5 = otchet_nov.objects.filter(
+    #                             Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+    #                             | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(
+    #                                 reelt7=user.username)
+    #                             | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+    #                             sdelka_zakrita__contains='Рассрочка',
+    #                             vneseno_komisii_date5__lte=date_end,
+    #                             vneseno_komisii_date5__gte=date_start).aggregate(Sum("vneseno_komisii5"))
+    #                         if rasr_sum5.get('vneseno_komisii5__sum'):
+    #                             r_sum = str(int(r_sum) + int(rasr_sum1.get('vneseno_komisii5__sum') * 50 / 100))
+    #                         else:
+    #                             r_sum = r_sum
+    #
+    #                     sum=0
+    #                     #sum = sum + int(r_sum)
+    #                     for i in sdelki_sum:
+    #                         if i.reelt1 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc1 / 100) * 2
+    #                         if i.reelt2 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc2 / 100) * 2
+    #                         if i.reelt3 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc3 / 100) * 2
+    #                         if i.reelt4 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc4 / 100) * 2
+    #                         if i.reelt5 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc5 / 100) * 2
+    #                         if i.reelt6 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc6 / 100) * 2
+    #                         if i.reelt7 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc7 / 100) * 2
+    #                         if i.reelt8 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc8 / 100) * 2
+    #                         if i.reelt9 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc9 / 100) * 2
+    #                         if i.reelt10 == user.username:
+    #                             sum = sum + ((i.komisia / 2) * i.rielt_proc10 / 100) * 2
+    #                         sum=sum+int(r_sum)
+    #                         r_sum=0
+    #                     s = reyting_po_sdelkam(auth_nic=user.username, auth_group=user.groups.get(), auth_ful_name=name,
+    #                                            sdelok_calc=sdelki_count,
+    #                                            sdelok_sum=sum, cian_count=cian_counts, crm_count=crm_counts)
+    #                     s.save()
+    # nach_pr = request.user.userprofile1.nach_otd
     ##########################
     # all For Sochi
     #########################
@@ -252,30 +252,30 @@ def logoutview(request):
     ##########################
     # reiting in otdel for Administraciya
     #########################
-    reyt_sdelka_otd.objects.all().delete()
-    for i in Group.objects.all():
-        if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)' \
-                or i.name == '1 Отдел' or i.name == '2 Отдел' or i.name == '3 Отдел' or i.name == '4 Отдел' or i.name == '5 Отдел':
-            if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)':
-                Ssum = reyting_po_sdelkam.objects.filter(auth_group=i.name).aggregate(Sum('sdelok_sum'))
-                sum = str(Ssum.get('sdelok_sum__sum'))
-                if str(sum) == 'None':
-                    sum = 0
-                ASsum = reyting_po_sdelkam.objects.filter(auth_group='Администрация Адлер').aggregate(Sum('sdelok_sum'))
-                Alsum = str(ASsum.get('sdelok_sum__sum'))
-                if str(Alsum) == 'None':
-                    AlSum = 0
-                AllSum = int(sum)  # +int(Alsum)
-
-                s = reyt_sdelka_otd(otd=i.name, kommisia=AllSum)
-                s.save()
-            else:
-                Ssum = reyting_po_sdelkam.objects.filter(auth_group=i.name).aggregate(Sum('sdelok_sum'))
-                sum = str(Ssum.get('sdelok_sum__sum'))
-                if str(sum) == 'None':
-                    sum = 0
-                s = reyt_sdelka_otd(otd=i.name, kommisia=sum)
-                s.save()
+    # reyt_sdelka_otd.objects.all().delete()
+    # for i in Group.objects.all():
+    #     if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)' \
+    #             or i.name == '1 Отдел' or i.name == '2 Отдел' or i.name == '3 Отдел' or i.name == '4 Отдел' or i.name == '5 Отдел':
+    #         if i.name == '1 Отдел (Адлер)' or i.name == '2 Отдел (Адлер)' or i.name == '3 Отдел (Адлер)' or i.name == '4 Отдел (Адлер)':
+    #             Ssum = reyting_po_sdelkam.objects.filter(auth_group=i.name).aggregate(Sum('sdelok_sum'))
+    #             sum = str(Ssum.get('sdelok_sum__sum'))
+    #             if str(sum) == 'None':
+    #                 sum = 0
+    #             ASsum = reyting_po_sdelkam.objects.filter(auth_group='Администрация Адлер').aggregate(Sum('sdelok_sum'))
+    #             Alsum = str(ASsum.get('sdelok_sum__sum'))
+    #             if str(Alsum) == 'None':
+    #                 AlSum = 0
+    #             AllSum = int(sum)  # +int(Alsum)
+    #
+    #             s = reyt_sdelka_otd(otd=i.name, kommisia=AllSum)
+    #             s.save()
+    #         else:
+    #             Ssum = reyting_po_sdelkam.objects.filter(auth_group=i.name).aggregate(Sum('sdelok_sum'))
+    #             sum = str(Ssum.get('sdelok_sum__sum'))
+    #             if str(sum) == 'None':
+    #                 sum = 0
+    #             s = reyt_sdelka_otd(otd=i.name, kommisia=sum)
+    #             s.save()
     logout(request)
     return redirect('crm:login')
 
@@ -4633,3 +4633,84 @@ def DashBoardView(request):
                                                      'tmanycount':ManyRoom_count,'thouse_count':Houses_count,'tAllCount':all_count,
                                                      'tOneCrs': OneRoomSrCena, 'tTwoCrs': TwoRoomSrCena,'tTreCrs': TreeRoomSrCena,'tt':t })
 
+
+@login_required
+def AgentObjectsView(request, agent_id):
+    angent_login = get_object_or_404(stat_obj_crm, pk=agent_id).auth_nic
+    agent = get_object_or_404(User, username=angent_login)
+    pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Опубликован').order_by('type')
+    un_pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Не опубликован').order_by('type')
+    return render(request, 'crm/stat/agent_objects.html', {'agent':agent, 'pub_sybj':pub_sybj,
+                                                           'un_pub_sybj':un_pub_sybj, })
+
+@login_required
+def AdminAgentObjectsView(request, agent_id):
+    #angent_login = get_object_or_404(stat_obj_crm, pk=agent_id).auth_nic
+    agent = get_object_or_404(User, pk=agent_id)
+    pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Опубликован').order_by('type')
+    un_pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Не опубликован').order_by('type')
+    return render(request, 'crm/stat/agent_objects.html', {'agent':agent, 'pub_sybj':pub_sybj,
+                                                           'un_pub_sybj':un_pub_sybj, })
+
+@login_required
+def UserEditView(request, agent_id):
+    if str(request.user.groups.get()) != 'Администрация':
+        return redirect('crm:all_flatpub')
+    agent = get_object_or_404(User, pk=agent_id)
+    user_form = UserEditForm(instance=agent)
+    user_group_form = UserGroupEdit(initial = {'group': agent.groups.get() })
+    user_userprofile_form = UserProfileGroupForm(instance=agent.userprofile1)
+    user_change_password_form = UserChangePasswwordForm()
+    rezult = ''
+    if '_user_profile_save' in request.POST:
+        user_form = UserEditForm(request.POST, instance=agent)
+        user_group_form = UserGroupEdit(request.POST, )
+        user_userprofile_form = UserProfileGroupForm(request.POST, request.FILES,  instance=agent.userprofile1)
+        if user_form.is_valid() and user_group_form.is_valid() and user_userprofile_form.is_valid():
+            user_form.save()
+            user_userprofile_form.save()
+            agent_group = user_group_form.cleaned_data['group']
+            new_agent_group = User.groups.through.objects.get(user=agent)
+            new_agent_group.group = agent_group
+            new_agent_group.save()
+            rezult = 'Данные сохранены!'
+    if '_change_password' in request.POST:
+        user_change_password_form = UserChangePasswwordForm(request.POST)
+        if user_change_password_form.is_valid():
+            pswd = user_change_password_form.cleaned_data['passw1']
+            if user_change_password_form.cleaned_data['passw2'] == pswd:
+                agent.set_password(pswd)
+                agent.save()
+                rezult = 'Пароль изменен!'
+            else:
+                rezult = 'Пароли не совпадают !'
+    return render(request, 'crm/stat/user_edit.html', {'user_form':user_form, 'user_group_form':user_group_form,
+                                                       'user_userprofile_form':user_userprofile_form, 'agent':agent,
+                                                       'user_change_password_form':user_change_password_form,
+                                                       'rezult':rezult,})
+
+@login_required
+def UserNewView(request, ):
+    if str(request.user.groups.get()) != 'Администрация':
+        return redirect('crm:all_flatpub')
+    user_form = UserEditForm()
+    user_group_form = UserGroupEdit()
+    user_userprofile_form = UserProfileGroupForm()
+    rezult = 'new_user'
+
+    if '_user_profile_save' in request.POST:
+        user_form = UserEditForm(request.POST,)
+        user_group_form = UserGroupEdit(request.POST, )
+        user_userprofile_form = UserProfileGroupForm(request.POST, request.FILES, )
+        if user_form.is_valid() and user_group_form.is_valid() and user_userprofile_form.is_valid():
+            user_form.save()
+            new_user = get_object_or_404(User, username=user_form.cleaned_data['username'])
+            new_tel = user_userprofile_form.cleaned_data['tel']
+            new_avatar = user_userprofile_form.cleaned_data['avatar']
+            UserProfile1.objects.create(user=new_user, tel=new_tel, avatar=new_avatar,)
+            new_user.groups.add(user_group_form.cleaned_data['group'])
+            return redirect('crm:user_edit_url', agent_id = new_user.pk  )
+
+    return render(request, 'crm/stat/user_edit.html', {'user_form':user_form, 'user_group_form':user_group_form,
+                                                       'user_userprofile_form':user_userprofile_form,
+                                                       'rezult':rezult,})

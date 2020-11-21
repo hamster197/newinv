@@ -1,16 +1,22 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from crm.models import UserProfile1
 
-from .forms import loginform, chpassform
+from .forms import loginform, chpassform, UserChpassForm
+from .settings import EMAIL_HOST_USER
+
 
 def login_view(request):
+    form = loginform()
+    ch_form = UserChpassForm()
+    rezult =''
     if request.user.is_authenticated:
         return redirect('crm:news_index')
     else:
-        if request.POST:
+        if '_login' in request.POST:
             form=loginform(request.POST)
             if form.is_valid():
                 u=form.cleaned_data['username']
@@ -32,10 +38,20 @@ def login_view(request):
                         else:
                             return redirect('voronka_ap:voronka_index')
 
-
-        else:
-            form=loginform()
-    return render(request,'crm/login.html',{'tpform':form})
+        if '_change_password' in request.POST:
+            ch_form = UserChpassForm(request.POST)
+            if ch_form.is_valid():
+                user_name = ch_form.cleaned_data['username']
+                if User.objects.filter(username=user_name).exists():
+                    from random import choice
+                    from string import ascii_letters
+                    new_password = ''.join(choice(ascii_letters) for i in range(8))
+                    user = get_object_or_404(User, username=user_name)
+                    user.set_password(new_password)
+                    user.save()
+                    send_mail('Смена пароля', 'Ваш новый пароль '+new_password, EMAIL_HOST_USER, [user.email], )
+                    rezult = 'Проверьте почту'
+    return render(request,'crm/login.html',{'tpform':form, 'ch_form':ch_form, 'rezult':rezult,})
 
 def v404_view(request):
     if request.user.is_authenticated:

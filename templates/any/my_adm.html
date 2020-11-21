@@ -12,8 +12,8 @@
 
 
       <ul class="nav nav-pills m-t-30 m-b-30">{{ ti }}
-        <li class="nav-item"><a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">AVITO баллы</a></li>
-        <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Чистка Cian</a></li>
+        <li class="nav-item"><a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Редактор профилей пользователей</a></li>
+        <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Увольнение рользователя</a></li>
         {% comment %}
         <li class="tab col s3 disabled"><a href="#test3">Увольнение</a></li>
         <li class="tab col s3 disabled"><a href="#test4">Test 4</a></li>
@@ -23,12 +23,14 @@
 
 <div class="tab-content br-n pn">
     <div id="test1" class="tab-pane active">
-<form method="post" class="post-form">
+{% comment %}<form method="post" class="post-form">{% endcomment %}
     <div class="row">
-      <div class="col s12">    {% csrf_token %}
-            {% form form=tVsForm %}{% endform %}
-
-              <button type="submit"  name="vestumAdd" class="btn" vertical-align="middle">Добавить баллы всем</button>
+      <div class="col s12">{% csrf_token %}
+            {% comment %}{% form form=tVsForm %}{% endcomment %}
+<br>
+             <a href="{% url 'crm:user_new_url' %}">
+              <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span>
+                  Добавить нового пользователя </button></a>
 {% comment %}
               <button type="submit"  name="vestumDellPrPub" class="btn">Убрать признак публикации</button>
 {% endcomment %}
@@ -46,6 +48,7 @@
           <tr>
               <th><strong>Отдел</strong></th>
               <th><strong>ФИО</strong></th>
+              {% comment %}
               <th><strong>Avito(Обычное)</strong></th>
               <th><strong>Avito(Премиум)</strong></th>
               <th><strong>Avito(VIP)</strong></th>
@@ -53,13 +56,15 @@
               <th><strong>Avito(Выделение)</strong></th>
               <th><strong>Avito(Turbo)</strong></th>
               <th><strong>Avito(Быстрая продажа)</strong></th>
+              {% endcomment %}
           </tr>
         </thead>
                <tbody>
            {% for reelt in tallreelt %}
           <tr>
             <td>{{ reelt.groups.all.0 }} </td>
-            <td><a href="{% url 'crm:usrbalsadd' idd=reelt.userprofile1.id %}">{{ reelt.last_name }} {{ reelt.first_name }}</td>
+            <td><a href="{% url 'crm:admin_agent_id_url' agent_id=reelt.pk %}">{{ reelt.last_name }} {{ reelt.first_name }}</td>
+          {% comment %}
             <td> {{ reelt.userprofile1.vestum_count_ads }}</td>
             <td> {{ reelt.userprofile1.avitoPR_count_ads }}</td>
           <td> {{ reelt.userprofile1.avitoVIP_count_ads }}</td>
@@ -67,6 +72,7 @@
           <td> {{ reelt.userprofile1.avitoVID_count_ads}}</td>
           <td> {{ reelt.userprofile1.avitoTURBO_count_ads }}</td>
           <td> {{ reelt.userprofile1.avitoQUICK_count_ads }}</td>
+          {% endcomment %}
           </tr>
            {%  endfor %}
                 </tbody>

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from material import *
 from django import forms
@@ -643,3 +644,25 @@ class vestum_poryadok_form(forms.ModelForm):
     class Meta:
         model = vestum_poryadok_feed
         fields = ('poryadok',)
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'is_active', 'email',)
+
+class UserProfileGroupForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile1
+        fields = ('tel', 'avatar', 'nach_otd',)
+
+class UserGroupEdit(forms.Form):
+    group = forms.ModelChoiceField(queryset=Group.objects.all().order_by('name'), label='Группа')
+
+class UserChangePasswwordForm(forms.Form):
+    passw1 = forms.CharField(max_length=10, widget=forms.PasswordInput, label='Введите пароль', required=True)
+    passw2 = forms.CharField(max_length=10, widget=forms.PasswordInput, label='Повторите пароль', required=True)
+    def clean(self):
+        cleaned_data = super(UserChangePasswwordForm, self).clean()
+        if str(cleaned_data['passw1']) != str(cleaned_data['passw1']):
+            raise ValidationError('Пароли не совпадают!', code='invalid')
+        return cleaned_data
