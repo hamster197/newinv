@@ -84,6 +84,12 @@ class flat_obj(models.Model):
     author=models.ForeignKey('auth.User',verbose_name='Автор', on_delete=models.CASCADE)
     status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'))
     status_obj=models.CharField('Публикация обьекта',max_length=45, choices=status_obj_choises,default='Опубликован')
+    contract_choises = (('Без договора','Без договора'),('Агентский','Агентский'),('Эксклюзив','Эксклюзив'))
+    contract = models.CharField(max_length=55, verbose_name='Договор', choices=contract_choises, default='Без договора',)
+    contract_number = models.CharField(max_length=55, verbose_name='Номер договора', default='',)
+    contract_date_end = models.DateField(verbose_name='До', null=True, blank=True)
+    new_building = models.BooleanField(verbose_name='Новостройка?', default=False)
+    youtube = models.CharField(verbose_name='Код видео с youtube', max_length=255, blank=True, )
 
     type_choises = (('flat','flat'),('house','house'),('uchastok','uchastok'),('komerc','komerc'))
     type = models.CharField(max_length=25, verbose_name='Тип недвижимости', choices=type_choises, default='flat')

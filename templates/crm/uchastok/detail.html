@@ -11,7 +11,7 @@
 	<ul class="nav nav-pills m-t-30 m-b-30">
     <li class=" nav-item"> <a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Главное</a> </li>
     <li class="nav-item"> <a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Примечание</a> </li>
-	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото</a> </li>
+	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото и видео</a> </li>
 	{%  ifequal request.user tp_uch.author %}<li class="nav-item"> <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">Данные клиента</a> </li>{% endifequal %}
     </ul>
 <div class="tab-content br-n pn">
@@ -49,6 +49,15 @@
             <td>Вид права:</td>
             <td><strong> {{ tp_uch.vid_prava }}</strong></td>
           </tr>
+          <tr>
+                                            <td>Договор:</td>
+                                            <td>
+                                                <strong>
+                                                    {{ tp_uch.contract }}
+                                                {% if tp_uch.contract != 'Без договора' %} Договор № {{ tp_uch.contract_number }}
+                                                   до {{ tp_uch.contract_date_end }} {% endif %}</strong>
+                                            </td>
+                                        </tr>
           <tr>
             <td>Цена агенства: </td>
             <td><strong>{{ tp_uch.cena_agenstv }} руб.</strong></td>
@@ -94,6 +103,9 @@
             <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.52.20{{ i.npict.url }}"></div>
         {% endfor %}	
 </div>
+{% if tp_uch.youtube %}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ tp_uch.youtube }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endif %}
 </div>
 
     <div id="test4" class="tab-pane">

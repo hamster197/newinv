@@ -13,7 +13,7 @@
     <li class=" nav-item"> <a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Главное</a> </li>
     <li class="nav-item"> <a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Описание</a> </li>
     <li class="nav-item"> <a href="#test3" class="nav-link" data-toggle="tab" aria-expanded="true">Примечание</a> </li>
-	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото</a> </li>
+	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото и видео</a> </li>
 	{% ifequal request.user tpflat.author %}<li class="nav-item"> <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">Данные клиента</a> </li>{% endifequal %}
     </ul>
 <div class="tab-content br-n pn">
@@ -28,6 +28,17 @@
                                             <td>
                                                 <strong>
                                                     {{tpflat.datep  }}
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Тип:
+                                            </td>
+                                            <td>
+                                                <strong>
+                                                    {% if tpflat.new_building == True %}  Новостройка
+                                                    {% else %} Вт оричка
+                                                    {% endif %}
                                                 </strong>
                                             </td>
                                         </tr>
@@ -58,14 +69,16 @@
                                             <td>
                                                 <strong>{{tpflat.klass_gilya  }}</strong>
                                             </td>
-                                        </tr>{% comment %}
+                                        </tr>
                                         <tr>
-                                            <td>Кредит:</td>
+                                            <td>Договор:</td>
                                             <td>
                                                 <strong>
-                                                    {{ tpflat.kredit }}</strong>
+                                                    {{ tpflat.contract }}
+                                                {% if tpflat.contract != 'Без договора' %} Договор № {{ tpflat.contract_number }}
+                                                   до {{ tpflat.contract_date_end }} {% endif %}</strong>
                                             </td>
-                                        </tr>{% endcomment %}
+                                        </tr>
                                         <tr>
                                             <td>Цена агенства:
                                             </td>
@@ -225,8 +238,11 @@
                                                         rel="gallery"
                                                         height="250"
                                                         src="http://77.222.52.20{{ i.npict.url }}"></div>
-                                            {% endfor %}	
+                                            {% endfor %}
 </div>
+{% if tpflat.youtube %}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ tpflat.youtube }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endif %}
 </div>
 
     <div id="test4" class="tab-pane">
@@ -262,6 +278,7 @@
                                                                         руб.</strong>
                                                                 </td>
                                                             </tr>
+
                                                             <tr>
                                                                 <td>Цена агенства:
                                                                 </td>
@@ -365,5 +382,4 @@
                         </ul> </div> </ul> -->{% endcomment %}
 
 
-
-                        {% endblock %}
+{% endblock %}

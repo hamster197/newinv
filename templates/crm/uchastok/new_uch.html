@@ -9,6 +9,24 @@
                     <form method="post" class="post-form">
                     {% csrf_token %}
                         {% form form=tpform layout=form.layout%}{% endform %}
+                      <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons"></i>{{ post.contract}} (Договор)</div>
+      <div class="collapsible-body"><span>
+
+<select name="compo" >
+  <option></option>
+  <option {% if post.contract == 'Без договора' %} selected {% endif %} >Без договора</option>
+    <option {% if post.contract == 'Агентский' %} selected {% endif %} >Агентский</option>
+    <option {% if post.contract == 'Эксклюзив' %} selected {% endif %} >Эксклюзив</option>
+</select>
+          <input type="date" name="date" value="{{ post.contract_date_end|date:'Y-m-d' }}"> Дата окончания {{ post.contract_date_end|date:'Y-m-d' }}
+       <input type="text" name="contract_number" value="{{ post.contract_number }}"> Номер договора
+          </p>
+</span></div>
+    </li>
+
+  </ul>
                         <button type="submit" name="_submit" class="btn btn-primary">Сохранить</button>
 					</form>	
                 </div>
@@ -21,6 +39,23 @@
 
 
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/static/material/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/static/material/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/static/material/materialize.js"></script>
 
+    <script>
+          document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
+
+  // Or with jQuery
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+    </script>
 
 {% endblock %}

@@ -366,6 +366,15 @@ def flat_postForm(request):
             flat_obj.date_sozd = timezone.datetime.now()
             flat_obj.date_vigr_sait = timezone.datetime.now()
             flat_obj.type = 'flat'
+            if request.POST.get('compo') == 'Без договора':
+                flat_obj.contract = 'Без договора'
+                flat_obj.contract_number = ''
+                flat_obj.contract_date_end = None
+            else:
+                flat_obj.contract = request.POST.get('compo')
+                flat_obj.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    flat_obj.contract_date_end = request.POST.get('date')
             flat_obj.save()
             return redirect('crm:newFlatgal', idd=flat_obj.pk)
 
@@ -437,6 +446,7 @@ def my_flatview_edit(request,idd):
     my_ya_obj = flat_obj.objects.filter(author=request.user).count()
     post = get_object_or_404(flat_obj, pk=idd)
     if request.POST:
+
         if request.user.userprofile1.ya=='Да':
             if request.user.groups.get().name.find('Краснодар')==6:
                 flat = kr_yandex_flateditform(request.POST, instance=post)
@@ -445,10 +455,21 @@ def my_flatview_edit(request,idd):
         else:
             flat = flateditform(request.POST, instance=post)
         if flat.is_valid():
+            if request.POST.get('compo') == 'Без договора':
+                post.contract = 'Без договора'
+                post.contract_number = ''
+                post.contract_date_end = None
+                post.save()
+            else:
+                post.contract = request.POST.get('compo')
+                post.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    post.contract_date_end = request.POST.get('date')
+                post.save()
             flat.save()
             return redirect('crm:newFlatgal', idd=post.pk)
         else:
-            return render(request,'crm/flat/flatedit.html', {'tpflatpostform': flat})
+            return render(request,'crm/flat/flatedit.html', {'tpflatpostform': flat, 'post':post,})
             #return redirect('crm:flat_edit', idd=post.pk)
     else:
         if request.user.userprofile1.ya == 'Да':
@@ -459,7 +480,7 @@ def my_flatview_edit(request,idd):
         else:
             flat=flateditform(instance=post)
         return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': flat,'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj
-                                                        , 'tcrm_obj_week_count': crm_obj_week_count,})
+                                                        , 'tcrm_obj_week_count': crm_obj_week_count, 'post':post,})
 
 def flat_photo_new_view(request, idd):
     n1 = 'Редактировать фото'
@@ -1335,6 +1356,17 @@ def new_dom_view(request):
             flat_obj.date_vigr_sait = timezone.datetime.now()
             flat_obj.date_sozd = timezone.datetime.now()
             flat_obj.type = 'house'
+            if request.POST.get('compo') == 'Без договора':
+                flat_obj.contract = 'Без договора'
+                flat_obj.contract_number = ''
+                flat_obj.contract_date_end = None
+                flat_obj.save()
+            else:
+                flat_obj.contract = request.POST.get('compo')
+                flat_obj.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    flat_obj.contract_date_end = request.POST.get('date')
+                #post.save()
             flat_obj.save()
             return redirect('crm:newFlatgal',  idd=flat_obj.pk)
     else:
@@ -1354,6 +1386,17 @@ def domaeditview(request,idd):
         else:
             form = doma_edit_form(request.POST, instance=domform)
         if form.is_valid():
+            if request.POST.get('compo') == 'Без договора':
+                domform.contract = 'Без договора'
+                domform.contract_number = ''
+                domform.contract_date_end = None
+                domform.save()
+            else:
+                domform.contract = request.POST.get('compo')
+                domform.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    domform.contract_date_end = request.POST.get('date')
+                domform.save()
             form.save()
             return redirect('crm:newFlatgal',  idd=domform.pk)
     else:
@@ -1361,7 +1404,7 @@ def domaeditview(request,idd):
             form = kr_doma_edit_form(instance=domform)
         else:
             form=doma_edit_form(instance=domform)
-    return render(request,'crm/doma/new_dom.html',{'tpform':form,'tn1':n1,'tn2':n2 })
+    return render(request,'crm/doma/new_dom.html',{'tpform':form,'tn1':n1,'tn2':n2, 'post':domform, })
 
 #############################################################################
 #### Start of My Houses
@@ -1479,6 +1522,17 @@ def new_uc_view(request):
             flat_obj.author = request.user
             flat_obj.type = 'uchastok'
             flat_obj.domclick = 'Да'
+            if request.POST.get('compo') == 'Без договора':
+                flat_obj.contract = 'Без договора'
+                flat_obj.contract_number = ''
+                flat_obj.contract_date_end = None
+                #post.save()
+            else:
+                flat_obj.contract = request.POST.get('compo')
+                flat_obj.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    flat_obj.contract_date_end = request.POST.get('date')
+                #post.save()
             flat_obj.save()
             #return redirect('crm:uc_detail', idd=flat_obj.pk)
             return redirect('crm:newFlatgal', idd=flat_obj.pk)
@@ -1492,23 +1546,35 @@ def new_uc_view(request):
 def ucheditview(request,idd):
     n1='Участки'
     n2='редакция'
-    form =  get_object_or_404(flat_obj, pk = idd)
+    post =  get_object_or_404(flat_obj, pk = idd)
     id_uch=idd
     if request.POST:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_uc_edit_form(request.POST, instance=form)
+            form = kr_uc_edit_form(request.POST, instance=post)
         else:
-            form = uc_edit_form(request.POST, instance=form)
+            form = uc_edit_form(request.POST, instance=post)
         if form.is_valid():
+            if request.POST.get('compo') == 'Без договора':
+                post.contract = 'Без договора'
+                post.contract_number = ''
+                post.contract_date_end = None
+                post.save()
+            else:
+                post.contract = request.POST.get('compo')
+                post.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    post.contract_date_end = request.POST.get('date')
+                post.save()
             form.save()
             #return redirect('crm:uc_detail', idd=id_uch)
             return redirect('crm:newFlatgal', idd=idd)
     else:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_uc_edit_form(instance=form)
+            form = kr_uc_edit_form(instance=post)
         else:
-            form = uc_edit_form(instance=form)
-    return render(request,'crm/uchastok/new_uch.html',{'tpform':form,'tn1':n1,'tn2':n2})
+            form = uc_edit_form(instance=post)
+    #print('1 ', form.co)
+    return render(request,'crm/uchastok/new_uch.html',{'tpform':form,'tn1':n1,'tn2':n2, 'post':post,})
 
 @login_required
 def pup_uchastki(request):

@@ -88,7 +88,7 @@ class kadastr_form(forms.ModelForm):
 class yandex_flatform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
-        fields=('client_name','client_tel','adress','dom_numb','kvart_numb','raion',
+        fields=('client_name','client_tel','new_building','adress','dom_numb','kvart_numb','raion',
                 'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
                 'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
@@ -171,7 +171,7 @@ class vestum_pub_form(forms.ModelForm):
 class yandex_flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
-        fields=('dom_numb','domclick','raion','adress','dom_numb','kvart_numb','kvart_numb',
+        fields=('dom_numb','domclick','new_building','raion','adress','dom_numb','kvart_numb','kvart_numb',
                 'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
                 'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',#'kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
@@ -192,7 +192,7 @@ class yandex_flateditform(forms.ModelForm):
 class kr_yandex_flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
-        fields=('dom_numb','domclick','kr_raion','adress','dom_numb','kvart_numb','kvart_numb',
+        fields=('dom_numb','domclick','new_building','kr_raion','adress','dom_numb','kvart_numb','kvart_numb',
                 'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
                 'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',#'kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
