@@ -483,12 +483,14 @@ def my_flatview_edit(request,idd):
                                                         , 'tcrm_obj_week_count': crm_obj_week_count, 'post':post,})
 
 def flat_photo_new_view(request, idd):
+    from PIL import Image
     n1 = 'Редактировать фото'
     n2 = 'Фото'
     n3 = zayavka.objects.filter(status='Свободен').count()
     my_ya_obj = flat_obj.objects.filter(author=request.user).count()
     d11 =timezone.datetime.now().date()-timedelta(days=timezone.datetime.now().weekday())
     crm_obj_week_count = flat_obj.objects.filter(author_id=request.user.id, date_sozd__gte=d11).count()
+    #watermark = Image.open('static/material/dist/logo21.png')
     if request.POST:
         files = request.FILES.getlist('myfiles')
         for a_file in files:
@@ -497,6 +499,10 @@ def flat_photo_new_view(request, idd):
                 npict=a_file
             )
             instance.save()
+            # print(instance.pk)
+            # image = Image.open(instance.npict)
+            # image.paste(watermark, (450, 230), watermark)
+            #image.save()
         return redirect('crm:newFlatgal', idd=idd)#flat_obj_gal.id_gal_id)
     else:
         form = flat_pict_form()

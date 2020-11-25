@@ -295,7 +295,7 @@ class flat_obj(models.Model):
     vid_razr_ch = (('Поселений (ИЖС)','Поселений (ИЖС)'),('Земля промназначения','Земля промназначения'),
                    ('Садовое некоммерческое товарищество','Садовое некоммерческое товарищество'),('ДНП','ДНП')
                    , ('Дачное хозяйство', 'Дачное хозяйство'),('ЛПХ','ЛПХ'))
-    vid_razr = models.CharField(verbose_name='Вид разрешеного использования:',max_length=25,default='--',choices=vid_razr_ch)
+    vid_razr = models.CharField(verbose_name='Вид разрешеного использования:',max_length=225,default='--',choices=vid_razr_ch)
     relef_ch =(('Ровный','Ровный'),('Уклон','Уклон'))
     relef = models.CharField(verbose_name='Вид рельефа:',max_length=25,default='--',choices=relef_ch)
     vid_prava_ch = (('Собственность','Собственность'),('Аренда (49лет)','Аренда (49лет)'),
@@ -331,6 +331,17 @@ class flat_obj_gal(models.Model):
         # and not replacing images in .save()
 #        super(flat_obj_gal, self).delete(*args, **kwargs)
 #        self.npict.delete()
+
+    #
+    # def save(self, *args, **kwargs):
+    #     #import Image
+    #
+    #     from PIL import Image
+    #     image = Image.open(self.npict)
+    #     watermark = Image.open('static/material/dist/logo21.png')
+    #     image.paste(watermark, (450, 230), watermark)
+    #     image.save
+
 
 class clients(models.Model):
     client_fio=models.CharField(max_length=45,verbose_name='Клиент(ФИО)')

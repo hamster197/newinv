@@ -1,5 +1,5 @@
 {% extends 'crm/main.html' %}
-
+{% load watermark %}
 {% block content %}
 <div class="row">
 <div class="col-lg-12">
@@ -37,7 +37,7 @@
                                             <td>
                                                 <strong>
                                                     {% if tpflat.new_building == True %}  Новостройка
-                                                    {% else %} Вт оричка
+                                                    {% else %} Вторичка
                                                     {% endif %}
                                                 </strong>
                                             </td>
@@ -237,7 +237,8 @@
                                                         class="materialboxed"
                                                         rel="gallery"
                                                         height="250"
-                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                                                        src="http://77.222.52.20{{ i.npict.url|watermark:"1,opacity=40,scale=F" }}"></div>
+                                                {% comment %}{% endcomment %}
                                             {% endfor %}
 </div>
 {% if tpflat.youtube %}

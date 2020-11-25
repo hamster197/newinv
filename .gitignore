@@ -2,7 +2,7 @@
 crm/migrations/*.py
 avito/migrations/*.py
 voronka/migrations/*.py
-image/*.*
+/image/*.*
 
 *~
 __pycache__
