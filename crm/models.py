@@ -579,7 +579,7 @@ class feed_gallery(models.Model):
     date = models.DateField(auto_now=True, verbose_name='Дата создания')
     #author = models.ForeignKey('auth.User',verbose_name='Автор:',default='homka')
     #pict = models.ImageField(verbose_name='Картинка', upload_to='image/%Y/%m/%d')
-    npict = ResizedImageField(verbose_name='Фото объекта', upload_to='image/%Y/%m/%d/cian', quality=15)
+    npict = models.ImageField(verbose_name='Фото объекта', upload_to='image/%Y/%m/%d/cian', )# ResizedImageField quality=15
     class Meta:
         verbose_name = 'Выгрузки галерея (ЦИАН)'
         verbose_name_plural = 'Выгрузки галерея (ЦИАН)'
