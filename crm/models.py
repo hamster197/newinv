@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timezone, datetime
 #import datetime
-from django_resized import ResizedImageField
+#from django_resized import ResizedImageField
 
 #from autoslug import AutoSlugField
 from django.contrib.auth.models import User

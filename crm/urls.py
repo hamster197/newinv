@@ -85,6 +85,7 @@ urlpatterns = [
     url(r'^doms/(?P<idd>[0-9]+)/$',views.dom_detail_view,name='dom_detail'),
     url(r'^doms/edit(?P<idd>[0-9]+)/$', views.domaeditview, name='dom_edit'),
     url(r'^doms/print/(?P<idd>[0-9]+)/$',views.dom_print_view,name='dom_print'),
+    url(r'^doms/pct_del/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$',views.house_del_view,name='dom_pct_del'),
 
     #uchastki
     url(r'^new_uch/$', views.new_uc_view, name='new_uch_post'),
@@ -93,6 +94,7 @@ urlpatterns = [
     url(r'^uch/(?P<idd>[0-9]+)/$',views.uch_detail_view,name='uc_detail'),
     url(r'^uchprt/(?P<idd>[0-9]+)/$',views.uch_print_view,name='uc_print'),
     url(r'^uch/edit(?P<idd>[0-9]+)/$', views.ucheditview, name='uc_edit'),
+    url(r'^uch/delete/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$', views.uchastok_del_view, name='uc_delete'),
 
     #otchet
     url(r'^newotchet/$',views.new_otchet_view_All, name='otch_new_all'),

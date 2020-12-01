@@ -13,7 +13,7 @@
 
       <ul class="nav nav-pills m-t-30 m-b-30">{{ ti }}
         <li class="nav-item"><a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Редактор профилей пользователей</a></li>
-        <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Увольнение пользователя1</a></li>
+        <li class="nav-item"><a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Перенос данных</a></li>
         {% comment %}
         <li class="tab col s3 disabled"><a href="#test3">Увольнение</a></li>
         <li class="tab col s3 disabled"><a href="#test4">Test 4</a></li>
@@ -87,12 +87,75 @@
 
 
 <div id="test2" class="tab-pane">
-  <span class="card-title">Удаление обьектов из Циан-введите нужный промежуток:</span>
+  <span class="card-title">Перенос обьектов:</span>
 <form method="post" class="post-form">
     {% csrf_token %}
-    {% form form=tform %}{% endform %}
-    <button type="submit"  name="cian_delete" class="btn">Удалить</button>
-    {% if tdel %}Удалено {{ tdel }} обьектов{% endif %}
+    <div class="row">
+      <div class="col s1">
+          <div class="row">
+    <div class="select-field col s12 required" id="id_month_container">
+        <label for="id_month">Перенессти обьекты с:</label>
+        <select id="id_month" name="subj_from">
+            {% for agent in agent_subj %}
+                <option value="{{ agent.username }}" >{{ agent.last_name }} {{ agent.first_name }} {{ agent.cn }} обьктов</option>
+            {% endfor %}
+        </select>
+
+    </div>
+</div>
+      </div>
+      <div class="col s1">
+          <div class="row">
+    <div class="select-field col s12 required" id="id_month_container">
+        <label for="id_month">Перенессти обьекты на:</label> <select id="id_month" name="subj_to">
+            {% for agent in agent_subj %}
+                <option value="{{ agent.username }}" >{{ agent.last_name }} {{ agent.first_name }} {{ agent.cn }} обьектов</option>
+            {% endfor %}
+
+        </select>
+
+    </div>
+</div>
+      </div>
+    </div>
+    <button type="submit"  name="_subj_transfer" class="btn">Перенести обьекты</button>
+   
+</form>
+
+
+
+  <span class="card-title">Перенос клиентов:</span>
+<form method="post" class="post-form">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col s1">
+          <div class="row">
+    <div class="select-field col s12 required" id="id_month_container">
+        <label for="id_month">Перенессти клиентов с:</label>
+        <select id="id_month" name="subj_from">
+            {% for agent in agent_applecations %}
+                <option value="{{ agent.username }}" >{{ agent.last_name }} {{ agent.first_name }} {{ agent.cn }} клиентов</option>
+            {% endfor %}
+        </select>
+
+    </div>
+</div>
+      </div>
+      <div class="col s1">
+          <div class="row">
+    <div class="select-field col s12 required" id="id_month_container">
+        <label for="id_month">Перенессти клиентов на:</label> <select id="id_month" name="subj_to">
+            {% for agent in agent_applecations %}
+                <option value="{{ agent.username }}" >{{ agent.last_name }} {{ agent.first_name }} {{ agent.cn }} клиентов</option>
+            {% endfor %}
+
+        </select>
+
+    </div>
+</div>
+      </div>
+    </div>
+    <button type="submit"  name="_app_transfer" class="btn">Перенести клиентов</button>
 </form>
 </div>
 

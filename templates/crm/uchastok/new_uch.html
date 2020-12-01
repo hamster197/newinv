@@ -6,7 +6,7 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-body">
-                    <form method="post" class="post-form">
+                    <form enctype="multipart/form-data" method="post" class="post-form">
                     {% csrf_token %}
                         {% form form=tpform layout=form.layout%}{% endform %}
                       <ul class="collapsible">
@@ -27,7 +27,34 @@
     </li>
 
   </ul>
-                        <button type="submit" name="_submit" class="btn btn-primary">Сохранить</button>
+    {% if post.idd_gal.all %}
+        {% for i in post.idd_gal.all %}
+        <tbody>
+          <tr>
+            <td> ID: {{ i.pk }}  </td>
+            <td><a href="{{ MEDIA_ROOT }}{{ i.npict.url }}"><img src="{{MEDIA_ROOT}}{{ i.npict.url }}"  height="232"></a>  </td>
+              <td><a href="{% url 'crm:uc_delete' idd=post.pk sidd=i.pk %}">
+                      Удалить</a></td>
+          </tr>
+        </tbody>
+        {% endfor %}
+    {% endif%}
+
+    <p>
+                Выберите не менее 5 картинок<strong> (Нажав кнопку ctr можно выбрать сразу несколько файлов!)</strong>
+            </p>
+            <input type="file" name="myfiles" multiple>
+            {% comment %}<button type="submit" class="btn btn-primary">Сохранить</button>{% endcomment %}
+
+
+         </div>
+         {% for pict in tpict %}<li> {{ pict.npict }}</li> {% endfor %}
+      </div><button type="submit" name="_submit" class="btn">Сохранить и продолжить редактирование</button>
+   <button type="submit" name="_submit_new" class="btn" >
+       Сохранить и создать новый</button>
+   <button type="submit" name="_submit_close" class="btn">Сохранить и закрыть</button>
+   </div>
+</div>
 					</form>	
                 </div>
             </div>

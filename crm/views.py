@@ -7,11 +7,13 @@ from datetime import timezone, datetime, timedelta
 from django.contrib import auth
 from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Count
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+
+from voronka.models import zayavka_vr
 from .forms import loginform, newsform, flatform, flat_search_form, newclientform, client_edit_form, doma_new_post, \
     uc_new_post, flateditform, doma_edit_form, uc_edit_form, otchet_all_form, \
     vigruzkaForm, vigruzkaGaleryForm, vigGalForm, flat_pict_form, vigruzkaNovostroikaForm, yandex_flatform, \
@@ -376,7 +378,21 @@ def flat_postForm(request):
                 if request.POST.get('date'):
                     flat_obj.contract_date_end = request.POST.get('date')
             flat_obj.save()
-            return redirect('crm:newFlatgal', idd=flat_obj.pk)
+            #return redirect('crm:flat_edit', idd=flat_obj.pk)
+            idd = flat_obj.pk
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close'in request.POST:
+                return redirect('crm:my_flatunpub')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_flat')
+            else:
+                return redirect('crm:flat_edit', idd=idd)
 
     else:
         if request.user.userprofile1.ya == 'Да':
@@ -445,8 +461,8 @@ def my_flatview_edit(request,idd):
     n3 = zayavka.objects.filter(status='Свободен').count()
     my_ya_obj = flat_obj.objects.filter(author=request.user).count()
     post = get_object_or_404(flat_obj, pk=idd)
+    form = flat_pict_form()
     if request.POST:
-
         if request.user.userprofile1.ya=='Да':
             if request.user.groups.get().name.find('Краснодар')==6:
                 flat = kr_yandex_flateditform(request.POST, instance=post)
@@ -467,9 +483,22 @@ def my_flatview_edit(request,idd):
                     post.contract_date_end = request.POST.get('date')
                 post.save()
             flat.save()
-            return redirect('crm:newFlatgal', idd=post.pk)
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close'in request.POST:
+                return redirect('crm:my_flatunpub')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_flat')
+            else:
+                return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': flat, 'post': post, 'tpform': form, })
+            #return redirect('crm:newFlatgal', idd=post.pk)
         else:
-            return render(request,'crm/flat/flatedit.html', {'tpflatpostform': flat, 'post':post,})
+            return render(request,'crm/flat/flatedit.html', {'tpflatpostform': flat, 'post':post, 'tpform':form, })
             #return redirect('crm:flat_edit', idd=post.pk)
     else:
         if request.user.userprofile1.ya == 'Да':
@@ -480,7 +509,8 @@ def my_flatview_edit(request,idd):
         else:
             flat=flateditform(instance=post)
         return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': flat,'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj
-                                                        , 'tcrm_obj_week_count': crm_obj_week_count, 'post':post,})
+                                                        , 'tcrm_obj_week_count': crm_obj_week_count, 'post':post,
+                                                          'tpform':form, })
 
 def flat_photo_new_view(request, idd):
     from PIL import Image
@@ -519,9 +549,33 @@ def flat_del_view(request, idd, sidd):
     spsubj = flat_obj_gal.objects.get(pk=sidd)
     spsubj.delete()
     sp = get_object_or_404(flat_obj, pk=idd)
-    form = vigruzkaGaleryForm()
-    return redirect('crm:newFlatgal', idd=sp.pk)
+    #form = vigruzkaGaleryForm()
+    return redirect('crm:flat_edit', idd=idd)
 
+
+@login_required
+def house_del_view(request, idd, sidd):
+    n1 = 'Редактировать фото'
+    n2 = 'Фото'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    my_ya_obj = flat_obj.objects.filter(author=request.user).count()
+    spsubj = flat_obj_gal.objects.get(pk=sidd)
+    spsubj.delete()
+    sp = get_object_or_404(flat_obj, pk=idd)
+    #form = vigruzkaGaleryForm()
+    return redirect('crm:dom_edit', idd=idd)
+
+@login_required
+def uchastok_del_view(request, idd, sidd):
+    n1 = 'Редактировать фото'
+    n2 = 'Фото'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    my_ya_obj = flat_obj.objects.filter(author=request.user).count()
+    spsubj = flat_obj_gal.objects.get(pk=sidd)
+    spsubj.delete()
+    sp = get_object_or_404(flat_obj, pk=idd)
+    #form = vigruzkaGaleryForm()
+    return redirect('crm:uc_edit', idd=idd)
 ###################################################
 ###  start All Flat list
 ###################################################
@@ -1168,6 +1222,7 @@ def YandexFeedview(request):
 
 ## New Yandex for all(with out feiks)
 def NewYandexFeedview(request):
+    vas_date = datetime.today() - timedelta(days=14)
     post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')#[:20]
     #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
     doma = flat_obj.objects.filter(domclick='Да', type='house').order_by('-datep')#[:20]
@@ -1186,7 +1241,8 @@ def NewYandexFeedview(request):
     else:
         dm = ''
     # end of autoручной ввод текста сео
-    return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
+    #print(vas_date)
+    return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'vas_date':vas_date,
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
 
 
@@ -1349,9 +1405,9 @@ def new_dom_view(request):
     n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_doma_new_post(request.POST)
+            form = kr_doma_new_post(request.POST, request.FILES)
         else:
-            form = doma_new_post(request.POST)
+            form = doma_new_post(request.POST, request.FILES)
         if form.is_valid():
             flat_obj=form.save(commit=False)
             flat_obj.author=request.user
@@ -1374,7 +1430,22 @@ def new_dom_view(request):
                     flat_obj.contract_date_end = request.POST.get('date')
                 #post.save()
             flat_obj.save()
-            return redirect('crm:newFlatgal',  idd=flat_obj.pk)
+            # return redirect('crm:newFlatgal',  idd=flat_obj.pk)
+            idd = flat_obj.pk
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close' in request.POST:
+                return redirect('crm:upb_dom_view')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_dom_post')
+            else:
+                return redirect('crm:dom_edit', idd=idd)
+
     else:
         if request.user.groups.get().name.find('Краснодар')==6:
             form = kr_doma_new_post()
@@ -1388,9 +1459,9 @@ def domaeditview(request,idd):
     domform= get_object_or_404(flat_obj, pk = idd)
     if request.POST:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_doma_edit_form(request.POST, instance=domform)
+            form = kr_doma_edit_form(request.POST, request.FILES, instance=domform)
         else:
-            form = doma_edit_form(request.POST, instance=domform)
+            form = doma_edit_form(request.POST, request.FILES, instance=domform)
         if form.is_valid():
             if request.POST.get('compo') == 'Без договора':
                 domform.contract = 'Без договора'
@@ -1404,7 +1475,20 @@ def domaeditview(request,idd):
                     domform.contract_date_end = request.POST.get('date')
                 domform.save()
             form.save()
-            return redirect('crm:newFlatgal',  idd=domform.pk)
+            #return redirect('crm:newFlatgal',  idd=domform.pk)
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close' in request.POST:
+                return redirect('crm:upb_dom_view')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_dom_post')
+            else:
+                return redirect('crm:dom_edit', idd=idd)
     else:
         if request.user.groups.get().name.find('Краснодар')==6:
             form = kr_doma_edit_form(instance=domform)
@@ -1517,9 +1601,9 @@ def new_uc_view(request):
     n2='подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
     if request.POST:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_uc_new_post(request.POST)
+            form = kr_uc_new_post(request.POST, request.FILES)
         else:
-            form=uc_new_post(request.POST)
+            form=uc_new_post(request.POST, request.FILES)
         if form.is_valid():
             flat_obj = form.save(commit=False)
             flat_obj.date_sozd = timezone.datetime.now()
@@ -1541,7 +1625,25 @@ def new_uc_view(request):
                 #post.save()
             flat_obj.save()
             #return redirect('crm:uc_detail', idd=flat_obj.pk)
-            return redirect('crm:newFlatgal', idd=flat_obj.pk)
+            #return redirect('crm:newFlatgal', idd=flat_obj.pk)
+            idd = flat_obj.pk
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close' in request.POST:
+                return redirect('crm:unpub_uc_index')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_uch_post')
+            else:
+                return redirect('crm:uc_edit', idd=idd)
+
+
+
+
     else:
         if request.user.groups.get().name.find('Краснодар')==6:
             form = kr_uc_new_post()
@@ -1556,9 +1658,9 @@ def ucheditview(request,idd):
     id_uch=idd
     if request.POST:
         if request.user.groups.get().name.find('Краснодар')==6:
-            form = kr_uc_edit_form(request.POST, instance=post)
+            form = kr_uc_edit_form(request.POST, request.FILES, instance=post)
         else:
-            form = uc_edit_form(request.POST, instance=post)
+            form = uc_edit_form(request.POST, request.FILES, instance=post)
         if form.is_valid():
             if request.POST.get('compo') == 'Без договора':
                 post.contract = 'Без договора'
@@ -1573,7 +1675,20 @@ def ucheditview(request,idd):
                 post.save()
             form.save()
             #return redirect('crm:uc_detail', idd=id_uch)
-            return redirect('crm:newFlatgal', idd=idd)
+            #return redirect('crm:newFlatgal', idd=idd)
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+            if '_submit_close' in request.POST:
+                return redirect('crm:unpub_uc_index')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_uch_post')
+            else:
+                return redirect('crm:uc_edit', idd=idd)
     else:
         if request.user.groups.get().name.find('Краснодар')==6:
             form = kr_uc_edit_form(instance=post)
@@ -4264,6 +4379,10 @@ def my_admi_view(request):
     n2='администрирование'#+' pars='+str(pars)
     #n2='pars='+str(pars)
     del1='1'
+
+    #fo
+    #flat_obj.objects.filter(author__is_active=True).count()
+    #print(agent_subj)
 ############################################################
 ## Start of Vetsum
 ############################################################
@@ -4317,13 +4436,19 @@ def my_admi_view(request):
                 return render(request, 'any/my_adm.html', {'tn1': n1, 'tn2': n2, 'tform': form, 'tdel': del1,
                                                            'tPrVsForm':PrVsForm,'tVsForm':vsForm, 'tallreelt':all_reelt,})
 
-
-
-
+    agent_subj = User.objects.filter(is_active=True).order_by('last_name').annotate(cn=Count('flat_obj'))
+    agent_applecations = User.objects.filter(is_active=True).order_by('last_name').annotate(cn=Count('zayavka_vr'))
+    if '_subj_transfer' in request.POST:
+        flat_obj.objects.filter(author=get_object_or_404(User, username=request.POST.get('subj_from'))).\
+            update(author=get_object_or_404(User, username=request.POST.get('subj_to')))
+    if '_app_transfer' in request.POST:
+        zayavka_vr.objects.filter(rielt=get_object_or_404(User, username=request.POST.get('subj_from'))). \
+            update(rielt=get_object_or_404(User, username=request.POST.get('subj_to')))
     #else:
     form = adm_form()
     return render(request,'any/my_adm.html',{'tn1':n1, 'tn2':n2,'tform':form,'tdel':del1, 'tVsForm':vsForm,
-                                             'tPrVsForm':PrVsForm, 'tallreelt':all_reelt})
+                                             'tPrVsForm':PrVsForm, 'tallreelt':all_reelt,
+                                             'agent_subj':agent_subj, 'agent_applecations':agent_applecations})
 @login_required
 def UserBallsAddView(request, idd):
     n1='CRM администрирование'
