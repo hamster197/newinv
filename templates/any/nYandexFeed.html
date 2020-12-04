@@ -5,10 +5,10 @@
     <type>Продажа</type>
     <category>квартира</category>
     <property-type>Жилая</property-type>
- <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
+ <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
  {% if vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y" and post.contract != 'Без договора' %}
      <vas>premium</vas>
- {% endif %}
+ {% endif %}{% endcomment %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
@@ -100,10 +100,10 @@
     <type>Продажа</type>
     <property-type>Жилая</property-type>
     <category>дом</category>
- <creation-date>{{ doma.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
+ <creation-date>{{ doma.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
  {% if vas_date|date:"M d, Y" <= doma.date_sozd|date:"M d, Y" and doma.contract != 'Без договора' %}
      <vas>premium</vas>
- {% endif %}
+ {% endif %}{% endcomment %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
@@ -180,10 +180,10 @@
     <property-type>Жилая</property-type>
     <category>участок</category>{%  if uchastoc.kadastr %}
     <cadastral-number>{{ uchastoc.kadastr }}</cadastral-number>{% endif %}
- <creation-date>{{ uchastoc.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
+ <creation-date>{{ uchastoc.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
   {% if vas_date|date:"M d, Y" <= uchastoc.date_sozd|date:"M d, Y" and uchastoc.contract != 'Без договора' %}
      <vas>premium</vas>
- {% endif %}
+ {% endif %}{% endcomment %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
