@@ -305,8 +305,8 @@ class flat_obj(models.Model):
     vid = models.CharField(verbose_name='Вид',max_length=25, default='--',choices=vid_ch)
     pereferiya_ch = (('Электричество','Электричество'),('Вода','Вода'),('Газ','Газ'),('Канализация','Канализация'))
     pereferiya = MultiSelectField(verbose_name='Коммуникации:',max_length=125,choices=pereferiya_ch,default='--')
-    latitude = models.FloatField(verbose_name='latitude', default=0)
-    longitude = models.FloatField(verbose_name='longitude', default=0)
+    latitude = models.CharField(verbose_name='latitude', max_length=255,)
+    longitude = models.CharField(verbose_name='longitude', max_length=255, )
     ##################################################################################################
     #       End of For Uchastki
     ##################################################################################################
