@@ -221,6 +221,25 @@
 
     </ul>
  -->
-
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"
+type="text/javascript"></script>
+<div id="yandexmap" style="width: 100%; height: 500px"></div>
+<script>
+var map;
+var marker;
+function initMap ()
+  {
+  map = new ymaps.Map("yandexmap", {
+    center: [ {{ tp_uch.longitude }}, {{ tp_uch.latitude }}],
+    zoom: 16
+    });
+  marker = new ymaps.Placemark([{{ tp_uch.longitude }}, {{ tp_uch.latitude }}], {
+    hintContent: 'Расположение',
+    balloonContent: '{{ tp_uch.cena_agenstv }} руб '
+    });
+  map.geoObjects.add(marker);
+  }
+ymaps.ready(initMap);
+</script>
 
 {% endblock %}
