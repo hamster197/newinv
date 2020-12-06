@@ -19,6 +19,7 @@ for subj in flat_obj.objects.all():
     resp = requests.get(url=url + adres)
     data = json.loads(resp.text)
     # addresses = ['Гагарина 36 Сочи', ]
+    print(subj.pk)
     subj.latitude = data['features'][0]['geometry']['coordinates'][0]
     subj.longitude = data['features'][0]['geometry']['coordinates'][1]
     subj.save()
