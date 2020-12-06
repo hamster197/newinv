@@ -291,7 +291,7 @@ class flat_obj(models.Model):
     ##################################################################################################
     #       Start of Uchastki
     ##################################################################################################
-    uc_dom_nunb = models.CharField(verbose_name='Номер дома(если есть):', default='',blank=True, max_length=15)
+    uc_dom_nunb = models.CharField(verbose_name='Номер дома(если есть, необязательно к заполнению!):', default='',blank=True, max_length=15)
     vid_razr_ch = (('Поселений (ИЖС)','Поселений (ИЖС)'),('Земля промназначения','Земля промназначения'),
                    ('Садовое некоммерческое товарищество','Садовое некоммерческое товарищество'),('ДНП','ДНП')
                    , ('Дачное хозяйство', 'Дачное хозяйство'),('ЛПХ','ЛПХ'))
@@ -305,6 +305,8 @@ class flat_obj(models.Model):
     vid = models.CharField(verbose_name='Вид',max_length=25, default='--',choices=vid_ch)
     pereferiya_ch = (('Электричество','Электричество'),('Вода','Вода'),('Газ','Газ'),('Канализация','Канализация'))
     pereferiya = MultiSelectField(verbose_name='Коммуникации:',max_length=125,choices=pereferiya_ch,default='--')
+    latitude = models.FloatField(verbose_name='latitude', default=0)
+    longitude = models.FloatField(verbose_name='longitude', default=0)
     ##################################################################################################
     #       End of For Uchastki
     ##################################################################################################
@@ -314,6 +316,24 @@ class flat_obj(models.Model):
         verbose_name='Все обьекты'
         verbose_name_plural='Все обьекты'
 
+    def save(self, *args, **kwargs):
+        import requests, json
+        url = 'http://photon.komoot.de/api/?q='
+        adres = self.adress + ' '
+        if self.type != 'uchastok':
+            adres = adres + self.dom_numb + ' '
+        else:
+            adres = adres + self.uc_dom_nunb + ' '
+        if len(self.kr_raion) == 0:
+            adres = adres + 'Сочи'
+        else:
+            adres = adres + 'Краснодар'
+        resp = requests.get(url=url + adres)
+        data = json.loads(resp.text)
+        #addresses = ['Гагарина 36 Сочи', ]
+        self.latitude = data['features'][0]['geometry']['coordinates'][0]
+        self.longitude = data['features'][0]['geometry']['coordinates'][1]
+        super(flat_obj, self).save(*args, **kwargs)
 
 
 class flat_obj_gal(models.Model):

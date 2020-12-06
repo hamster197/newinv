@@ -14,7 +14,10 @@
     <country>Россия</country>
     <region>Краснодарский край</region>
     <locality-name>{% if post.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
-    <address>{{ post.adress }} {{ post.dom_numb }} </address>{% comment %}
+    <address>{{ post.adress }} {{ post.dom_numb }} </address>
+    <latitude>{{ post.latitude }}</latitude>
+    <longitude>{{ post.longitude }}</longitude>
+     {% comment %}
     {% if post.kvart_numb  %}
         <apartment>{{  post.kvart_numb }}</apartment>
     {% endif %}{% endcomment %}
@@ -110,6 +113,8 @@
     <region>Краснодарский край</region>
     <locality-name>{% if doma.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ doma.adress }}</address>
+    <latitude>{{ doma.latitude }}</latitude>
+    <longitude>{{ doma.longitude }}</longitude>
 </location>
 <sales-agent>
     <phone>{{ doma.author.userprofile1.tel }} </phone>
@@ -190,6 +195,8 @@
     <region>Краснодарский край</region>
     <locality-name>{% if uchastoc.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ uchastoc.adress }} {{ uchastoc.uc_dom_nunb }}</address>
+    <latitude>{{ uchastoc.latitude }}</latitude>
+    <longitude>{{ uchastoc.longitude }}</longitude>
 </location>
 <sales-agent>
     <phone>{{ uchastoc.author.userprofile1.tel }}</phone>
