@@ -331,8 +331,12 @@ class flat_obj(models.Model):
         resp = requests.get(url=url + adres)
         data = json.loads(resp.text)
         #addresses = ['Гагарина 36 Сочи', ]
-        self.latitude = data['features'][0]['geometry']['coordinates'][0]
-        self.longitude = data['features'][0]['geometry']['coordinates'][1]
+        if str(data) != "{'features': [], 'type': 'FeatureCollection'}":
+            self.latitude = data['features'][0]['geometry']['coordinates'][0]
+            self.longitude = data['features'][0]['geometry']['coordinates'][1]
+        else:
+            self.latitude = '43.60280789999999'
+            self.longitude = '39.7341543'
         super(flat_obj, self).save(*args, **kwargs)
 
 
