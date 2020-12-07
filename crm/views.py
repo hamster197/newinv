@@ -712,12 +712,12 @@ def my_flatview_unpub(request):
             us.search_maxc = maxc
             us.save()
             if raionc == 'Любой':
-                flatlist = flat_obj.objects.filter(status_obj='Опубликован',
+                flatlist = flat_obj.objects.filter(#status_obj='Опубликован',
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
             else:
-                flatlist = flat_obj.objects.filter(status_obj='Опубликован',raion=raionc,
+                flatlist = flat_obj.objects.filter(#status_obj='Опубликован',raion=raionc,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
@@ -1512,14 +1512,14 @@ def mu_unpob_doma_view(request):
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
             if raion_d =='Любой':
-                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house',
+                doms=flat_obj.objects.filter(type='house',#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
                                        cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
             else:
-                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', raion=raion_d,
+                doms=flat_obj.objects.filter(type='house', raion=raion_d,#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
                                        cena_agenstv__gte=int(minc),
@@ -1742,14 +1742,14 @@ def unpup_uchastki(request):
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
             if raion_d =='Любой':
-                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok',
+                uc=flat_obj.objects.filter(type='uchastok',#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
                                        cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
             else:
-                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', raion=raion_d,
+                uc=flat_obj.objects.filter(type='uchastok', raion=raion_d,#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
                                        cena_agenstv__gte=int(minc),

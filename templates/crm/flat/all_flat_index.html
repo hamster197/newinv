@@ -27,7 +27,7 @@
           {%  if request.user.groups.get.name == 'Офис-менеджер' %}
             <td> <a href="{% url 'crm:new_kadastr' idd=flatlist.pk %}">{{ flatlist.date_sozd }}</a> </td>
           {% else %}
-              <td> {{ flatlist.date_sozd }} </td>
+              <td> {{ flatlist.date_sozd }}({{ flatlist.status_obj }}) </td>
           {% endif %}
             <td>{{ flatlist.pk }}</td>
             <td> {{ flatlist.cena_agenstv }} </td>

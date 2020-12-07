@@ -306,11 +306,11 @@
 <div class="card-body">
 {% ifequal request.user tpflat.author %}
 <a href="{% url 'crm:flat_edit' idd=tpflat.id %} " class="btn" title = "Редактировать">Редактировать</a>{% endifequal %}
-
+{% comment %}
 {% if request.user.groups.get.name == 'seo' or request.user.groups.get.name == 'Администрация' %}
 <a href="{% url 'crm:form_flatpub' idd=tpflat.id %} " class="btn" title="Публиковать на сайте"> Публиковать на сайте </a>
                                     
-                                {% endif %}
+                                {% endif %}{% endcomment %}
                       
 					  {% ifequal request.user tpflat.author %}
 {% comment %}
