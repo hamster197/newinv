@@ -1223,10 +1223,10 @@ def YandexFeedview(request):
 ## New Yandex for all(with out feiks)
 def NewYandexFeedview(request):
     vas_date = datetime.today() - timedelta(days=14)
-    post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')#[:20]
+    post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat', status_obj='Опубликован',).order_by('-pk')#[:20]
     #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
-    doma = flat_obj.objects.filter(domclick='Да', type='house').order_by('-datep')#[:20]
-    uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok').order_by('-datep')
+    doma = flat_obj.objects.filter(domclick='Да', type='house', status_obj='Опубликован',).order_by('-datep')#[:20]
+    uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok', status_obj='Опубликован',).order_by('-datep')
     gal = flat_obj_gal.objects.all()
     #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
     #post = flat_obj.objects.order_by('-datep')

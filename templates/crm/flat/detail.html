@@ -125,7 +125,14 @@
                                                 <td>
                                                     <strong>{{tpflat.ploshad  }}</strong>
                                                 </td>
-                                            </tr>
+                                            </tr>{% if tpflat.kitchen_value != 0 %}
+                                            <tr>
+                                                <td>Площадь Кухни:
+                                                </td>
+                                                <td>
+                                                    <strong>{{tpflat.kitchen_value  }}</strong>
+                                                </td>
+                                            </tr>{% endif %}
                                             <tr>
                                                 <td>Этаж:
                                                 </td>
@@ -138,7 +145,14 @@
                                                 <td>Вид из окон:
                                                 </td>
                                                 <td>
-                                                    <strong>{{tpflat.vid_is_okon  }}</strong>
+                                                    <strong>{{ tpflat.vid_is_okon  }}</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Растояние до моря:
+                                                </td>
+                                                <td>
+                                                    <strong>{{ tpflat.h_rast_more  }}</strong>
                                                 </td>
                                             </tr>
                                             <tr>

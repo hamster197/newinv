@@ -31,8 +31,12 @@
        <tr>
             <td>Площадь:  </td>
             <td><strong>{{tpdom.ploshad}}</strong></strong></td>
+          </tr>{% if tpdom.kitchen_value != 0 %}
+       <tr>
+            <td>Площадь кухни:  </td>
+            <td><strong>{{tpdom.kitchen_value}}</strong></strong></td>
           </tr>
-                 <tr>
+                 <tr>{% endif %}
             <td>Площадь участка: </td>
             <td><strong>{{tpdom.h_ploshad_uch}}</strong> </td>
           </tr>

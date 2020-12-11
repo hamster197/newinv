@@ -113,8 +113,8 @@
     <region>Краснодарский край</region>
     <locality-name>{% if doma.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ doma.adress }}</address>
-    <latitude>{{ doma.latitude }}</latitude>
-    <longitude>{{ doma.longitude }}</longitude>
+    <latitude>{{ doma.longitude }}</latitude>
+    <longitude>{{ doma.latitude }}</longitude>
 </location>
 <sales-agent>
     <phone>{{ doma.author.userprofile1.tel }} </phone>
@@ -195,8 +195,8 @@
     <region>Краснодарский край</region>
     <locality-name>{% if uchastoc.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ uchastoc.adress }} {{ uchastoc.uc_dom_nunb }}</address>
-    <latitude>{{ uchastoc.latitude }}</latitude>
-    <longitude>{{ uchastoc.longitude }}</longitude>
+    <latitude>{{ uchastoc.longitude }}</latitude>
+    <longitude>{{ uchastoc.latitude }}</longitude>
 </location>
 <sales-agent>
     <phone>{{ uchastoc.author.userprofile1.tel }}</phone>

@@ -90,6 +90,7 @@ class flat_obj(models.Model):
     contract_date_end = models.DateField(verbose_name='До', null=True, blank=True)
     new_building = models.BooleanField(verbose_name='Новостройка?', default=False)
     youtube = models.CharField(verbose_name='Код видео с youtube', max_length=255, blank=True, )
+    kitchen_value = models.FloatField(verbose_name='Плошадь кухни', blank=True, default=0)
 
     type_choises = (('flat','flat'),('house','house'),('uchastok','uchastok'),('komerc','komerc'))
     type = models.CharField(max_length=25, verbose_name='Тип недвижимости', choices=type_choises, default='flat')
@@ -181,7 +182,7 @@ class flat_obj(models.Model):
     #       Start of Flats
     ##################################################################################################
 
-    kvart_numb = models.CharField(verbose_name='Номер квартиры:', help_text='например: 11', default='',max_length=5, blank=True)
+    kvart_numb = models.CharField(verbose_name='Номер квартиры (необязательное поле):', help_text='например: 11', default='',max_length=5, blank=True)
 
     etap_sdachi_choise=(('Не сдан','Не сдан'),('Рег.УФРС','Рег.УФРС'),('ФЗ-214','ФЗ-214'),('ФЗ-215','ФЗ-215'),('Сдан','Сдан'))
     etap_sdachi=models.CharField('Этап сдачи',max_length=40,choices=etap_sdachi_choise)

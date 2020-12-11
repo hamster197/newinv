@@ -31,11 +31,11 @@
        <tr>
             <td>Площадь: </td>
             <td><strong>{{tp_uch.h_ploshad_uch}}</strong></td>
-          </tr>
+          </tr>{% if tp_uch.h_rast_more != 0 %}
           <tr>
             <td>Растояние до моря: </td>
             <td><strong>{{tp_uch.h_rast_more}}</strong></td>
-          </tr>
+          </tr>{% endif %}
                  <tr>
             <td>Вид разрешения: </td>
             <td><strong>{{ tp_uch.vid_razr  }}</strong></td>

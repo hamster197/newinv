@@ -29,7 +29,7 @@ class flatform(forms.ModelForm):
         model=flat_obj
         fields=('client_name','client_tel','adress','raion','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya',
                 'remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv',
-                'security','rubbish_chute','lift','balcony', 'prim')#,'domclick_pub')
+                'security','rubbish_chute','lift','balcony', 'kadastr','prim')#,'domclick_pub')
         #fields=('client_name','client_tel','status_obj','adress','raion','etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr','cena_sobstv','cena_agenstv','prim')
     def clean(self):
         cleaned_data = super(flatform, self).clean()
@@ -89,8 +89,8 @@ class yandex_flatform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
         fields=('client_name','client_tel','new_building','adress','dom_numb','kvart_numb','raion',
-                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
-                'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',
+                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value','etag',#
+                'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim', 'kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
         #fields=('client_name','client_tel','domclick','status_obj','adress','raion','etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr','cena_sobstv','cena_agenstv','prim')
     def clean(self):
@@ -114,8 +114,8 @@ class kr_yandex_flatform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
         fields=('client_name','client_tel','kr_raion','adress','dom_numb','kvart_numb',
-                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
-                'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',
+                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value', 'etag',#
+                'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim','kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
         #fields=('client_name','client_tel','domclick','status_obj','adress','raion','etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr','cena_sobstv','cena_agenstv','prim')
     def clean(self):
@@ -140,7 +140,7 @@ class flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
         fields=('adress','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya','remont',
-                'komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking',#'kadastr',
+                'komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr',
                 'cena_sobstv','cena_agenstv','prim','security','rubbish_chute','lift','balcony')#,'domclick_pub')
     def clean(self):
         cleaned_data = super(flateditform, self).clean()
@@ -172,8 +172,8 @@ class yandex_flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
         fields=('status_obj','dom_numb','domclick','new_building','raion','adress','dom_numb','kvart_numb','kvart_numb',
-                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
-                'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',#'kadastr',
+                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value','etag',
+                'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim','kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
     def clean(self):
         cleaned_data = super(yandex_flateditform, self).clean()
@@ -193,8 +193,8 @@ class kr_yandex_flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
         fields=('status_obj','dom_numb','domclick','new_building','kr_raion','adress','dom_numb','kvart_numb','kvart_numb',
-                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag',
-                'etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv','prim',#'kadastr',
+                'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value','etag',
+                'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim','kadastr',
                 'security','rubbish_chute','lift','balcony')#,'domclick_pub')
     def clean(self):
         cleaned_data = super(kr_yandex_flateditform, self).clean()
@@ -275,7 +275,7 @@ class client_edit_form(forms.ModelForm):
 class doma_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','raion','adress','dom_numb','ploshad','cena_sobstv',#'kadastr','
+        fields=('client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv','kadastr',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more',)
 
@@ -290,7 +290,7 @@ class doma_new_post(forms.ModelForm):
 class kr_doma_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','kr_raion','adress','dom_numb','ploshad','cena_sobstv',#'kadastr','
+        fields=('client_name','client_tel','kr_raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv', 'kadastr',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more',)
 
@@ -305,7 +305,7 @@ class kr_doma_new_post(forms.ModelForm):
 class doma_edit_form(forms.ModelForm):
      class Meta:
         model = flat_obj
-        fields = ('status_obj','raion','adress','dom_numb','ploshad','cena_sobstv',#'kadastr','nazv',
+        fields = ('status_obj','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv', 'kadastr',#'nazv',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more',)
      def clean(self):
@@ -320,9 +320,9 @@ class doma_edit_form(forms.ModelForm):
 class kr_doma_edit_form(forms.ModelForm):
     class Meta:
         model = flat_obj#
-        fields = ('status_obj','nazv', 'kr_raion', 'adress', 'dom_numb', 'ploshad', 'cena_sobstv',  # 'kadastr',
+        fields = ('status_obj','nazv', 'kr_raion', 'adress', 'dom_numb', 'ploshad', 'kitchen_value','cena_sobstv', 'kadastr',
                   'cena_agenstv', 'prim', 'h_vid_prava', 'h_vid_is_okon', 'h_isp_uch', 'h_infr', 'h_etagnost',
-                  'h_komnat',
+                  'h_komnat', 'h_rast_more',
                   'h_tip_doma', 'h_ploshad_uch', 'h_rast_more',)
 
     def clean(self):
@@ -339,8 +339,8 @@ class kr_doma_edit_form(forms.ModelForm):
 class uc_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','raion','adress','uc_dom_nunb','h_infr','vid_razr','relef',#'kadastr',
-                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch',
+        fields=('client_name','client_tel','raion','adress','uc_dom_nunb','h_infr','vid_razr','relef','kadastr',
+                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
                     'cena_sobstv','cena_agenstv','prim',)
     def clean(self):
         cleaned_data = super(uc_new_post, self).clean()
@@ -357,8 +357,8 @@ class uc_new_post(forms.ModelForm):
 class kr_uc_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','kr_raion','adress','uc_dom_nunb','h_infr','vid_razr','relef',#'kadastr',
-                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch',
+        fields=('client_name','client_tel','kr_raion','adress','uc_dom_nunb','h_infr','vid_razr','relef','kadastr',
+                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
                     'cena_sobstv','cena_agenstv','prim',)
     def clean(self):
         cleaned_data = super(kr_uc_new_post, self).clean()
@@ -375,8 +375,8 @@ class kr_uc_new_post(forms.ModelForm):
 class uc_edit_form(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('status_obj','raion','adress','h_infr','vid_razr','relef',#'kadastr',
-                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch',
+        fields=('status_obj','raion','adress','h_infr','vid_razr','relef', 'kadastr',
+                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
                     'cena_sobstv','cena_agenstv','prim')
         def clean(self):
             cleaned_data = super(uc_new_post, self).clean()
@@ -393,8 +393,8 @@ class uc_edit_form(forms.ModelForm):
 class kr_uc_edit_form(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('status_obj','kr_raion','adress','h_infr','vid_razr','relef',#'kadastr',
-                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch',
+        fields=('status_obj','kr_raion','adress','h_infr','vid_razr','relef', 'kadastr',
+                    'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
                     'cena_sobstv','cena_agenstv','prim')
         def clean(self):
             cleaned_data = super(kr_uc_new_post, self).clean()
