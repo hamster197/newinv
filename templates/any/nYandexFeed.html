@@ -50,7 +50,10 @@
     <value>{{ post.ploshad|cut:" " }}</value>
     <unit>кв.м</unit>
 </area>
-
+<kitchen-space>
+    <value>{{ post.kitchen_value }}</value>
+    <unit>кв. м</unit>
+</kitchen-space>
 <gas-supply>
     {% if post.gaz == 'Есть' %}
         да
