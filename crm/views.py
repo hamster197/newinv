@@ -1246,6 +1246,31 @@ def NewYandexFeedview(request):
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
 
 
+## New Sait 21 centry for all(with out feiks)
+def NewSaitFeedview(request):
+    vas_date = datetime.today() - timedelta(days=14)
+    post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat', status_obj='Опубликован',).order_by('-pk')#[:20]
+    #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
+    doma = flat_obj.objects.filter(domclick='Да', type='house', status_obj='Опубликован',).order_by('-datep')#[:20]
+    uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok', status_obj='Опубликован',).order_by('-datep')
+    gal = flat_obj_gal.objects.all()
+    #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
+    #post = flat_obj.objects.order_by('-datep')
+    #ручной ввод текста сео
+    date = datetime.now()
+    #dm = domclickText.objects.all().order_by('-dates')[0]
+    # end of ручной ввод текста сео
+    # auto ввод текста сео
+    date1 = timezone.now().day
+    if domclickText.objects.filter(day = int(date1)).exists():
+        dm = get_object_or_404(domclickText, day = int(date1))
+    else:
+        dm = ''
+    # end of autoручной ввод текста сео
+    #print(vas_date)
+    return render(request,'any/nYSaitFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'vas_date':vas_date,
+                                                 'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
+
 ## Afy for all(with out feiks)
 def AfyFeedview(request):
     post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat').order_by('-pk')#[:20]
