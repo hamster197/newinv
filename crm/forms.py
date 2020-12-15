@@ -237,6 +237,14 @@ class flat_search_form(forms.ModelForm):
                    'search_minc': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
                    'search_maxc': forms.TextInput(attrs={'required': 'true', 'type':'number'})}
 
+class kr_flat_search_form(forms.ModelForm):
+    class Meta:
+        model = UserProfile1
+        fields = ('search_minp','search_maxp','search_minc','search_maxc','kr_search_raion',)
+        widgets = {'search_minp': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
+                   'search_maxp': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
+                   'search_minc': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
+                   'search_maxc': forms.TextInput(attrs={'required': 'true', 'type':'number'})}
 
 class flat_pict_form(forms.ModelForm):
     class Meta:
