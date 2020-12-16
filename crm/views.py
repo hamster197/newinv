@@ -21,7 +21,7 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     nov_new_zayv_form, all_zayav_form, reelt_lich_new_zayv_form, search_by_moth_form, seo_pub_form, kadastr_form, \
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
     BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
-    kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm
+    kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm, kr_flat_search_form
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -589,9 +589,14 @@ def my_flatview_pub(request):
     crm_obj_week_count = flat_obj.objects.filter(author_id=request.user.id, date_sozd__gte=d11).count()
     my_ya_obj = flat_obj.objects.filter(author=request.user).count()
     auser = request.user
+    if request.user.groups.get().name.find('Краснодар') == 6:
+        kr_flag = 'Yes'
+    else:
+        kr_flag = 'No'
     if request.POST:
         aFlatSearch = flat_search_form(request.POST)
-        if aFlatSearch.is_valid():
+        KrFlatSearch = kr_flat_search_form(request.POST)
+        if aFlatSearch.is_valid() and '_submit' in request.POST:
             minp = aFlatSearch.cleaned_data['search_minp']
             maxp = aFlatSearch.cleaned_data['search_maxp']
             minc = aFlatSearch.cleaned_data['search_minc']
@@ -606,12 +611,37 @@ def my_flatview_pub(request):
             us.search_maxc = maxc
             us.save()
             if raionc =='Любой':
-                flatlist = flat_obj.objects.filter(status_obj='Опубликован',
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован', kr_raion = '',
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
             else:
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',raion=raionc,
+                                               cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
+                                               ploshad__gte=int(minp), ploshad__lte=int(maxp),
+                                               type = 'flat').order_by('-date_sozd')
+
+        if KrFlatSearch.is_valid() and '_kr_submit' in request.POST:
+            minp = KrFlatSearch.cleaned_data['search_minp']
+            maxp = KrFlatSearch.cleaned_data['search_maxp']
+            minc = KrFlatSearch.cleaned_data['search_minc']
+            maxc = KrFlatSearch.cleaned_data['search_maxc']
+            raionc = KrFlatSearch.cleaned_data['kr_search_raion']
+            id = request.user.pk
+            us = get_object_or_404(UserProfile1, pk=id)
+            us.kr_search_raion = raionc
+            us.search_minp = minp
+            us.search_maxp = maxp
+            us.search_minc = minc
+            us.search_maxc = maxc
+            us.save()
+            if raionc =='Любой':
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion='',
+                                               cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
+                                               ploshad__gte=int(minp), ploshad__lte=int(maxp),
+                                               type = 'flat').order_by('-date_sozd')
+            else:
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован',kr_raion=raionc,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
@@ -626,32 +656,41 @@ def my_flatview_pub(request):
         aFlatSearch=flat_search_form(initial={'search_minp': us.search_minp, 'search_maxp': us.search_maxp,
                                               'search_minc': us.search_minc, 'search_maxc': us.search_maxc,
                                               'search_raion': us.search_raion})
+        KrFlatSearch=kr_flat_search_form(initial={'search_minp': us.search_minp, 'search_maxp': us.search_maxp,
+                                              'search_minc': us.search_minc, 'search_maxc': us.search_maxc,
+                                              'kr_search_raion': us.kr_search_raion})
         if raionc == 'Любой':
             if request.user.groups.get().name.find('Краснодар')==6:
+                kr_flag = 'Yes'
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                            type='flat').exclude(kr_raion='').order_by('-date_sozd')
             else:
+                kr_flag = 'No'
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',
                                                    cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                    ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                    type='flat').exclude(raion='').order_by('-date_sozd')
         else:
             if request.user.groups.get().name.find('Краснодар')==6:
+                kr_flag = 'Yes'
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
                                            cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                            ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                            type='flat').exclude(kr_raion='').order_by('-date_sozd')
             else:
+                kr_flag = 'No'
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован', raion=raionc,
                                                    cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                    ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                    type='flat').exclude(raion='').order_by('-date_sozd')
         if request.user.groups.get().name == 'Офис-менеджер' :
             flatlist = flat_obj.objects.filter(kadastr_pr='Нет', kadastr='').order_by('-date_sozd')
-    return render(request,'crm/flat/all_flat_index.html',{'tpflatlist':flatlist,'tpaFlatSearch':aFlatSearch,'tn1':n1,'tn2':n2, 'tn3':n3,
-                                                          'tcrm_obj_week_count':crm_obj_week_count,'t_my_ya_obj':my_ya_obj})
+    return render(request,'crm/flat/all_flat_index.html',{'tpflatlist':flatlist,'tpaFlatSearch':aFlatSearch,
+                                                          'KrFlatSearch':KrFlatSearch, 'tn1':n1,'tn2':n2, 'tn3':n3,
+                                                          'tcrm_obj_week_count':crm_obj_week_count,'t_my_ya_obj':my_ya_obj,
+                                                          'kr_flag':kr_flag})
 
 ###################################################
 ###  esnd All Flat list
@@ -1570,34 +1609,67 @@ def mu_pob_doma_view(request):
     n1='Дома'
     n2='опубликованные'
     if request.POST:
+        if request.user.groups.get().name.find('Краснодар')==6:
+            kr_flag = 'Yes'
+        else:
+            kr_flag = 'No'
         form = flat_search_form(request.POST)
-        if form.is_valid():
+        kr_form = kr_flat_search_form(request.POST)
+        if form.is_valid() and '_submit' in request.POST:
             minp=form.cleaned_data['search_minp']
             maxp=form.cleaned_data['search_maxp']
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
             if raion_d =='Любой':
-                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house',
+                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', kr_raion='',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),
                                        cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
-                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
+                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
             else:
                 doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', raion=raion_d,
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),
                                        cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
-                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
+                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag, })
+        if kr_form.is_valid() and '_kr_submit' in request.POST:
+            minp=kr_form.cleaned_data['search_minp']
+            maxp=kr_form.cleaned_data['search_maxp']
+            minc=kr_form.cleaned_data['search_minc']
+            maxc=kr_form.cleaned_data['search_maxc']
+            raion_d=kr_form.cleaned_data['kr_search_raion']
+            if raion_d =='Любой':
+                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', raion='',
+                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__lte=int(maxp),
+                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
+                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
+            else:
+                doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', kr_raion=raion_d,
+                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__lte=int(maxp),
+                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
+                return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag, })
     else:
         form = flat_search_form()
+        kr_form = kr_flat_search_form()
         if request.user.groups.get().name.find('Краснодар')==6:
+            kr_flag = 'Yes'
             doms = flat_obj.objects.filter(type='house').exclude(kr_raion='').order_by('-date_sozd')
         else:
+            kr_flag = 'No'
             doms = flat_obj.objects.filter(type='house').exclude(raion='').order_by('-date_sozd')
-        return render(request, 'crm/doma/index_dom.html', {'tpdoms': doms, 'tpform':form,'tn1':n1,'tn2':n2})
+        return render(request, 'crm/doma/index_dom.html', {'tpdoms': doms, 'tpform':form,'tn1':n1,'tn2':n2,
+                                                           'kr_form':kr_form, 'kr_flag':kr_flag,})
 #############################################################################
 #### End of All Houses
 #############################################################################
@@ -1727,32 +1799,63 @@ def pup_uchastki(request):
     n1='Участки'
     n2='В агенстве'
     if request.POST:
+        if request.user.groups.get().name.find('Краснодар')==6:
+            kr_flag = 'Yes'
+        else:
+            kr_flag = 'No'
         form=flat_search_form(request.POST)
-        if form.is_valid():
+        kr_form = kr_flat_search_form(request.POST)
+        if form.is_valid() and '_submit' in request.POST:
             minp=form.cleaned_data['search_minp']
             maxp=form.cleaned_data['search_maxp']
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
             if raion_d =='Любой':
-                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok',
+                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', kr_raion='',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
-                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
+                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
             else:
                 uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', raion=raion_d,
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
-                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
+                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
+        if kr_form.is_valid() and '_kr_submit' in request.POST:
+            minp=kr_form.cleaned_data['search_minp']
+            maxp=kr_form.cleaned_data['search_maxp']
+            minc=kr_form.cleaned_data['search_minc']
+            maxc=kr_form.cleaned_data['search_maxc']
+            raion_d=kr_form.cleaned_data['kr_search_raion']
+            if raion_d =='Любой':
+                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', raion='',
+                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
+                                       cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
+                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
+            else:
+                uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', kr_raion=raion_d,
+                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
+                                       cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
+                return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
+                                                                 'kr_form':kr_form, 'kr_flag':kr_flag,})
     else:
         form = flat_search_form()
+        kr_form = kr_flat_search_form()
         if request.user.groups.get().name.find('Краснодар')==6:
+            kr_flag = 'Yes'
             uc = flat_obj.objects.filter(status_obj='Опубликован',type='uchastok').exclude(kr_raion='').order_by('-date_sozd')
         else:
             uc = flat_obj.objects.filter(status_obj='Опубликован', type='uchastok').exclude(raion='').order_by('-date_sozd')
-        return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
+            kr_flag = 'No'
+        return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
+                                                         'kr_form':kr_form, 'kr_flag':kr_flag,})
 
 @login_required
 def unpup_uchastki(request):

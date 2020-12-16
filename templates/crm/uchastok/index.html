@@ -61,9 +61,20 @@
       </div>
       <div class="col-lg-3">
           <div class="card">
+          {% if  kr_flag == 'Yes' %}
                 <div class="card-content">
                     <form method="post" class="post-form">
+                        <h2>Краснодар</h2>
+                        {% csrf_token %}
+                        {% form form=kr_form %} {% endform %}
+                        <button type="submit" name="_kr_submit" class="btn">Найти</button>
+                    </form>
+                </div>
 
+          {% endif %}
+                <div class="card-content">
+                    <form method="post" class="post-form">
+                        <h2>Сочи</h2>
                         {% csrf_token %}
                         {% form form=tpform %} {% endform %}
                         <button type="submit" name="_submit" class="btn">Найти</button>

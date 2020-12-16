@@ -97,7 +97,7 @@ class UserProfile1(models.Model):
                        ('Поселок Индустриальный', 'Поселок Индустриальный'), ('Поселок Колосистый', 'Поселок Колосистый'),
                        ('Станица Старокорсунская', 'Станица Старокорсунская'),
     )
-    kr_search_raion=models.CharField('Район', choices=kr_raion_choise, max_length=40 , default='', blank=True)
+    kr_search_raion=models.CharField('Район', choices=kr_raion_choise, max_length=40 , default='Любой', blank=True)
     vestum_count_ads = models.IntegerField(verbose_name='Avito(Обычное):', default=0, validators=[MinValueValidator(0)])
     avitoPR_count_ads = models.IntegerField(verbose_name='Avito(Премиум):', default=0, validators=[MinValueValidator(0)])
     avitoVIP_count_ads = models.IntegerField(verbose_name='Avito(VIP):', default=0, validators=[MinValueValidator(0)])
@@ -137,7 +137,7 @@ class flat_obj(models.Model):
 
     type_choises = (('flat','flat'),('house','house'),('uchastok','uchastok'),('komerc','komerc'))
     type = models.CharField(max_length=25, verbose_name='Тип недвижимости', choices=type_choises, default='flat')
-    raion_choise = (('Любой', 'Любой'),('Ареда','Ареда'),('Ахун', 'Ахун'),
+    raion_choise = (('Ареда','Ареда'),('Ахун', 'Ахун'),#('Любой', 'Любой'),
         ('Барановка село','Барановка село'),('Бытха', 'Бытха'), ('Верхневеселое село','Верхневеселое село'),
         ('Виноградная', 'Виноградная'),('Дагомыс', 'Дагомыс'),('Донская', 'Донская'),('Донская(Пасечная)', 'Донская(Пасечная)'),
         ('Донская(Тимерязева)', 'Донская(Тимерязева)'), ('Завокзальный', 'Завокзальный'),('Заречный', 'Заречный'), ('Клубничная', 'Клубничная'),('КСМ', 'КСМ'),
