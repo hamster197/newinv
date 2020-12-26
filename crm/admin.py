@@ -147,6 +147,8 @@ class UserInline(admin.StackedInline):
 # Определяем новый класс настроек для модели User
 class UserAdmin(UserAdmin):
     inlines = (UserInline,)
+    list_display = ['pk', 'username', 'first_name', 'last_name', 'date_joined', 'last_login', 'is_staff',
+                    'is_superuser']
 
 
 # Перерегистрируем модель User
