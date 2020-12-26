@@ -99,8 +99,8 @@ class yandex_flatform(forms.ModelForm):
                 raise ValidationError('Этаж или Этажность равны 0!' , code='invalid')
         if int(cleaned_data['etag'])>int(cleaned_data['etagnost']):
                 raise ValidationError('Этаж больше этажности' , code='invalid')
-        if str(cleaned_data['kvart_numb']) == '' and str(cleaned_data['kadastr']) == '':
-                raise ValidationError('введите №кв или кадастр' , code='invalid')
+        # if str(cleaned_data['kvart_numb']) == '' and str(cleaned_data['kadastr']) == '':
+        #         raise ValidationError('введите №кв или кадастр' , code='invalid')
         if len(str(cleaned_data['prim'])) == 0:
                 raise ValidationError('Введите текст описания' , code='invalid')
         if len(str(cleaned_data['prim'])) < 300:
