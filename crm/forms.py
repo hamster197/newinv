@@ -103,8 +103,8 @@ class yandex_flatform(forms.ModelForm):
         #         raise ValidationError('введите №кв или кадастр' , code='invalid')
         if len(str(cleaned_data['prim'])) == 0:
                 raise ValidationError('Введите текст описания' , code='invalid')
-        if len(str(cleaned_data['prim'])) < 300:
-                raise ValidationError('меньше 300 символов в описании' , code='invalid')
+        if len(str(cleaned_data['prim'])) < 80:
+                raise ValidationError('меньше 80 символов в описании' , code='invalid')
         if  str(cleaned_data['raion'])=='Выбор района':
                 raise ValidationError('Выберите район!' , code='invalid')
 
