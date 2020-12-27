@@ -1,3 +1,4 @@
+{% load watermark %}
 <realty-feed xmlns="http://webmaster.yandex.ru/schemas/feed/realty/2010-06">
  <generation-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</generation-date>
  {% for post in tppost %}
@@ -41,7 +42,7 @@
 {% for i in post.idd_gal.all %}
     {% if i.npict.url %}
     <image>
-      http://77.222.52.20{{ i.npict.url }}
+      http://77.222.52.20{{ i.npict.url|watermark:"1,opacity=40,scale=F" }}
     </image>
     {% endif %}
 {% endfor %}
