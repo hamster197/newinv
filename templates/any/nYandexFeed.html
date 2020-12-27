@@ -42,7 +42,7 @@
 {% for i in post.idd_gal.all %}
     {% if i.npict.url %}
     <image>
-      http://77.222.52.20{{ i.npict.url|watermark:"1,opacity=40,scale=F" }}
+      http://77.222.52.20{{ i.npict.url }}
     </image>
     {% endif %}
 {% endfor %}
