@@ -9,6 +9,7 @@ from django.core.validators import MinValueValidator, MinLengthValidator, MaxVal
 from django.db import models
 from multiselectfield import MultiSelectField
 from phonenumber_field.modelfields import PhoneNumberField
+from watermarker.models import Watermark
 
 
 class news(models.Model):
@@ -55,7 +56,7 @@ class UserProfile1(models.Model):
         ('(А) Сириус', '(А) Сириус'), ('(А) Черешня', '(А) Черешня'),
         ('Орел-Изумруд село','Орел-Изумруд село'),('Черемушки','Черемушки')
                      )
-    search_raion = models.CharField(max_length=25, default='Любой', verbose_name='Район', choices=raion_choises)
+    search_raion = models.CharField(max_length=45, default='Любой', verbose_name='Район', choices=raion_choises)
     kr_raion_choise = (('Любой', 'Любой'),('Центральный район (ЦМР)','Центральный район (ЦМР)'),('Фестивальный микрорайон (ФМР)', 'Фестивальный микрорайон (ФМР)'),#('Выбор района', 'Выбор района'),
             ('Юбилейный микрорайон (ЮМР)', 'Юбилейный микрорайон (ЮМР)'), ('Пашковский микрорайон (ПМР)', 'Пашковский микрорайон (ПМР)'),
                        ('Славянский микрорайон (СМР)','Славянский микрорайон (СМР)'),('Микрорайон Черемушки (ЧМР)', 'Микрорайон Черемушки (ЧМР)'),
@@ -407,10 +408,29 @@ class flat_obj_gal(models.Model):
     #     #import Image
     #
     #     from PIL import Image
-    #     image = Image.open(self.npict)
-    #     watermark = Image.open('static/material/dist/logo21.png')
-    #     image.paste(watermark, (450, 230), watermark)
-    #     image.save
+    #     print(self.npict.path)
+    #     filepath = self.npict.path
+    #     image = Image.open(filepath)
+    #     crm_watermark = Watermark.objects.first().image.path
+    #     print(crm_watermark)
+    #     watermark = Image.open(crm_watermark)
+    #     print(watermark)
+    #     image.paste(watermark, (round(image.size[0] / 2), round(image.size[1] / 2)), watermark)
+    #     #print(image)
+    #     image.save(filepath)
+    #     #print(image)
+    #
+    #     print(watermark.size[0] / 2, ' ', watermark.size[1] / 2)
+    #     # base_image = Image.open(self.npict)
+    #     # watermark = Image.open(watermark_image_path)
+    #     # width, height = base_image.size
+    #     #
+    #     # transparent = Image.new('RGBA', (width, height), (0, 0, 0, 0))
+    #     # transparent.paste(base_image, (0, 0))
+    #     # transparent.paste(watermark, position, mask=watermark)
+    #     # transparent.show()
+    #     # transparent.save(output_image_path)
+    #     super(flat_obj_gal, self).save(*args, **kwargs)
 
 
 class clients(models.Model):
