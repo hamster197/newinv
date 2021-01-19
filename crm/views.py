@@ -754,7 +754,7 @@ def my_flatview_unpub(request):
             us.search_maxc = maxc
             us.save()
             if raionc == 'Любой':
-                flatlist = flat_obj.objects.filter(#status_obj='Опубликован',
+                flatlist = flat_obj.objects.filter(author=request.user,#status_obj='Опубликован',
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
@@ -762,7 +762,8 @@ def my_flatview_unpub(request):
                 flatlist = flat_obj.objects.filter(#status_obj='Опубликован',raion=raionc,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                               type = 'flat', raion=raionc).order_by('-date_sozd')
+                                               type = 'flat', raion=raionc,
+                author=request.user).order_by('-date_sozd')
     else:
         id = request.user.pk
         us = get_object_or_404(UserProfile1, pk = id)
