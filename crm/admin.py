@@ -116,6 +116,8 @@ class zadachi_spr_fields(admin.ModelAdmin):
 class kanal_pr_fields(admin.ModelAdmin):
     list_display = ('pk','kanal','voronka_counts')
 
+class galery_fields(admin.ModelAdmin):
+    list_display = ('pk','id_gal','npict')
 
 admin.site.register(flat_obj, flatfields, )
 admin.site.register(otchet_nov, sdelka_nov)
@@ -137,7 +139,7 @@ admin.site.register(comment, comment_fields)
 admin.site.register(zayavka_subj)#, zadachi_spr_fields)
 admin.site.register(zadachi, zadachi_fields)
 admin.site.register(zadachi_spr, zadachi_spr_fields)
-
+admin.site.register(flat_obj_gal, galery_fields)
 class UserInline(admin.StackedInline):
     model = UserProfile1
     can_delete = False

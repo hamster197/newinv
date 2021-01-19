@@ -404,33 +404,19 @@ class flat_obj_gal(models.Model):
 #        self.npict.delete()
 
     #
-    # def save(self, *args, **kwargs):
-    #     #import Image
-    #
-    #     from PIL import Image
-    #     print(self.npict.path)
-    #     filepath = self.npict.path
-    #     image = Image.open(filepath)
-    #     crm_watermark = Watermark.objects.first().image.path
-    #     print(crm_watermark)
-    #     watermark = Image.open(crm_watermark)
-    #     print(watermark)
-    #     image.paste(watermark, (round(image.size[0] / 2), round(image.size[1] / 2)), watermark)
-    #     #print(image)
-    #     image.save(filepath)
-    #     #print(image)
-    #
-    #     print(watermark.size[0] / 2, ' ', watermark.size[1] / 2)
-    #     # base_image = Image.open(self.npict)
-    #     # watermark = Image.open(watermark_image_path)
-    #     # width, height = base_image.size
-    #     #
-    #     # transparent = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-    #     # transparent.paste(base_image, (0, 0))
-    #     # transparent.paste(watermark, position, mask=watermark)
-    #     # transparent.show()
-    #     # transparent.save(output_image_path)
-    #     super(flat_obj_gal, self).save(*args, **kwargs)
+    def save_water(self, *args, **kwargs):
+        #import Image
+
+        from PIL import Image
+        filepath = self.npict.path
+        print(filepath)
+        image = Image.open(filepath)
+        crm_watermark = Watermark.objects.first().image.path
+        watermark = Image.open(crm_watermark)
+        #image.paste(watermark, (round(image.size[0] / 2), round(image.size[1] / 2)), watermark)
+        image.paste(watermark, (round(image.size[0] / 2) - 150, round(image.size[1] / 2) - 200), watermark)
+        image.save(filepath)
+        super(flat_obj_gal, self).save(*args, **kwargs)
 
 
 class clients(models.Model):

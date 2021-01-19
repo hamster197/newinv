@@ -125,7 +125,7 @@
 	<div class="p-20" ><p> </p></div>
     <div class="row">
         {% for i in tpdom.idd_gal.all %}
-            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.52.20{{ i.npict.url|watermark:"1,opacity=40,scale=F"  }}"></div>
+            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.52.20{{ i.npict.url }}"></div>{% comment %}|watermark:"1,opacity=40,scale=F" {% endcomment %}
         {% endfor %}	
 </div>
 {% if tpdom %}

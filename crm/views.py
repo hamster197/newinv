@@ -387,6 +387,7 @@ def flat_postForm(request):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
             if '_submit_new' in request.POST:
@@ -490,6 +491,7 @@ def my_flatview_edit(request,idd):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
             if '_submit_new' in request.POST:
@@ -620,6 +622,7 @@ def my_flatview_pub(request):
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
+
 
         if KrFlatSearch.is_valid() and '_kr_submit' in request.POST:
             minp = KrFlatSearch.cleaned_data['search_minp']
@@ -1503,6 +1506,7 @@ def new_dom_view(request):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:upb_dom_view')
             if '_submit_new' in request.POST:
@@ -1547,6 +1551,7 @@ def domaeditview(request,idd):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:upb_dom_view')
             if '_submit_new' in request.POST:
@@ -1731,6 +1736,7 @@ def new_uc_view(request):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:unpub_uc_index')
             if '_submit_new' in request.POST:
@@ -1780,6 +1786,7 @@ def ucheditview(request,idd):
                     npict=a_file
                 )
                 instance.save()
+                instance.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:unpub_uc_index')
             if '_submit_new' in request.POST:

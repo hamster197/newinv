@@ -251,8 +251,8 @@
                                                         class="materialboxed"
                                                         rel="gallery"
                                                         height="250"
-                                                        src="http://77.222.52.20{{ i.npict.url|watermark:"1,opacity=40,scale=F" }}"></div>
-                                                {% comment %}{% endcomment %}
+                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                                                {% comment %}|watermark:"1,opacity=40,scale=F"{% endcomment %}
                                             {% endfor %}
 </div>
 {% if tpflat.youtube %}
