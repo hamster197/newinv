@@ -66,7 +66,8 @@
       {% endif %}
       {% if not request.user.groups.all.0.name == 'Администрация Адлер' %}
         {% if not  request.user.groups.all.0.name == 'Офис в Адлере' %}
-                     <li class=" nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="false">Краснодар</a></li>
+                     <li class=" nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="false"></a></li>
+{#            Краснодар#}
                  {% endif %}
       {% endif %}
       {% if request.user.groups.all.0.name == 'Администрация' or request.user.groups.all.0.name == 'Администрация Адлер' or request.user.groups.all.0.name == 'Офис в Адлере' %}

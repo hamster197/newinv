@@ -104,12 +104,14 @@
          <table class="bordered">
         <thead>
           <tr>
-              <th>Дата создания</th>
-              <th>ID</th>
-              <th>Цена</th>
-              <th>Район</th>
-              <th>Улица</th>
               <th></th>
+                    <th>Tип объекта</th>
+                      <th>Kоличество комнат</th>
+                     <th>Oтветственный</th>
+                     <th>Цена</th>
+                     <th>Район</th>
+                     <th>Адрес</th>
+                     <th></th>
           </tr>
         </thead>
 
@@ -117,19 +119,26 @@
     {% for subj in pub_sybj %}
         <tbody>
           <tr>
-              <td>{{ subj.date_sozd }}</td>
-            <td>{{ subj.pk }}</td>
+          <td>
+              {% for i in subj.idd_gal.all|slice:":1" %}
+                            <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                        {% endfor %}
+          </td>
+          <td>
+          {% if subj.type == 'flat' %}Квартира{% endif %}
+          {% if subj.type == 'house' %}Дом{% endif %}
+          {% if subj.type == 'uchastok' %}Участок{% endif %}
+          {% if subj.type == 'komerc' %}Коммерция{% endif %}
+          </td>
+              <td>{{ subj.komnat }}</td>
+            <td>{{ subj.author.first_name }} {{ subj.author.last_name }}</td>
             <td> {{ subj.cena_agenstv }} </td>
             <td> {{ subj.raion }} {{ subj.kr_raion }}</td>
-          <td>{% if subj.type == 'flat' %}
-              Квартира({{ subj.komnat }})
-              {% endif %}
-          {% if subj.type == 'house' %}
-              Дом
-              {% endif %}
-          {% if subj.type == 'uchastok' %}
-              Участок
-              {% endif %}
+          <td>{{ subj.adress }} {{ subj.dom_numb }}
           </td>
 
           <td>{% if subj.type == 'flat' %}

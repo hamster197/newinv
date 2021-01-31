@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^flat/print/(?P<idd>[0-9]+)/$', views.myflatPrint, name='flat_print'),
     url(r'^newFlatGal/(?P<idd>[0-9]+)/$',views.flat_photo_new_view, name='newFlatgal'),
     url(r'^flatdel/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$',views.flat_del_view, name='FlatPhotodel'),
+    url(r'^flat_rotate/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$',views.FlatPctRotateView, name='FlatPctRotate'),
     ##feeds
     url(r'^domclick.xml$', views.YandexFeedview, name='Yandex'),#for yandex feed
     url(r'^mail.xml$', views.MailRuFeedview, name='Mail'),  # for mail.ru feed

@@ -475,11 +475,13 @@ label{margin:0;}
                                         <span class="hide-menu"> Пр.неделя (Адлер)</span>
                                     </a>
                                 </li>{% endcomment %}
+                            {% comment %}
                                  <li class="sidebar-item">
                                     <a href="{% url 'crm:DmCahestvoOtch'%}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Качество обьявлений </span>
                                     </a>
+                             {% endcomment %}
                                 </li>{% if request.user.groups.get.name == 'Администрация' %}
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:myadm'%}" class="sidebar-link">

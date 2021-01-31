@@ -98,7 +98,7 @@ class UserProfile1(models.Model):
                        ('Поселок Индустриальный', 'Поселок Индустриальный'), ('Поселок Колосистый', 'Поселок Колосистый'),
                        ('Станица Старокорсунская', 'Станица Старокорсунская'),
     )
-    kr_search_raion=models.CharField('Район', choices=kr_raion_choise, max_length=40 , default='Любой', blank=True)
+    kr_search_raion=models.CharField('Район1', choices=kr_raion_choise, max_length=40 , default='Любой', blank=True)
     vestum_count_ads = models.IntegerField(verbose_name='Avito(Обычное):', default=0, validators=[MinValueValidator(0)])
     avitoPR_count_ads = models.IntegerField(verbose_name='Avito(Премиум):', default=0, validators=[MinValueValidator(0)])
     avitoVIP_count_ads = models.IntegerField(verbose_name='Avito(VIP):', default=0, validators=[MinValueValidator(0)])
@@ -126,7 +126,7 @@ class flat_obj(models.Model):
     datep = models.DateField('Дата публикации', blank=True, auto_now=True)
     date_sozd = models.DateField('Дата создания', blank=True, )
     author=models.ForeignKey('auth.User',verbose_name='Автор', on_delete=models.CASCADE)
-    status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'))
+    status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'), ('В архиве','В архиве'))
     status_obj=models.CharField('Публикация обьекта',max_length=45, choices=status_obj_choises,default='Опубликован')
     contract_choises = (('Без договора','Без договора'),('Агентский','Агентский'),('Эксклюзив','Эксклюзив'))
     contract = models.CharField(max_length=55, verbose_name='Договор', choices=contract_choises, default='Без договора',)
@@ -134,7 +134,7 @@ class flat_obj(models.Model):
     contract_date_end = models.DateField(verbose_name='До', null=True, blank=True)
     new_building = models.BooleanField(verbose_name='Новостройка?', default=False)
     youtube = models.CharField(verbose_name='Код видео с youtube', max_length=255, blank=True, )
-    kitchen_value = models.FloatField(verbose_name='Плошадь кухни', blank=True, default=0)
+    kitchen_value = models.FloatField(verbose_name='Плошадь кухни',  default=0, null=True)
 
     type_choises = (('flat','flat'),('house','house'),('uchastok','uchastok'),('komerc','komerc'))
     type = models.CharField(max_length=25, verbose_name='Тип недвижимости', choices=type_choises, default='flat')
@@ -409,13 +409,21 @@ class flat_obj_gal(models.Model):
 
         from PIL import Image
         filepath = self.npict.path
-        print(filepath)
+        #print(filepath)
         image = Image.open(filepath)
         crm_watermark = Watermark.objects.first().image.path
         watermark = Image.open(crm_watermark)
         #image.paste(watermark, (round(image.size[0] / 2), round(image.size[1] / 2)), watermark)
         image.paste(watermark, (round(image.size[0] / 2) - 150, round(image.size[1] / 2) - 200), watermark)
         image.save(filepath)
+        super(flat_obj_gal, self).save(*args, **kwargs)
+
+    def save_rotate(self, *args, **kwargs):
+        from PIL import Image
+        fullname = self.npict.path
+        im = Image.open(fullname)
+        im.transpose(Image.ROTATE_90)
+        im.save(fullname)
         super(flat_obj_gal, self).save(*args, **kwargs)
 
 
@@ -467,7 +475,7 @@ class uchastok(models.Model):
     client_fio=models.CharField(max_length=45,verbose_name='Собственник(ФИО)')
     tel=PhoneNumberField('Телефон собственника(+79881234567)')
     date_sozd=models.DateField('Дата создания:',auto_now=True)
-    status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'))
+    status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'), ('В архиве','В архиве'))
     status_obj=models.CharField('Публикация обьекта',max_length=45, choices=status_obj_choises)
     raion_choise =  (('Ахун', 'Ахун'),('Адлер', 'Адлер'),('Бытха', 'Бытха'),('Виноградная', 'Виноградная'),('Дагомыс', 'Дагомыс'),('Донская', 'Донская'),('Донская(Пасечная)', 'Донская(Пасечная)'),
         ('Донская(Тимерярева)', 'Донская(Тимерярева)'), ('Завокзальный', 'Завокзальный'),('Заречный', 'Заречный'), ('Клубничная', 'Клубничная'),('КСМ', 'КСМ'),

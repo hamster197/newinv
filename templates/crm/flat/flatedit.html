@@ -36,6 +36,8 @@
             <td><a href="{{ MEDIA_ROOT }}{{ i.npict.url }}"><img src="{{MEDIA_ROOT}}{{ i.npict.url }}"  height="232"></a>  </td>
               <td><a href="{% url 'crm:FlatPhotodel' idd=post.pk sidd=i.pk %}">
                       Удалить</a></td>
+              <td><a href="{% url 'crm:FlatPctRotate' idd=post.pk sidd=i.pk %}">
+                      Повернуть</a></td>
           </tr>
         </tbody>
         {% endfor %}

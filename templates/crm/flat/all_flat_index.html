@@ -8,11 +8,12 @@
             <table class="bordered">
                <thead>
                   <tr>
-                     <th>Дата создания</th>
-                     <th>ID</th>
+                     <th></th>
+                      <th>Kоличество комнат</th>
+                     <th>Oтветственный</th>
                      <th>Цена</th>
                      <th>Район</th>
-                     <th>Улица</th>
+                     <th>Адрес</th>
                      <th></th>
                      {% comment %}{% ifequal request.user.userprofile1.ya "Да" %}
                      <th>Статус</th>
@@ -25,15 +26,24 @@
                {% for flatlist in tpflatlist %}
                <tbody>
                   <tr>
+                    <td>
+                        {% for i in flatlist.idd_gal.all|slice:":1" %}
+                            <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                        {% endfor %}
+                    </td>
                      {%  if request.user.groups.get.name == 'Офис-менеджер' %}
                      <td> <a href="{% url 'crm:new_kadastr' idd=flatlist.pk %}">{{ flatlist.date_sozd }}</a> </td>
                      {% else %}
-                     <td> {{ flatlist.date_sozd }}({{ flatlist.status_obj }}) </td>
+                     <td> {{ flatlist.komnat }}{% comment %}{{ flatlist.date_sozd }}({{ flatlist.status_obj }}){% endcomment %} </td>
                      {% endif %}
-                     <td>{{ flatlist.pk }}</td>
+                     <td> {{ flatlist.author.first_name }} {{ flatlist.author.last_name }}{% comment %}{ flatlist.pk }}{% endcomment %}</td>
                      <td> {{ flatlist.cena_agenstv }} </td>
                      <td> {{ flatlist.raion }} {{ flatlist.kr_raion }}</td>
-                     <td>{{ flatlist.adress }}</td>
+                     <td>{{ flatlist.adress }} {{ flatlist.dom_numb }}</td>
                      {% comment %}
                      <td>
                         {%  ifequal request.user flatlist.author %}
@@ -82,7 +92,7 @@
       <div class="card">
          <div class="card-content">
             <form method="post" class="post-form">
-               <h2>Краснодар</h2>
+               <h2>Сочи</h2>
                {% csrf_token %}
                {% form form=KrFlatSearch %} {% endform %}
                <button type="submit" name="_kr_submit" class="btn">Найти</button>

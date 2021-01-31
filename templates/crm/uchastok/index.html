@@ -10,10 +10,12 @@
         <table class="bordered">
         <thead>
           <tr>
-              <th>Дата создания</th>
-              <th>ID</th>
-              <th>Цена</th>
-              <th>Район</th>
+             <td></td>
+                     <th>Oтветственный</th>
+                     <th>Цена</th>
+                     <th>Район</th>
+                     <th>Адрес</th>
+              <td></td>
               <th></th>
           </tr>
         </thead>
@@ -25,10 +27,19 @@
     {% for uc in tp_uch %}
         <tbody>
           <tr>
-            <td>{{ uc.date_sozd }}({{ uc.status_obj }})</td>
-            <td><strong> {{ uc.pk }}</strong></td>
+          <td>
+              {% for i in uc.idd_gal.all|slice:":1" %}
+                            <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                        {% endfor %}
+          </td>
+            <td><strong> {{ uc.author.first_name }} {{ uc.author.last_name }}</strong></td>
             <td><strong> {{ uc.cena_agenstv }}</strong></td>
             <td><strong> {{ uc.raion }} {{ uc.kr_raion }}</strong></td>
+              <td>{{ uc.adress }} {{ uc.dom_numb }}</td>
             <th><a href="{% url 'crm:uc_detail' idd=uc.pk %}"><button type="submit" class="waves-effect waves-light btn"></span> Подробнее</button></a></th>
           </tr>
 
@@ -64,7 +75,7 @@
           {% if  kr_flag == 'Yes' %}
                 <div class="card-content">
                     <form method="post" class="post-form">
-                        <h2>Краснодар</h2>
+                        <h2>Сочи</h2>
                         {% csrf_token %}
                         {% form form=kr_form %} {% endform %}
                         <button type="submit" name="_kr_submit" class="btn">Найти</button>

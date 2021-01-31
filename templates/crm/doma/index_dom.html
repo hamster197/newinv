@@ -9,11 +9,12 @@
 
         <table class="bordered">
         <thead>
-          <tr>
-              <th>Дата создания</th>
-              <th>ID</th>
-              <th>Цена</th>
-              <th>Район</th>
+          <tr><td></td>
+              <th>Kомнат</th>
+                     <th>Oтветственный</th>
+                     <th>Цена</th>
+                     <th>Район</th>
+                     <th>Адрес</th>
               <th></th>
           </tr>
         </thead>
@@ -23,10 +24,20 @@
     {% for doms in tpdoms %}
         <tbody>
           <tr>
-            <td> {{ doms.date_sozd }}({{ doms.status_obj }}) </td>
-            <td>{{ doms.pk }}</td>
-            <td> {{ doms.cena_agenstv }} </td>
-            <td> {{ doms.raion }} {{ doms.kr_raion }}</td>
+            <td>
+                {% for i in doms.idd_gal.all|slice:":1" %}
+                            <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
+                        {% endfor %}
+            </td>
+            <td>{{ doms.h_komnat }}</td>
+            <td>{{ doms.author.first_name }} {{ doms.author.last_name }} </td>
+            <td>{{ doms.cena_agenstv }}</td>
+            <td> {{ doms.raion }} {{ doms.kr_raion }} </td>
+            <td> {{ doms.adress }} {{ doms.dom_numb }}</td>
             <td><a href="{% url 'crm:dom_detail' idd=doms.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Подробнее</button></a></td>
           </tr>
 
@@ -58,10 +69,10 @@
       </div>
       <div class="col-lg-3">
           <div class="card">
-          {% if kr_flag == 'Yes' %}
+          {% if Кпа %}
                 <div class="card-content">
                     <form method="post" class="post-form">
-                        <h2>Краснодар</h2>
+                        <h2>Сочи</h2>
                         {% csrf_token %}
                         {% form form=kr_form %} {% endform %}
                         <button type="submit" name="_kr_submit" class="btn">Найти</button>

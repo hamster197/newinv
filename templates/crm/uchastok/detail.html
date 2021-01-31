@@ -12,7 +12,11 @@
     <li class=" nav-item"> <a href="#test1" class="nav-link active" data-toggle="tab" aria-expanded="false">Главное</a> </li>
     <li class="nav-item"> <a href="#test2" class="nav-link" data-toggle="tab" aria-expanded="false">Примечание</a> </li>
 	<li class="nav-item"> <a href="#test5" class="nav-link" data-toggle="tab" aria-expanded="true">Фото и видео</a> </li>
-	{%  ifequal request.user tp_uch.author %}<li class="nav-item"> <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">Данные клиента</a> </li>{% endifequal %}
+	{%  ifequal request.user tp_uch.author %}<li class="nav-item"> <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">
+        Данные клиента({{ registred_clients.count }})</a> </li>{% endifequal %}
+{% if request.user.groups.get.name == tp_uch.author.groups.get.name and request.user.userprofile1.nach_otd == 'Да' %}
+    <a href="#test4" class="nav-link" data-toggle="tab" aria-expanded="true">Данные клиента({{ registred_clients.count }})</a> </li>
+{% endif %}
     </ul>
 <div class="tab-content br-n pn">
     <div id="test1" class="tab-pane active">
@@ -111,15 +115,15 @@
     <div id="test4" class="tab-pane">
 	<div class="p-20" ><p> </p></div>
     <div class="row">
-           {%  ifequal request.user tp_uch.author %}<table class="bordered">
+           {% comment %}{%  ifequal request.user tp_uch.author %}{% endcomment %}<table class="bordered">
 			 <tbody>
           <tr>
               <td>ФИО собственника:  </td>
-              <td><strong>{{tp_uch.client_fio }}</strong></td>
+              <td><strong>{{ tp_uch.client_name }}</strong></td>
           </tr>
           <tr>
             <td>Телефон собственника: </td>
-            <td><strong>{{tp_uch.tel}}</strong</td>
+            <td><strong>{{ tp_uch.client_tel}}</strong</td>
           </tr>
           <tr>
             <td>Адрес: </td>
@@ -133,8 +137,18 @@
             <td>Цена агенства: </td>
             <td><strong>{{ tp_uch.cena_agenstv }} руб.</strong></td>
           </tr>
+             <td>Телефон зарегестрирован у :
+                                                                </td>
+                                                                <td>
+
+                                                                        <strong>
+                                                                           {% for client in registred_clients %}
+                                                                    {{ client.author.first_name }} {{ client.author.last_name }},
+                                                                            {% endfor %}
+                                                                           </strong>
+                                                                    </td>
            </tbody>
-      </table>{% endifequal %}
+      </table>{% comment %}{% endifequal %}{% endcomment %}
 </div>
 </div>
 </div>

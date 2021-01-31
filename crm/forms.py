@@ -139,7 +139,7 @@ class kr_yandex_flatform(forms.ModelForm):
 class flateditform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
-        fields=('adress','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya','remont',
+        fields=('status_obj','adress','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya','remont',
                 'komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr',
                 'cena_sobstv','cena_agenstv','prim','security','rubbish_chute','lift','balcony')#,'domclick_pub')
     def clean(self):
@@ -283,7 +283,7 @@ class client_edit_form(forms.ModelForm):
 class doma_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv','kadastr',
+        fields=('status_obj','client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv','kadastr',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more',)
 
@@ -347,7 +347,7 @@ class kr_doma_edit_form(forms.ModelForm):
 class uc_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('client_name','client_tel','raion','adress','uc_dom_nunb','h_infr','vid_razr','relef','kadastr',
+        fields=('status_obj','client_name','client_tel','raion','adress','uc_dom_nunb','h_infr','vid_razr','relef','kadastr',
                     'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
                     'cena_sobstv','cena_agenstv','prim',)
     def clean(self):
