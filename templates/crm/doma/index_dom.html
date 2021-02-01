@@ -9,7 +9,9 @@
 
         <table class="bordered">
         <thead>
-          <tr><td></td>
+          <tr>
+              <td>ID</td>
+              <td></td>
               <th>Kомнат</th>
                      <th>Oтветственный</th>
                      <th>Цена</th>
@@ -24,6 +26,7 @@
     {% for doms in tpdoms %}
         <tbody>
           <tr>
+          <td>{{ doms.pk }}</td>
             <td>
                 {% for i in doms.idd_gal.all|slice:":1" %}
                             <img

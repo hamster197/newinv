@@ -104,6 +104,7 @@
          <table class="bordered">
         <thead>
           <tr>
+              <th>ID</th>
               <th></th>
                     <th>Tип объекта</th>
                       <th>Kоличество комнат</th>
@@ -119,6 +120,7 @@
     {% for subj in pub_sybj %}
         <tbody>
           <tr>
+          <td>{{ subj.pk }}</td>
           <td>
               {% for i in subj.idd_gal.all|slice:":1" %}
                             <img
@@ -171,8 +173,9 @@
          <table class="bordered">
         <thead>
           <tr>
-              <th>Дата создания</th>
               <th>ID</th>
+              <th>Дата создания</th>
+
               <th>Цена</th>
               <th>Район</th>
               <th>Улица</th>
@@ -185,8 +188,9 @@
     {% for subj in un_pub_sybj %}
         <tbody>
           <tr>
+          <td>{{ subj.pk }}</td>
               <td>{{ subj.date_sozd }}</td>
-            <td>{{ subj.pk }}</td>
+
             <td> {{ subj.cena_agenstv }} </td>
             <td> {{ subj.raion }} {{ subj.kr_raion }}</td>
           <td>{% if subj.type == 'flat' %}

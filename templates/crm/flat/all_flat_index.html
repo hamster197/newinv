@@ -8,6 +8,7 @@
             <table class="bordered">
                <thead>
                   <tr>
+                      <th>ID</th>
                      <th></th>
                       <th>Kоличество комнат</th>
                      <th>Oтветственный</th>
@@ -26,6 +27,7 @@
                {% for flatlist in tpflatlist %}
                <tbody>
                   <tr>
+                  <td>{{ flatlist.pk }}</td>
                     <td>
                         {% for i in flatlist.idd_gal.all|slice:":1" %}
                             <img

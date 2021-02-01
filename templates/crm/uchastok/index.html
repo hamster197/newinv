@@ -10,6 +10,7 @@
         <table class="bordered">
         <thead>
           <tr>
+              <td>ID</td>
              <td></td>
                      <th>Oтветственный</th>
                      <th>Цена</th>
@@ -27,6 +28,7 @@
     {% for uc in tp_uch %}
         <tbody>
           <tr>
+          <td>{{ uc.pk }}</td>
           <td>
               {% for i in uc.idd_gal.all|slice:":1" %}
                             <img
