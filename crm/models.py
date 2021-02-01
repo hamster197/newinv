@@ -426,6 +426,9 @@ class flat_obj_gal(models.Model):
         im.save(fullname)
         super(flat_obj_gal, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return self.npict
+
 
 class clients(models.Model):
     client_fio=models.CharField(max_length=45,verbose_name='Клиент(ФИО)')
