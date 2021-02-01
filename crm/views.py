@@ -490,7 +490,8 @@ def my_flatview_edit(request,idd):
                     id_gal_id=idd,
                     npict=a_file
                 )
-                instance.save()
+                import codecs
+                instance.save(codecs.BOM_UTF8)
                 instance.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
