@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User, Group
 from django.utils import timezone
+from django_select2.forms import ModelSelect2Widget, Select2Widget, Select2MultipleWidget, Select2TagWidget, \
+    HeavySelect2Mixin
 from material import *
 from django import forms
 from django.core.exceptions import ValidationError
@@ -263,14 +265,16 @@ class seo_pub_form(forms.ModelForm):
 class newclientform(forms.ModelForm):
     class Meta:
         model=clients
-        fields=('client_fio','tel','email','category','raion','cel_pokupki','prim','budg_ot','budg_do','ferst_work',
-                'prich_otkaza','st_pub')
-        widgets = {'raion': SelectMultiple }
+        fields=('client_fio','tel','email','category','raion','prim','budg_ot','budg_do','ferst_work',#'cel_pokupki',
+                'prich_otkaza',)#'st_pub'
+        widgets = {'raion': Select2MultipleWidget(attrs={'width':'100%'}),#Select2TagWidget(attrs={'width':'100%'})
+                   #'cel_pokupki':Wi,
+            }
 
 class client_edit_form(forms.ModelForm):
     class Meta:
         model=clients
-        fields=('raion','cel_pokupki','prim','budg_ot','budg_do','ferst_work',
+        fields=('raion','prim','budg_ot','budg_do','ferst_work',# 'cel_pokupki',
                 'prich_otkaza','st_pub')
 
         widgets = {'raion': SelectMultiple}

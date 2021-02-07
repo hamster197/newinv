@@ -28,6 +28,7 @@ urlpatterns = [
     #url(r'^jet/', include('jet.urls', 'jet')),
     url(r'^admin/', admin.site.urls),
     #url(r'^admin', admin.site.urls),
+    url("select2/", include("django_select2.urls")),
     url(r'^$', views.login_view, name='login'),
     url(r'^accounts/login/$', views.login_view, name='login'),
     url(r'^ch_pass$', views.ch_pass_view, name='ch_login'),

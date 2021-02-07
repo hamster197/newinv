@@ -426,8 +426,9 @@ class flat_obj_gal(models.Model):
         im.save(fullname)
         super(flat_obj_gal, self).save(*args, **kwargs)
 
-    def __unicode__(self):
-        return self.npict.encoding('UTF-8')
+    # def __unicode__(self, *args, **kwargs):
+    #     print('1')
+    #     return u'%s' % self.npict
 
 
 class clients(models.Model):

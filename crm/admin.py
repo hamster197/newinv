@@ -140,6 +140,7 @@ admin.site.register(zayavka_subj)#, zadachi_spr_fields)
 admin.site.register(zadachi, zadachi_fields)
 admin.site.register(zadachi_spr, zadachi_spr_fields)
 admin.site.register(flat_obj_gal, galery_fields)
+admin.site.register(clients, )
 class UserInline(admin.StackedInline):
     model = UserProfile1
     can_delete = False

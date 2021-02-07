@@ -452,7 +452,9 @@ def flat_apparts_postForm(request):
             else:
                 form = flatform_appart()
     return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': form,'tn1':n1,'tn2':n2,'tn3':n3})
-
+def remove_accents(value):
+    nkfd_form = unicodedata.normalize('NFKD', str(value))
+    return "".join([c for c in nkfd_form if not unicodedata.combining(c)])
 @login_required
 def my_flatview_edit(request,idd):
     n1='Квартиры'
@@ -490,8 +492,7 @@ def my_flatview_edit(request,idd):
                     id_gal_id=idd,
                     npict=a_file
                 )
-                import codecs
-                instance.save(codecs.BOM_UTF8)
+                instance.save()
                 instance.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
@@ -504,6 +505,7 @@ def my_flatview_edit(request,idd):
             return render(request,'crm/flat/flatedit.html', {'tpflatpostform': flat, 'post':post, 'tpform':form, })
             #return redirect('crm:flat_edit', idd=post.pk)
     else:
+        flat = flateditform(instance=post)
         if request.user.userprofile1.ya == 'Да':
         #     if request.user.groups.get().name.find('Краснодар')==6:
         #         flat = kr_yandex_flateditform(instance=post)
@@ -1461,7 +1463,7 @@ def otd_clients_view(request):
 def cliend_detail_view(request, idd):
     n1='Клиенты'
     n2='подробно'
-    client=get_object_or_404(clients,pk=idd)
+    client=get_object_or_404(clients, pk=idd)
     #s = client.category
     if client.category == 'Квартиры':
      pub_obj = flat_obj.objects.filter( status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-datep')

@@ -260,7 +260,12 @@ label{margin:0;}
                                         <span class="hide-menu"> Участки </span>
                                     </a>
                                 </li>
-
+                                <li class="sidebar-item">
+                                    <a href="{% url 'crm:new_client' %}" class="sidebar-link">
+                                        <i class="mdi mdi-highway"></i>
+                                        <span class="hide-menu"> Клиента </span>
+                                    </a>
+                                </li>
 
 						 <li class="nav-small-cap">
                             <i class="mdi mdi-dots-horizontal"></i>
@@ -289,13 +294,13 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Участки </span>
                                     </a>
-                                </li>{% comment %}
+                                </li>
 								<li class="sidebar-item">
-                                    <a href="{% url 'crm:all_vs_pub' %}" class="sidebar-link">
+                                    <a href="{% url 'crm:own_clienws' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> в Вестум</span>
+                                        <span class="hide-menu"> Клиенты</span>
                                     </a>
-                                    </li>
+                                    </li>{% comment %}
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:cianindex' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
@@ -342,18 +347,19 @@ label{margin:0;}
                                 </li>
                             </ul>
                         </li>
-						{% if request.user.groups.get.name == 'seo' or request.user.groups.get.name == 'Администрация' %}
-							<li class="nav-small-cap">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                            <span class="hide-menu">СЕО</span>
-                        </li>
-							<li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <i class="mdi mdi-link"></i>
-                                <span class="hide-menu"> SEO </span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item">{% comment %}
+{#						{% if request.user.groups.get.name == 'seo' or request.user.groups.get.name == 'Администрация' %}#}
+{#							<li class="nav-small-cap">#}
+{#                            <i class="mdi mdi-dots-horizontal"></i>#}
+{#                            <span class="hide-menu">СЕО</span>#}
+{#                        </li>#}
+{#							<li class="sidebar-item">#}
+{#                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">#}
+{#                                <i class="mdi mdi-link"></i>#}
+{#                                <span class="hide-menu"> SEO </span>#}
+{#                            </a>#}
+{#                            <ul aria-expanded="false" class="collapse  first-level">#}
+{#                                <li class="sidebar-item">#}
+                                    {% comment %}
                                     <a href="{% url 'crm:seo_flat_pub'%}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Квартиры на сайте </span>
@@ -365,64 +371,66 @@ label{margin:0;}
                                         <span class="hide-menu"> Квартиры не на сайте </span>
                                     </a>
                                 </li>{% endcomment %}
-                                 <li class="sidebar-item">
-                                    <a href="{% url 'crm:dm_index'%}" class="sidebar-link">
-                                        <i class="mdi mdi-format-align-right"></i>
-                                        <span class="hide-menu"> Текст для ДомКлик </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-						
-						{% endif %}<li class="nav-small-cap">
-                            <i class="mdi mdi-dots-horizontal"></i>
-                            <span class="hide-menu">Офис</span>
-                        </li>
-							<li class="sidebar-item">
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <i class="mdi mdi-account"></i>
-                                <span class="hide-menu"> Клиенты</span>
-                            </a>
-
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item">
-                                    {% if request.user.groups.get.name == 'Администрация' %}
-                                    <a href="{% url 'voronka_ap:voronka_main_adm' %}" class="sidebar-link">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Воронка продаж </span>
-                                    </a>
-                                    {% endif %}
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{% url 'voronka_ap:voronka_index' %}" class="sidebar-link">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Мои клиенты </span>
-                                    </a>
-                                </li>
-								{% if request.user.groups.get.name == 'Офис-менеджер' or request.user.groups.get.name == 'Администрация'%}
-                                <li class="sidebar-item">
-                                    <a href="{% url 'crm:NewZayavNov' %}" class="sidebar-link">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Внести новостройку </span>
-                                    </a>
-                                </li>
-                                 <li class="sidebar-item">
-                                    <a href="{% url 'crm:NewZayavLich' %}" class="sidebar-link">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Заявка на риелтора </span>
-                                    </a>
-                                </li>
-								    {% endif %}
-                                                        {% comment %}
-								<li class="sidebar-item">
-                                    <a href="Выбрать клиента" class="sidebar-link">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Выбрать клиента</span>
-                                    </a>
-                                </li>
-								{% endcomment %}
-                            </ul>
-                        </li>                        <li class="nav-small-cap">
+{#                                 <li class="sidebar-item">#}
+{#                                    <a href="{% url 'crm:dm_index'%}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-format-align-right"></i>#}
+{#                                        <span class="hide-menu"> Текст для ДомКлик </span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#						#}
+{#						{% endif %}#}
+{#                        <li class="nav-small-cap">#}
+{#                            <i class="mdi mdi-dots-horizontal"></i>#}
+{#                            <span class="hide-menu">Офис</span>#}
+{#                        </li>#}
+{#							<li class="sidebar-item">#}
+{#                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">#}
+{#                                <i class="mdi mdi-account"></i>#}
+{#                                <span class="hide-menu"> Клиенты</span>#}
+{#                            </a>#}
+{##}
+{#                            <ul aria-expanded="false" class="collapse  first-level">#}
+{#                                <li class="sidebar-item">#}
+{#                                    {% if request.user.groups.get.name == 'Администрация' %}#}
+{#                                    <a href="{% url 'voronka_ap:voronka_main_adm' %}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Воронка продаж </span>#}
+{#                                    </a>#}
+{#                                    {% endif %}#}
+{#                                </li>#}
+{#                                <li class="sidebar-item">#}
+{#                                    <a href="{% url 'voronka_ap:voronka_index' %}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Мои клиенты </span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#								{% if request.user.groups.get.name == 'Офис-менеджер' or request.user.groups.get.name == 'Администрация'%}#}
+{#                                <li class="sidebar-item">#}
+{#                                    <a href="{% url 'crm:NewZayavNov' %}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Внести новостройку </span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#                                 <li class="sidebar-item">#}
+{#                                    <a href="{% url 'crm:NewZayavLich' %}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Заявка на риелтора </span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#								    {% endif %}#}
+{#                                                        {% comment %}#}
+{#								<li class="sidebar-item">#}
+{#                                    <a href="Выбрать клиента" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Выбрать клиента</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+{#								{% endcomment %}#}
+{#                            </ul>#}
+{#                        </li>                        #}
+                        <li class="nav-small-cap">
                             <i class="mdi mdi-dots-horizontal"></i>
                             <span class="hide-menu">Отчеты</span>
                         </li>

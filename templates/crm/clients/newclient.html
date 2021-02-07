@@ -1,6 +1,10 @@
 {% extends 'crm/main.html' %}
 {% block content %}
-
+{{ tpformclient.media.css }}
+<style type="text/css">
+        input, select,select2 select2-container {width: 100%}
+</style>
+    <script src="/static/select/jquery-3.4.1.js"></script>
 {% load material_form %}
     <div class="row">
          <div class="col s12">
@@ -8,7 +12,8 @@
                 <div class="card-content">
                     <form method="post" class="post-form">
                     {% csrf_token %}
-                        {% form form=tpformclient layout=form.layout%}{% endform %}
+                        {{ tpformclient.as_p }}
+                       {% comment %} {% form form=tpformclient layout=form.layout%}{% endform %}{% endcomment %}
                         <button type="submit" name="_submit" class="btn">Сохранить</button>
                 </div>
             </div>
@@ -17,7 +22,8 @@
 
 </form>
 
-
+    {{ tpformclient.media.js }}
+<script src="/static/select/js/i18n/ru.js"></script>
 
 
 
