@@ -4996,7 +4996,8 @@ def AgentObjectsView(request, agent_id):
     agent = get_object_or_404(User, username=angent_login)
     pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Опубликован').order_by('type')
     un_pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Не опубликован').order_by('type')
-    return render(request, 'crm/stat/agent_objects.html', {'agent':agent, 'pub_sybj':pub_sybj,
+    client = clients.objects.filter(auth__username=angent_login)
+    return render(request, 'crm/stat/agent_objects.html', {'agent':agent, 'pub_sybj':pub_sybj, 'clients':client,
                                                            'un_pub_sybj':un_pub_sybj, })
 
 @login_required
