@@ -2241,10 +2241,26 @@ def reeelt_otchet_all_view(request, tpr_tab):
         rasr_otchet = otchet_nov.objects.filter(sdelka_zakrita='Рассрочка').order_by('-date_zakr')
 
         open_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Нет').order_by('-pk').count()
+        sum_open_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Нет').aggregate(Sum('komisia'))['komisia__sum']
+        if sum_open_otchet_sum is None:
+            sum_open_otchet_sum = 0
+
         closet_otchet_sum = otchet_nov.objects.filter(Q(sdelka_zakrita='Да') | Q(sdelka_zakrita='Да-Рассрочка'),
                                                       date_zakr__gte=ds,date_zakr__lte=de).order_by('-pk').count()
+        sum_closet_otchet_sum = otchet_nov.objects.filter(Q(sdelka_zakrita='Да') | Q(sdelka_zakrita='Да-Рассрочка'),
+                                                      date_zakr__gte=ds, date_zakr__lte=de).aggregate(Sum('komisia'))['komisia__sum']
+        if sum_closet_otchet_sum is None:
+            sum_closet_otchet_sum = 0
+
         sriv_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Срыв',date_zakr__gte=ds,date_zakr__lte=de).order_by('-pk').count()
+        sum_sriv_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Срыв', date_zakr__gte=ds, date_zakr__lte=de).aggregate(Sum('komisia'))['komisia__sum']
+        if sum_sriv_otchet_sum is None:
+            sum_sriv_otchet_sum = 0
+
         rasr_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Рассрочка').order_by('-pk').count()
+        sum_rasr_otchet_sum = otchet_nov.objects.filter(sdelka_zakrita='Рассрочка').aggregate(Sum('komisia'))['komisia__sum']
+        if sum_rasr_otchet_sum is None:
+            sum_rasr_otchet_sum = 0
 ######################################################################################################################
         razn_otch = otchet_nov.objects.filter(date_zakr__gte=ds,date_zakr__lte=de, sdelka_zakrita='Да', ot_kuda_kl='Другое').count()
         razn_otch = razn_otch +(otchet_nov.objects.filter(date_sozd__gte=ds, date_sozd__lte=de, sdelka_zakrita='Рассрочка',
@@ -2685,7 +2701,12 @@ def reeelt_otchet_all_view(request, tpr_tab):
                                                            'tcloset_otchet_sum':closet_otchet_sum,
                                                            'tsriv_otchet_sum':sriv_otchet_sum,
                                                            'trasr_otchet_sum':rasr_otchet_sum,
-                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab})
+                                                           'tde':date,'t_my_ya_obj':my_ya_obj,'tpr_tab':tpr_tab,
+                                                           'sum_open_otchet_sum':sum_open_otchet_sum,
+                                                            'sum_closet_otchet_sum':sum_closet_otchet_sum,
+                                                           'sum_sriv_otchet_sum': sum_sriv_otchet_sum,
+                                                           'sum_rasr_otchet_sum': sum_rasr_otchet_sum,
+                                                           })
 
 
 
