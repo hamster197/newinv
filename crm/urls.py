@@ -100,6 +100,13 @@ urlpatterns = [
     url(r'^uch/edit(?P<idd>[0-9]+)/$', views.ucheditview, name='uc_edit'),
     url(r'^uch/delete/(?P<idd>[0-9]+)/(?P<sidd>[0-9]+)/$', views.uchastok_del_view, name='uc_delete'),
 
+    #Commerce
+    url(r'^commerce/new$', views.NewCommerceView, name='new_commerce_url'),
+    url(r'^commerce/my/index$', views.MyIndexCommerceView, name='my_index_commerce_url'),
+    url(r'^commerce/all/index$', views.AllIndexCommerceView, name='all_index_commerce_url'),
+    url(r'^commerce/detail/(?P<idd>[0-9]+)$', views.DetailCommerceView, name='detail_commerce_url'),
+    url(r'^commerce/edit/(?P<idd>[0-9]+)$', views.EditCommerceView, name='edit_commerce_url'),
+
     #otchet
     url(r'^newotchet/$',views.new_otchet_view_All, name='otch_new_all'),
     url(r'^editotchet/(?P<idd>[0-9]+)/$', views.otchet_edit_view, name='otch_edit'),

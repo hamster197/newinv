@@ -21,7 +21,8 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     nov_new_zayv_form, all_zayav_form, reelt_lich_new_zayv_form, search_by_moth_form, seo_pub_form, kadastr_form, \
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
     BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
-    kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm, kr_flat_search_form
+    kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm, kr_flat_search_form, \
+    CommerceEditForm
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed
@@ -452,9 +453,11 @@ def flat_apparts_postForm(request):
             else:
                 form = flatform_appart()
     return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': form,'tn1':n1,'tn2':n2,'tn3':n3})
+
 def remove_accents(value):
     nkfd_form = unicodedata.normalize('NFKD', str(value))
     return "".join([c for c in nkfd_form if not unicodedata.combining(c)])
+
 @login_required
 def my_flatview_edit(request,idd):
     n1='Квартиры'
@@ -560,7 +563,7 @@ def flat_del_view(request, idd, sidd):
 @login_required
 def FlatPctRotateView(request, idd, sidd):
     pct = flat_obj_gal.objects.get(pk=sidd)
-    print(pct.npict.path)
+    #print(pct.npict.path)
     from PIL import Image
     im = Image.open(pct.npict.path)
     im.transpose(Image.ROTATE_90).save(pct.npict.path)
@@ -590,6 +593,155 @@ def uchastok_del_view(request, idd, sidd):
     sp = get_object_or_404(flat_obj, pk=idd)
     #form = vigruzkaGaleryForm()
     return redirect('crm:uc_edit', idd=idd)
+###################################################
+###  start of Commerce
+###################################################
+@login_required
+def NewCommerceView(request):
+    n1 = 'Коммерческая недвижимость'
+    n2 = 'подача на Cайт, RegionalRealty, Yandex, Mail, Юла'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+
+    tpform = CommerceEditForm()
+    if request.POST:
+        tpform = CommerceEditForm(request.POST, request.FILES)
+        if tpform.is_valid():
+            # cena=form.cleaned_data['cena_sobstv']
+            flat_obj = tpform.save(commit=False)
+            flat_obj.author = request.user
+            if request.user.groups.get().name == 'Офис-менеджер':
+                flat_obj.domclick = 'Нет'
+                flat_obj.ploshad = 0
+                flat_obj.date_vigr_sait = timezone.datetime.now()
+                flat_obj.cena_sobstv = 0
+            else:
+                flat_obj.domclick = 'Да'
+            flat_obj.text_err = 'False'
+            flat_obj.dom_err = 'False'
+            flat_obj.kv_err = 'False'
+            flat_obj.date_sozd = timezone.datetime.now()
+            flat_obj.date_vigr_sait = timezone.datetime.now()
+            flat_obj.type = 'komerc'
+            if request.POST.get('compo') == 'Без договора':
+                flat_obj.contract = 'Без договора'
+                flat_obj.contract_number = ''
+                flat_obj.contract_date_end = None
+            else:
+                flat_obj.contract = request.POST.get('compo')
+                flat_obj.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    flat_obj.contract_date_end = request.POST.get('date')
+            flat_obj.save()
+            # return redirect('crm:flat_edit', idd=flat_obj.pk)
+            idd = flat_obj.pk
+            files = request.FILES.getlist('myfiles')
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                instance.save()
+                instance.save_water()
+            if '_submit_close' in request.POST:
+                return redirect('crm:my_index_commerce_url')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_commerce_url')
+            else:
+                return redirect('crm:edit_commerce_url', idd=idd)
+
+    return render(request, 'crm/commerce/edit.html', {'tpform':tpform, 'tn1':n1, 'tn2':n2, 'tn3':n3,})
+
+@login_required
+def MyIndexCommerceView(request):
+    n1 = 'Коммерческая недвижимость'
+    n2 = 'Мои обьекты'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    commerce = flat_obj.objects.filter(author=request.user, type='komerc')
+    tpform = flat_search_form()
+    if request.POST:
+        tpform = flat_search_form(request.POST)
+        if tpform.is_valid():
+            min_square = tpform.cleaned_data['search_minp']
+            max_square = tpform.cleaned_data['search_maxp']
+            min_price = tpform.cleaned_data['search_minc']
+            max_price = tpform.cleaned_data['search_maxc']
+            district = tpform.cleaned_data['search_raion']
+            if district != 'Любой':
+                commerce = flat_obj.objects.filter(author=request.user, type='komerc', raion=district,
+                                               cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
+                                               ploshad__gte=min_square, ploshad__lte=max_square,
+                                               )
+            else:
+                commerce = flat_obj.objects.filter(author=request.user, type='komerc',# raion=district,
+                                                   cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
+                                                   ploshad__gte=min_square, ploshad__lte=max_square,
+                                                   )
+    return render(request, 'crm/commerce/index.html', { 'tpform':tpform, 'tn1': n1, 'tn2': n2, 'tn3': n3, 'commerce':commerce, })
+
+@login_required
+def AllIndexCommerceView(request):
+    n1 = 'Коммерческая недвижимость'
+    n2 = 'Все обьекты'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    if request.user.groups.get().name.find('Адлер')==6:
+        commerce = flat_obj.objects.filter(author=request.user, type='komerc', raion__exact='Адлер')
+    else:
+        commerce = flat_obj.objects.filter(author=request.user, type='komerc').exclude(raion__exact='Адлер')
+    tpform = flat_search_form()
+    if request.POST:
+        tpform = flat_search_form(request.POST)
+        if tpform.is_valid():
+            min_square = tpform.cleaned_data['search_minp']
+            max_square = tpform.cleaned_data['search_maxp']
+            min_price = tpform.cleaned_data['search_minc']
+            max_price = tpform.cleaned_data['search_maxc']
+            district = tpform.cleaned_data['search_raion']
+            if district != 'Любой':
+                commerce = flat_obj.objects.filter( type='komerc', raion=district,#author=request.user,
+                                               cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
+                                               ploshad__gte=min_square, ploshad__lte=max_square,
+                                               )
+            else:
+                commerce = flat_obj.objects.filter(type='komerc',# raion=district, author=request.user,
+                                                   cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
+                                                   ploshad__gte=min_square, ploshad__lte=max_square,
+                                                   )
+    return render(request, 'crm/commerce/index.html', { 'tpform':tpform, 'tn1': n1, 'tn2': n2, 'tn3': n3, 'commerce':commerce, })
+
+@login_required
+def DetailCommerceView(request, idd):
+    n1 = 'Коммерческая недвижимость'
+    n2 = 'подробно'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    tpdom = get_object_or_404(flat_obj, pk=idd)
+    registred_clients = flat_obj.objects.filter(client_tel=tpdom.client_tel).exclude(pk=tpdom.pk)
+    return render(request, 'crm/commerce/detail.html',{'tn1': n1, 'tn2': n2, 'tn3': n3,'tpdom':tpdom,
+                                                       'registred_clients':registred_clients, })
+
+
+@login_required
+def EditCommerceView(request, idd):
+    n1 = 'Коммерческая недвижимость'
+    n2 = 'редактор'
+    n3 = zayavka.objects.filter(status='Свободен').count()
+    subj = get_object_or_404(flat_obj, pk=idd)
+    if request.POST:
+        form = CommerceEditForm(request.POST, request.FILES, instance=subj)
+        if form.is_valid():
+            form.save()
+            if '_submit_close' in request.POST:
+                return redirect('crm:my_index_commerce_url')
+            if '_submit_new' in request.POST:
+                return redirect('crm:new_commerce_url')
+            else:
+                return redirect('crm:edit_commerce_url', idd=idd)
+    form = CommerceEditForm(instance=subj)
+    return render(request, 'crm/commerce/edit.html',{'tn1': n1, 'tn2': n2, 'tn3': n3,
+                                                     'tpform':form,'post':subj,})
+
+###################################################
+###  end of Commerce
+###################################################
 ###################################################
 ###  start All Flat list
 ###################################################

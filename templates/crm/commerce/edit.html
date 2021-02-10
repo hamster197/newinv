@@ -1,0 +1,91 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+
+{% load material_form %}
+    <div class="row">
+         <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <form enctype="multipart/form-data" method="post" class="post-form">
+                    {% csrf_token %}
+                        {% form form=tpform layout=form.layout%}{% endform %}
+                      <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons"></i>{{ post.contract}} (Договор)</div>
+      <div class="collapsible-body"><span>
+
+<select name="compo" >
+  <option></option>
+  <option {% if post.contract == 'Без договора' %} selected {% endif %} >Без договора</option>
+    <option {% if post.contract == 'Агентский' %} selected {% endif %} >Агентский</option>
+    <option {% if post.contract == 'Эксклюзив' %} selected {% endif %} >Эксклюзив</option>
+</select>
+          <input type="date" name="date" value="{{ post.contract_date_end|date:'Y-m-d' }}"> Дата окончания {{ post.contract_date_end|date:'Y-m-d' }}
+       <input type="text" name="contract_number" value="{{ post.contract_number }}"> Номер договора
+          </p>
+</span></div>
+    </li>
+
+  </ul>
+    {% if post.idd_gal.all %}
+        {% for i in post.idd_gal.all %}
+        <tbody>
+        <tr>
+            <td><a href="{{ MEDIA_ROOT }}{{ post.main_pct.url }}"><img src="{{MEDIA_ROOT}}{{  post.main_pct.url }}"  height="232"></a>  </td>
+        </tr>
+          <tr>
+            <td> ID: {{ i.pk }}  </td>
+            <td><a href="{{ MEDIA_ROOT }}{{ i.npict.url }}"><img src="{{MEDIA_ROOT}}{{ i.npict.url }}"  height="232"></a>  </td>
+              <td><a href="{% url 'crm:dom_pct_del' idd=post.pk sidd=i.pk %}">
+                      Удалить</a></td>
+              <td><a href="{% url 'crm:FlatPctRotate' idd=post.pk sidd=i.pk %}">
+                      Повернуть</a></td>
+          </tr>
+        </tbody>
+        {% endfor %}
+    {% endif%}
+
+    <p>
+                Выберите не менее 5 картинок<strong> (Нажав кнопку ctr можно выбрать сразу несколько файлов!)</strong>
+            </p>
+            <input type="file" name="myfiles" multiple>
+            {% comment %}<button type="submit" class="btn btn-primary">Сохранить</button>{% endcomment %}
+
+
+         </div>
+         {% for pict in tpict %}<li> {{ pict.npict }}</li> {% endfor %}
+      </div><button type="submit" name="_submit" class="btn">Сохранить и продолжить редактирование</button>
+   <button type="submit" name="_submit_new" class="btn" >
+       Сохранить и создать новый</button>
+   <button type="submit" name="_submit_close" class="btn">Сохранить и закрыть</button>
+   </div>
+                </div>
+            </div>
+         </div>
+     </div>
+
+</form>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="/static/material/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/static/material/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="/static/material/materialize.js"></script>
+
+    <script>
+          document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
+
+  // Or with jQuery
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+    </script>
+
+
+
+{% endblock %}

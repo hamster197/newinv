@@ -258,6 +258,23 @@ class seo_pub_form(forms.ModelForm):
         model = flat_obj
         fields =('nazv',)
 
+class CommerceEditForm(forms.ModelForm):
+    class Meta:
+        model = flat_obj
+        fields = ('client_name','client_tel','raion','adress','type_building','type_deal','ploshad','cena_sobstv','cena_agenstv',
+                  'prim','main_pct', 'youtube',)
+        widgets = {'main_pct': forms.FileInput(attrs={'required': 'true', }),
+                   'type_deal': forms.Select(attrs={'required': 'true', }),
+                   'type_building': forms.Select(attrs={'required': 'true', }),
+                   'client_name': forms.TextInput(attrs={'required': 'true', }),
+                   'client_tel': forms.TextInput(attrs={'required': 'true', }),
+                   'raion': forms.Select(attrs={'required': 'true', }),
+                   'adress': forms.TextInput(attrs={'required': 'true', }),
+                   'ploshad': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
+                   'cena_sobstv': forms.TextInput(attrs={'required': 'true', 'type': 'number'}),
+                   'cena_agenstv': forms.TextInput(attrs={'required': 'true', 'type': 'number'}),
+                   'prim': forms.TextInput(attrs={'required': 'true', }),
+                   }
 ########################3
 #CLIENTS
 ##########################

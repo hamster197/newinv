@@ -1,0 +1,115 @@
+weeq{% extends 'crm/main.html' %}
+{% block content %}
+    <div class="row">
+      <div class="col-lg-9">
+          <div class="card">
+                <div class="card-content">
+
+ {% load material_form %}
+
+        <table class="bordered">
+        <thead>
+          <tr>
+              <td>ID</td>
+              <td></td>
+              <th>Тип строения</th>
+                     <th>Тип Сделки</th>
+                     <th>Площадь</th>
+                     <th>Район</th>
+                     <th>Цена</th>
+              <th></th>
+          </tr>
+        </thead>
+{% if commerce %}
+{% load el_pagination_tags %}
+{% lazy_paginate commerce %}
+    {% for doms in commerce %}
+        <tbody>
+          <tr>
+          <td>{{ doms.pk }}</td>
+            <td>
+                {% for i in doms.idd_gal.all|slice:":1" %}
+                            <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20
+            {% if not doms.main_pct %}{{ i.npict.url }}{% else %}{{ doms.main_pct.url }}{% endif %}"></div>
+                        {% endfor %}
+            </td>
+            <td>{{ doms.type_building }} </td>
+            <td>{{ doms.type_deal }}  </td>
+            <td>{{ doms.ploshad }}</td>
+            <td> {{ doms.raion }} {{ doms.kr_raion }} </td>
+            <td> {{ doms.cena_agenstv }} </td>
+            <td><a href="{% url 'crm:detail_commerce_url' idd=doms.pk %}"><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Подробнее</button></a></td>
+          </tr>
+
+        </tbody>
+
+
+    {% endfor %}
+    </table>
+
+{% get_pages %}
+    <ul class="pagination">
+        {% for page in pages %}
+            <li>
+                <a href="{{ page.path }}" rel="page" class="endless_page_link">{{ page.number }}</a>
+            </li>
+        {% endfor %}
+   </ul>
+
+{% else %}
+  </tbody></br></br></br>
+   <strong>У Вас пока нет обьектов</strong>
+{% endif %}
+                        </tbody>
+      </table>
+
+
+                </div>
+          </div>
+      </div>
+      <div class="col-lg-3">
+          <div class="card">
+          {% if Кпа %}
+                <div class="card-content">
+                    <form method="post" class="post-form">
+                        <h2>Сочи</h2>
+                        {% csrf_token %}
+                        {% form form=kr_form %} {% endform %}
+                        <button type="submit" name="_kr_submit" class="btn">Найти</button>
+                    </form>
+                </div>
+          {% endif %}
+          </div>
+          <div class="card">
+                <div class="card-content">
+                    <form method="post" class="post-form">
+                        <h2>Сочи</h2>
+                        {% csrf_token %}
+                        {% form form=tpform %} {% endform %}
+                        <button type="submit" name="_submit" class="btn">Найти</button>
+                    </form>
+                </div>
+          </div>
+      </div>
+
+    </div>
+
+ <!--
+    <div class="fixed-action-btn horizontal">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">access_time</i>
+    </a>
+    <ul>
+      <li><a href="{% url 'crm:upb_dom_view' %}" class="btn-floating yellow darken-1"title = "Личные"><i class="material-icons">account_box</i></a></li>
+      <li><a <a href="{% url 'crm:pub_dom_view' %}"  class="btn-floating green" title = "В агенстве"><i class="material-icons">announcement</i></a></li>
+
+    </ul>
+  </div>
+-->
+
+
+{% endblock %}
