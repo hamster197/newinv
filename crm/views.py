@@ -1619,15 +1619,15 @@ def cliend_detail_view(request, idd):
     #s = client.category
     if client.category == 'Квартиры':
      pub_obj = flat_obj.objects.filter( status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-datep')
-     un_pub_obj = flat_obj.objects.filter( status_obj__contains='Не опубликован', cena_agenstv__lte=client.budg_do ).order_by('-datep')
+     un_pub_obj = flat_obj.objects.filter( status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do, author=request.user ).order_by('-datep')
      return render(request,'crm/clients/detail.html',{'tpclient':client, 'tp_pub_obj':pub_obj,'tp_unp_obj':un_pub_obj,'tn1':n1,'tn2':n2 })
     if client.category == 'Дома':
-     pub_obj = doma.objects.filter(status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-date_sozd')
-     un_pub_obj = doma.objects.filter(status_obj__contains='Не опубликован', cena_agenstv__lte=client.budg_do,author=request.user ).order_by('-date_sozd')
+     pub_obj = flat_obj.objects.filter(status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-date_sozd')
+     un_pub_obj = flat_obj.objects.filter(status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do, author=request.user ).order_by('-date_sozd')
      return render(request,'crm/clients/detail.html',{'tpclient':client, 'tp_pub_obj':pub_obj,'tp_unp_obj':un_pub_obj,'tn1':n1,'tn2':n2 })
     if client.category == 'Участки':
-     pub_obj = uchastok.objects.filter(status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-date_sozd')
-     un_pub_obj = uchastok.objects.filter( status_obj__contains='Не опубликован', cena_agenstv__lte=client.budg_do ).order_by('-date_sozd')
+     pub_obj = flat_obj.objects.filter(status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do ).order_by('-date_sozd')
+     un_pub_obj = flat_obj.objects.filter( status_obj__contains='Опубликован', cena_agenstv__lte=client.budg_do, author=request.user ).order_by('-date_sozd')
      return render(request,'crm/clients/detail.html',{'tpclient':client, 'tp_pub_obj':pub_obj,'tp_unp_obj':un_pub_obj,'tn1':n1,'tn2':n2 })
 
 

@@ -13629,3 +13629,122 @@ File: scss
 @media (max-width: 991.98px) {
   .do-block {
     display: block !important; } }
+	
+/*new style for card-tabs*/
+.row .card-tabs .col{
+float: none;
+flex-basis: auto;
+}
+.card-tabs .nav-pills .active .nav-link {
+    color: #fff;
+    background-color: #2962FF;
+	cursor:pointer;
+}
+.card-tabs .nav-pills .active .nav-link:hover{
+     background-color: #6a7a8c; 
+    cursor:pointer;
+	color:#fff;
+}
+.card-tabs .nav-pills.mytabs__caption2 .nav-item.active .nav-link:hover{
+     background-color: #6a7a8c; 
+    cursor:pointer;
+	color:#fff;
+}
+.card-tabs .nav-pills.mytabs__caption2 .nav-link {
+color: #6a7a8c;
+    background: transparent;
+    cursor: pointer;
+}
+.card-tabs .nav-pills.mytabs__caption2 .nav-link:hover {
+color: #2962FF;
+   background: transparent;
+    cursor: pointer;
+}
+.card-tabs .nav-pills.mytabs__caption2 .active .nav-link {
+    color: #fff;
+    background: #2962FF;
+    cursor: pointer;
+}
+.card-tabs .nav-pills.mytabs__caption2 .nav-item.active.nav-link {
+color: #fff;
+    background-color: #2962FF;
+    cursor: pointer;
+}
+.card-tabs .nav-pills .nav-link:hover{
+color: #2962FF;
+cursor:pointer;
+}
+.collection.mytabs__content2 {
+    display: none;
+    margin-top: 0px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-left: none;
+    border-right: none;
+}
+.card-tabs .card .card-content .card-title {    
+    margin-bottom: 15px;
+}
+.card-tabs thead {
+    color: #fff;
+    background-color: #6a7a8c;  
+}
+.card-tabs ul:not(.browser-default) {
+    margin-top: 30px;
+    width: 100%;
+}
+.card-tabs .nav-wrapper.card-title a, .card-tabs .nav-wrapper.card-title a:hover{
+color:#6a7a8c;
+}
+.card-tabs h4 {   
+    margin-bottom: 0px;
+	color:#fff;
+}
+.collection.with-header .collection-header {    
+    border-bottom: 1px solid #6a7a8c;
+    padding: 13px 20px;
+    background: #6a7a8c;
+}
+.collection.with-header.my-object .collection-item:nth-child(odd){
+    background: #f8f8f8;
+}
+.collection.with-header.my-object .collection-item:nth-child(even){
+    background: #ffffff;
+}
+ul.collection.with-header:not(.browser-default) > li {
+    list-style-type: none;
+    padding: 10px 10px 10px 30px;
+}
+ul.collection.with-header:not(.browser-default) > li a {
+    color: #6a7a8c;
+    margin-right: 20px;
+}
+.card-tabs .pagination li.active {
+    background-color: #6a7a8c;
+    color: #fff;
+    padding: 0px 9px;
+    vertical-align: middle;
+    height: auto;
+    font-size: 19px;
+}
+.card-tabs .pagination{
+    margin-top: 20px;
+}
+.card-tabs .pagination-results .text-center {    
+    margin-top: 31px;   
+}
+.collection.with-header .collection-item{
+ background:#f8f8f8;
+}
+.card-box.active{
+display:block;
+}
+.card-box{
+display:none;
+}
+.collection.mytabs__content2.active{
+display:block;
+}
+.my_objekt{
+
+}
