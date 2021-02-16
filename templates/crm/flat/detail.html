@@ -250,6 +250,15 @@
 <div id="test5" class="tab-pane">
 	<div class="p-20" ><p> </p></div>
     <div class="row">
+    {% if tpflat.main_pct %}
+        <div style="float:left; margin-right:10px; margin-top:10px;">
+                                                    <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="250"
+                                                        src="http://77.222.52.20{{ tpflat.main_pct.url }}"></div>
+                                            </div>
+    {% endif %}
                                             {% for i in tpflat.idd_gal.all %}
                                                 <div style="float:left; margin-right:10px; margin-top:10px;">
                                                     <img

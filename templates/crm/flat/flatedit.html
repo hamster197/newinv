@@ -27,6 +27,16 @@
                      </div>
                   </li>
                </ul>
+    {% if post.main_pct %}
+        <tbody>
+          <tr>
+            <td>  </td>
+            <td><a href="{{ MEDIA_ROOT }}{{ post.main_pct.url }}"><img src="{{MEDIA_ROOT}}{{ post.main_pct.url }}"  height="232"></a>  </td>
+              <td></td>
+              <td></td>
+          </tr>
+        </tbody>
+    {% endif %}
 
     {% if post.idd_gal.all %}
         {% for i in post.idd_gal.all %}

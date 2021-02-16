@@ -28,13 +28,23 @@
           <tr>
           <td>{{ doms.pk }}</td>
             <td>
+            {% if not doms.main_pct %}
                 {% for i in doms.idd_gal.all|slice:":1" %}
                             <img
                                                         class="materialboxed"
                                                         rel="gallery"
                                                         height="100"
-                                                        src="http://77.222.52.20{{ i.npict.url }}"></div>
-                        {% endfor %}
+                                                        src="http://77.222.52.20{{ i.npict.url }}">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ doms.main_pct.url }}">
+                    </div>
+            {% endif %}
             </td>
             <td>{{ doms.h_komnat }}</td>
             <td>{{ doms.author.first_name }} {{ doms.author.last_name }} </td>

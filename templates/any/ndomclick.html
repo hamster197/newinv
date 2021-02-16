@@ -28,6 +28,11 @@
     <deal-status>прямая продажа</deal-status>
     <description>{{ post.prim }} {{ tdm }}и недорог
 </description>
+{% if post.main_pct %}
+    <image>
+      http://77.222.52.20{{ post.main_pct.url }}
+    </image>
+{% endif %}
 {% for i in post.idd_gal.all %}
     <image>
       http://77.222.52.20{{ i.npict.url }}
@@ -152,7 +157,11 @@
     <value>{{ doma.h_ploshad_uch }}</value>
     <unit>кв. м</unit>
 </lot-area>
-
+{% if doma.main_pct %}
+    <image>
+      http://77.222.52.20{{ doma.main_pct.url }}
+    </image>
+{% endif %}
 {% for i in doma.idd_gal.all %}
    {% if i.npict.url %}
     <image>

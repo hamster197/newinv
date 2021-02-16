@@ -30,6 +30,7 @@
           <tr>
           <td>{{ uc.pk }}</td>
           <td>
+          {% if not uc.main_pct %}
               {% for i in uc.idd_gal.all|slice:":1" %}
                             <img
                                                         class="materialboxed"
@@ -37,6 +38,13 @@
                                                         height="100"
                                                         src="http://77.222.52.20{{ i.npict.url }}"></div>
                         {% endfor %}
+          {% else %}
+              <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ uc.main_pct.url }}"></div>
+          {% endif %}
           </td>
             <td><strong> {{ uc.author.first_name }} {{ uc.author.last_name }}</strong></td>
             <td><strong> {{ uc.cena_agenstv }}</strong></td>

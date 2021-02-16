@@ -26,9 +26,15 @@
                {% lazy_paginate  tpflatlist %}
                {% for flatlist in tpflatlist %}
                <tbody>
-                  <tr>
-                  <td>{{ flatlist.pk }}</td>
+
                     <td>
+              {% if flatlist.main_pct %}
+                   <img
+                                                        class="materialboxed"
+                                                        rel="gallery"
+                                                        height="100"
+                                                        src="http://77.222.52.20{{ flatlist.main_pct.url }}"></div>
+               {% else %}
                         {% for i in flatlist.idd_gal.all|slice:":1" %}
                             <img
                                                         class="materialboxed"
@@ -37,6 +43,7 @@
                                                         src="http://77.222.52.20{{ i.npict.url }}"></div>
                         {% endfor %}
                     </td>
+                {% endif %}
                      {%  if request.user.groups.get.name == 'Офис-менеджер' %}
                      <td> <a href="{% url 'crm:new_kadastr' idd=flatlist.pk %}">{{ flatlist.date_sozd }}</a> </td>
                      {% else %}

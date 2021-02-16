@@ -343,7 +343,7 @@ def flat_postForm(request):
     n3 = zayavka.objects.filter(status='Свободен').count()
     if request.POST:
         if request.user.userprofile1.ya == 'Да':
-            form=yandex_flatform(request.POST)
+            form=yandex_flatform(request.POST, request.FILES)
             if request.user.groups.get().name.find('Краснодар')==6:
                 form = kr_yandex_flatform(request.POST)
         else:
@@ -473,9 +473,9 @@ def my_flatview_edit(request,idd):
             if request.user.groups.get().name.find('Краснодар')==6:
                 flat = kr_yandex_flateditform(request.POST, instance=post)
             else:
-                flat=yandex_flateditform(request.POST, instance=post)
+                flat=yandex_flateditform(request.POST, request.FILES, instance=post)
         else:
-            flat = flateditform(request.POST, instance=post)
+            flat = flateditform(request.POST, request.FILES, instance=post)
         if flat.is_valid():
             if request.POST.get('compo') == 'Без договора':
                 post.contract = 'Без договора'
@@ -684,9 +684,9 @@ def AllIndexCommerceView(request):
     n2 = 'Все обьекты'
     n3 = zayavka.objects.filter(status='Свободен').count()
     if request.user.groups.get().name.find('Адлер')==6:
-        commerce = flat_obj.objects.filter(author=request.user, type='komerc', raion__exact='Адлер')
+        commerce = flat_obj.objects.filter( type='komerc', raion__exact='Адлер')#author=request.user,
     else:
-        commerce = flat_obj.objects.filter(author=request.user, type='komerc').exclude(raion__exact='Адлер')
+        commerce = flat_obj.objects.filter(type='komerc').exclude(raion__exact='Адлер')#author=request.user, 
     tpform = flat_search_form()
     if request.POST:
         tpform = flat_search_form(request.POST)

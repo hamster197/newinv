@@ -32,7 +32,11 @@
     <deal-status>прямая продажа</deal-status>
     <description>{{ post.prim }} {{ tdm }}
 </description>
-
+{% if post.main_pct %}
+    <image>
+      http://77.222.52.20{{ post.main_pct.url }}
+    </image>
+{% endif %}
 {% for i in post.idd_gal.all %}
     {% if i.npict.url %}
     <image>
@@ -155,7 +159,11 @@
     <value>{{ doma.h_ploshad_uch|cut:" " }}</value>
     <unit>cотка</unit>
 </lot-area>
-
+{% if doma.main_pct %}
+    <image>
+      http://77.222.52.20{{ doma.main_pct.url }}
+    </image>
+{% endif %}
 {% for i in doma.idd_gal.all %}
    {% if i.npict.url %}
     <image>
@@ -202,6 +210,11 @@
 </lot-area>
 {% if uchastoc.vid_razr_ch == 'Поселений (ИЖС)' %}<lot-type>ИЖС</lot-type>
 {% else %}<lot-type>садоводство</lot-type>{% endif %}
+{% if uchastoc.main_pct %}
+    <image>
+      http://77.222.52.20{{ uchastoc.main_pct.url }}
+    </image>
+{% endif %}
 {% for i in uchastoc.idd_gal.all %}
    {% if i.npict.url %}
     <image>
