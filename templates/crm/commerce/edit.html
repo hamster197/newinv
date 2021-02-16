@@ -30,9 +30,11 @@
     {% if post.idd_gal.all %}
         {% for i in post.idd_gal.all %}
         <tbody>
+        {% if post.main_pct %}
         <tr>
             <td><a href="{{ MEDIA_ROOT }}{{ post.main_pct.url }}"><img src="{{MEDIA_ROOT}}{{  post.main_pct.url }}"  height="232"></a>  </td>
         </tr>
+        {% endif %}
           <tr>
             <td> ID: {{ i.pk }}  </td>
             <td><a href="{{ MEDIA_ROOT }}{{ i.npict.url }}"><img src="{{MEDIA_ROOT}}{{ i.npict.url }}"  height="232"></a>  </td>

@@ -1325,6 +1325,7 @@ def domclickfeedview(request):
     post = flat_obj.objects.filter(status_obj='Опубликован',type = 'flat')#[:10]#.exclude(kadastr='')#.order_by('-kadastr','-datep')[:count]
     doma = flat_obj.objects.filter(status_obj='Опубликован', type='house').order_by('-datep')
     uchastoc = flat_obj.objects.filter(domclick_pub='Да', type='uchastok').order_by('-datep')
+    comerce = flat_obj.objects.filter(domclick_pub='Да', type='komerc').order_by('-datep')
     gal = flat_obj_gal.objects.all()
     #post = flat_obj.objects.filter(domclick_pub='Да').order_by('-datep')
     #post = flat_obj.objects.order_by('-datep')
@@ -1339,7 +1340,7 @@ def domclickfeedview(request):
     dm = ''
     # end of autoручной ввод текста сео
     return render(request,'any/ndomclick.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'tcount':count, 'tdom':doma,
-                                                 'tuchastoc':uchastoc,'tdm':dm, }, content_type="text/xml")
+                                                 'comerce':comerce, 'tuchastoc':uchastoc,'tdm':dm, }, content_type="text/xml")
 
 #for Vestum
 def vestumfeedview(request):
@@ -1440,6 +1441,7 @@ def NewYandexFeedview(request):
     #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
     doma = flat_obj.objects.filter(domclick='Да', type='house', status_obj='Опубликован',).order_by('-datep')#[:20]
     uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok', status_obj='Опубликован',).order_by('-datep')
+    comerce = flat_obj.objects.filter(domclick='Да', type='komerc', status_obj='Опубликован',).order_by('-datep')
     gal = flat_obj_gal.objects.all()
     #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
     #post = flat_obj.objects.order_by('-datep')
@@ -1456,7 +1458,7 @@ def NewYandexFeedview(request):
     # end of autoручной ввод текста сео
     #print(vas_date)
     return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'vas_date':vas_date,
-                                                 'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
+                                                 'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc, 'comerce':comerce, }, content_type="text/xml")
 
 
 ## New Sait 21 centry for all(with out feiks)
@@ -1490,6 +1492,7 @@ def AfyFeedview(request):
     #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
     doma = flat_obj.objects.filter(domclick='Да', type='house').order_by('-datep')#[:20]
     uchastoc = flat_obj.objects.filter(domclick='Да', type='uchastok').order_by('-datep')
+    comerce = flat_obj.objects.filter(domclick='Да', type='komerc').order_by('-datep')
     gal = flat_obj_gal.objects.all()
     #post = flat_obj.objects.filter(author.userprofile1.tel='' ).order_by('-datep')
     #post = flat_obj.objects.order_by('-datep')
@@ -1504,7 +1507,7 @@ def AfyFeedview(request):
     else:
         dm = ''
     # end of autoручной ввод текста сео
-    return render(request,'any/AfyFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date,
+    return render(request,'any/AfyFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'comerce':comerce,
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc }, content_type="text/xml")
 
 #for Mail ru & ula

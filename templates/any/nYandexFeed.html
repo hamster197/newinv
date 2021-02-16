@@ -228,4 +228,64 @@
    </offer>
     {% endfor %}
 {% endif %}
+
+<!--Коммерческая недвижимость-->
+{% for subj in comerce %}
+<offer internal-id="{{ subj.pk|cut:" " }}">
+<type>{{ subj.type_deal }}</type>
+<category>commercial</category>
+{% if subj.type_building == 'Торговое помещение' %}
+<commercial-type>retail</commercial-type>
+{% endif %}
+{% if subj.type_building == 'Помещение Свободного назначения' %}
+<commercial-type>free purpose</commercial-type>
+{% endif %}
+{% if subj.type_building == 'Склад' %}
+<commercial-type>warehouse</commercial-type>
+{% endif %}
+{% if subj.type_building == 'Офисное помещение' %}
+<commercial-type>office</commercial-type>
+{% endif %}
+{% if subj.type_building == 'Производство' %}
+<commercial-type>manufacturing</commercial-type>
+{% endif %}
+{% if subj.type_building == 'Другая коммерческая недвижимость' %}
+<commercial-type>free <purpose></purpose></commercial-type>
+{% endif %}
+{#<commercial-building-type>business center</commercial-building-type>#}
+ <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
+ <location>
+    <country>Россия</country>
+    <region>Краснодарский край</region>
+    <locality-name>{% if subj.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
+    <address>{{ subj.adress }} </address>
+</location>
+<sales-agent>
+    <phone>{{ subj.author.userprofile1.tel }}</phone>
+    <name>{{  subj.author.first_name }} {{ subj.author.last_name }}</name>
+    <email>{{ subj.author.email }}</email>
+</sales-agent>
+<price>
+    <value>{{ subj.cena_agenstv|cut:" "  }}</value>
+  <currency>RUR</currency>
+</price>
+<area>
+    <value>{{ subj.ploshad|cut:" " }}</value>
+    <unit>кв.м</unit>
+</area>
+</offer>
+{% if subj.main_pct %}
+    <image>
+      http://77.222.52.20{{ subj.main_pct.url }}
+    </image>
+{% endif %}
+{% for i in subj.idd_gal.all %}
+   {% if i.npict.url %}
+    <image>
+      http://77.222.52.20{{ i.npict.url }}
+    </image>
+   {% endif %}
+{% endfor %}
+<description>{{ subj.prim }}</description>
+{% endfor %}
 </realty-feed>

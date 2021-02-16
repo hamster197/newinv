@@ -262,7 +262,7 @@ class CommerceEditForm(forms.ModelForm):
     class Meta:
         model = flat_obj
         fields = ('client_name','client_tel','raion','adress','type_building','type_deal','ploshad','cena_sobstv','cena_agenstv',
-                  'prim','main_pct', 'youtube',)
+                  'prim', 'youtube', 'main_pct',)
         widgets = {'main_pct': forms.FileInput(attrs={'required': 'true', }),
                    'type_deal': forms.Select(attrs={'required': 'true', }),
                    'type_building': forms.Select(attrs={'required': 'true', }),

@@ -367,7 +367,7 @@ class flat_obj(models.Model):
                              ('Другая коммерческая недвижимость', 'Другая коммерческая недвижимость'),
                              )
     type_building = models.CharField(verbose_name='Тип строения', max_length=80, choices=type_building_choises, blank=True,)
-    type_deal_choises = (('Аренда','Аренда'), ('Продажа','Продажа'),)
+    type_deal_choises = (('аренда','аренда'), ('продажа','продажа'),)
     type_deal = models.CharField(verbose_name='Тип Сделки', max_length=80, choices=type_deal_choises, blank=True,)
     ##################################################################################################
     #       End of For Commerc
