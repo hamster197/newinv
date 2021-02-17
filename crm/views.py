@@ -686,7 +686,7 @@ def AllIndexCommerceView(request):
     if request.user.groups.get().name.find('Адлер')==6:
         commerce = flat_obj.objects.filter( type='komerc', raion__exact='Адлер')#author=request.user,
     else:
-        commerce = flat_obj.objects.filter(type='komerc').exclude(raion__exact='Адлер')#author=request.user, 
+        commerce = flat_obj.objects.filter(type='komerc').exclude(raion__exact='Адлер')#author=request.user,
     tpform = flat_search_form()
     if request.POST:
         tpform = flat_search_form(request.POST)

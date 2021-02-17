@@ -33,11 +33,11 @@ weeq{% extends 'crm/main.html' %}
                                                         class="materialboxed"
                                                         rel="gallery"
                                                         height="100"
-                                                        src="http://77.222.52.20
+                                                        src="{{MEDIA_ROOT}}
             {% if not doms.main_pct %}{{ i.npict.url }}{% else %}{{ doms.main_pct.url }}{% endif %}"></div>
                         {% endfor %}
             </td>
-            <td>{{ doms.type_building }} </td>
+            <td>{{ doms.type_building }} {{ doms.main_pct }}</td>
             <td>{{ doms.type_deal }}  </td>
             <td>{{ doms.ploshad }}</td>
             <td> {{ doms.raion }} {{ doms.kr_raion }} </td>
