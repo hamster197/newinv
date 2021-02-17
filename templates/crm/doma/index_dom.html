@@ -1,7 +1,31 @@
 {% extends 'crm/main.html' %}
 {% block content %}
+{{ tpform.media.css }}
+<style type="text/css">
+        input, select,select2 select2-container {width: 100%}
+</style>
+    <script src="/static/select/jquery-3.4.1.js"></script>
+
+<div class="row">
+<div class="col-lg-12">
+<form method="post" class="post-form"> {% csrf_token %}
+    <p> {{ tpform.search_raion }}</p>
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col s1">{{ tpform.search_minp.label }} {{ tpform.search_minp }}</div>
+      <div class="col s1">{{ tpform.search_maxp.label }} {{ tpform.search_maxp }}</div>
+    </div>
+        <div class="row">
+      <div class="col s1">{{ tpform.search_minc.label }} {{ tpform.search_minc }}</div>
+      <div class="col s1">{{ tpform.search_maxc.label }} {{ tpform.search_maxc }}</div>
+    </div>
+
+<button type="submit" name="_submit" class="btn">Найти</button>
+</form></div></div>
+
+
+
+    <div class="row">
+      <div class="col-lg-12">
           <div class="card">
                 <div class="card-content">
 
@@ -80,6 +104,7 @@
                 </div>
           </div>
       </div>
+    {% comment %}
       <div class="col-lg-3">
           <div class="card">
           {% if Кпа %}
@@ -106,7 +131,7 @@
       </div>
 
     </div>
-
+{% endcomment %}
  <!--
     <div class="fixed-action-btn horizontal">
     <a class="btn-floating btn-large red">
@@ -119,6 +144,7 @@
     </ul>
   </div>
 -->
-
+ {{ tpform.media.js }}
+<script src="/static/select/js/i18n/ru.js"></script>
 
 {% endblock %}

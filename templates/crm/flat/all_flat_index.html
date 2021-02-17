@@ -1,7 +1,28 @@
 {% extends 'crm/main.html' %}
 {% block content %}
+{{ tpaFlatSearch.media.css }}
+<style type="text/css">
+        input, select,select2 select2-container {width: 100%}
+</style>
+    <script src="/static/select/jquery-3.4.1.js"></script>
+
+
 <div class="row">
-   <div class="col-lg-9">
+<div class="col-lg-12">
+<form method="post" class="post-form"> {% csrf_token %}
+    <p> {{ tpaFlatSearch.search_raion }}</p>
+    <div class="row">
+      <div class="col s1">{{ tpaFlatSearch.search_minp.label }} {{ tpaFlatSearch.search_minp }}</div>
+      <div class="col s1">{{ tpaFlatSearch.search_maxp.label }} {{ tpaFlatSearch.search_maxp }}</div>
+    </div>
+        <div class="row">
+      <div class="col s1">{{ tpaFlatSearch.search_minc.label }} {{ tpaFlatSearch.search_minc }}</div>
+      <div class="col s1">{{ tpaFlatSearch.search_maxc.label }} {{ tpaFlatSearch.search_maxc }}</div>
+    </div>
+
+<button type="submit" name="_submit" class="btn">Найти</button>
+</form></div>
+   <div class="col-lg-12">
       <div class="card">
          <div class="card-content">
             {% load material_form %}
@@ -96,6 +117,7 @@
          </div>
       </div>
    </div>
+    {% comment %}
    <div class="col-lg-3">
       {% if kr_flag == 'Yes' %}
       <div class="card">
@@ -119,10 +141,9 @@
             </form>
          </div>
       </div>
-
    </div>
 
-</div>
+</div>{% endcomment %}
 <!--
    <div class="fixed-action-btn horizontal">
    <a class="btn-floating btn-large red">
@@ -134,5 +155,10 @@
      <li><a <a href="{% url 'crm:my_flatpub' %}"  class="btn-floating green" title = "В агенстве"><i class="material-icons">announcement</i></a></li>
    -->
 </ul>
-</div>
+    </div>
+
+        {{ tpaFlatSearch.media.js }}
+<script src="/static/select/js/i18n/ru.js"></script>
+
+
 {% endblock %}
