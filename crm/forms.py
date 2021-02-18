@@ -233,7 +233,7 @@ raion_choises = (('Ареда','Ареда'),('Ахун', 'Ахун'),('Бытх
 class flat_search_form(forms.ModelForm):
     class Meta:
         model = UserProfile1
-        fields = ('search_minp','search_maxp','search_minc','search_maxc','search_raion',)
+        fields = ('search_minp','search_maxp','search_minc','search_maxc','search_raion','contract',)
         widgets = {'search_minp': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
                    'search_maxp': forms.TextInput(attrs={'required': 'true', 'type':'number'}),
                    'search_minc': forms.TextInput(attrs={'required': 'true', 'type':'number'}),

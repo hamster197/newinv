@@ -666,16 +666,17 @@ def MyIndexCommerceView(request):
             min_price = tpform.cleaned_data['search_minc']
             max_price = tpform.cleaned_data['search_maxc']
             district = tpform.cleaned_data['search_raion']
+            contract = tpform.cleaned_data['contract']
             if not 'Любой' in district:
                 commerce = flat_obj.objects.filter(author=request.user, type='komerc', raion__in=district,
                                                cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
                                                ploshad__gte=min_square, ploshad__lte=max_square,
-                                               )
+                                               contract=contract,)
             else:
                 commerce = flat_obj.objects.filter(author=request.user, type='komerc',# raion=district,
                                                    cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
                                                    ploshad__gte=min_square, ploshad__lte=max_square,
-                                                   )
+                                                   contract=contract,)
     return render(request, 'crm/commerce/index.html', { 'tpform':tpform, 'tn1': n1, 'tn2': n2, 'tn3': n3, 'commerce':commerce, })
 
 @login_required
@@ -696,16 +697,17 @@ def AllIndexCommerceView(request):
             min_price = tpform.cleaned_data['search_minc']
             max_price = tpform.cleaned_data['search_maxc']
             district = tpform.cleaned_data['search_raion']
+            contract = tpform.cleaned_data['contract']
             if not 'Любой' in district:
                 commerce = flat_obj.objects.filter( type='komerc', raion__in=district,#author=request.user,
                                                cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
                                                ploshad__gte=min_square, ploshad__lte=max_square,
-                                               )
+                                               contract=contract,)
             else:
                 commerce = flat_obj.objects.filter(type='komerc',# raion=district, author=request.user,
                                                    cena_agenstv__gte=min_price, cena_agenstv__lte=max_price,
                                                    ploshad__gte=min_square, ploshad__lte=max_square,
-                                                   )
+                                                   contract=contract,)
     return render(request, 'crm/commerce/index.html', { 'tpform':tpform, 'tn1': n1, 'tn2': n2, 'tn3': n3, 'commerce':commerce, })
 
 @login_required
@@ -768,6 +770,7 @@ def my_flatview_pub(request):
             minc = aFlatSearch.cleaned_data['search_minc']
             maxc = aFlatSearch.cleaned_data['search_maxc']
             raionc = aFlatSearch.cleaned_data['search_raion']
+            contract = aFlatSearch.cleaned_data['contract']
             id = request.user.pk
             us = get_object_or_404(UserProfile1, pk=id)
             us.search_raion = raionc
@@ -778,7 +781,7 @@ def my_flatview_pub(request):
             us.save()
             #if raionc =='Любой':
             if 'Любой' in raionc:
-                flatlist = flat_obj.objects.filter(status_obj='Опубликован', #kr_raion = '',
+                flatlist = flat_obj.objects.filter(status_obj='Опубликован', contract=contract,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat').order_by('-date_sozd')
@@ -787,7 +790,7 @@ def my_flatview_pub(request):
                 flatlist = flat_obj.objects.filter(status_obj='Опубликован',raion__in=raionc,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                               type = 'flat').order_by('-date_sozd')
+                                               type = 'flat', contract=contract,).order_by('-date_sozd')
                 #print(flatlist.count())
 
 
@@ -912,6 +915,7 @@ def my_flatview_unpub(request):
             minc = aFlatSearch.cleaned_data['search_minc']
             maxc = aFlatSearch.cleaned_data['search_maxc']
             raionc = aFlatSearch.cleaned_data['search_raion']
+            contract = aFlatSearch.cleaned_data['contract']
             id = request.user.pk
             us = get_object_or_404(UserProfile1, pk=id)
             us.search_raion = raionc
@@ -924,12 +928,14 @@ def my_flatview_unpub(request):
                 flatlist = flat_obj.objects.filter(author=request.user,#status_obj='Опубликован',
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
-                                               type = 'flat').exclude(status_obj='В архиве').order_by('-date_sozd')
+                                               type = 'flat',
+                                               contract=contract,).exclude(status_obj='В архиве').order_by('-date_sozd')
             else:
                 flatlist = flat_obj.objects.filter(#status_obj='Опубликован',raion=raionc,
                                                cena_agenstv__gte=int(minc), cena_agenstv__lte=int(maxc),
                                                ploshad__gte=int(minp), ploshad__lte=int(maxp),
                                                type = 'flat', raion__in=raionc,
+                                                contract=contract,
                 author=request.user).exclude(status_obj='В архиве').order_by('-date_sozd')
     else:
         id = request.user.pk
@@ -1755,18 +1761,19 @@ def mu_unpob_doma_view(request):
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
+            contract = form.cleaned_data['contract']
             if 'Любой' in raion_d:
                 doms=flat_obj.objects.filter(type='house',#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc),contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
             else:
                 doms=flat_obj.objects.filter(type='house', raion__in=raion_d,#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc), contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2})
             #doms=flat_obj.objects.filter(raion=raion_d, ploshad__gte=int(minp), ploshad__lte=int(maxp),
@@ -1801,11 +1808,12 @@ def mu_pob_doma_view(request):
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
+            contract = form.cleaned_data['contract']
             if 'Любой' in raion_d:
                 doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', #kr_raion='',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc),contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
                                                                  'kr_form':kr_form, 'kr_flag':kr_flag,})
@@ -1813,7 +1821,7 @@ def mu_pob_doma_view(request):
                 doms=flat_obj.objects.filter(status_obj='Опубликован',type='house', raion__in=raion_d,
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc),contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/doma/index_dom.html',{'tpform':form,'tpdoms':doms,'tn1':n1,'tn2':n2,
                                                                  'kr_form':kr_form, 'kr_flag':kr_flag, })
@@ -1995,16 +2003,17 @@ def pup_uchastki(request):
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
+            contract = form.cleaned_data['contract']
             if 'Любой' in raion_d:
                 uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok',# kr_raion='',
-                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__gte=int(minp), contract=contract,
                                        h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
                                                                  'kr_form':kr_form, 'kr_flag':kr_flag,})
             else:
                 uc=flat_obj.objects.filter(status_obj='Опубликован',type='uchastok', raion__in=raion_d,
-                                       h_ploshad_uch__gte=int(minp),
+                                       h_ploshad_uch__gte=int(minp), contract=contract,
                                        h_ploshad_uch__lte=int(maxp),  cena_agenstv__gte=int(minc),
                                        cena_agenstv__lte=int(maxc)).order_by('-date_sozd')
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2,
@@ -2053,18 +2062,19 @@ def unpup_uchastki(request):
             minc=form.cleaned_data['search_minc']
             maxc=form.cleaned_data['search_maxc']
             raion_d=form.cleaned_data['search_raion']
+            contract = form.cleaned_data['contract']
             if 'Любой' in raion_d:
                 uc=flat_obj.objects.filter(type='uchastok',#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc), contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
             else:
                 uc=flat_obj.objects.filter(type='uchastok', raion__in=raion_d,#status_obj='Опубликован',
                                        h_ploshad_uch__gte=int(minp),
                                        h_ploshad_uch__lte=int(maxp),author_id=request.user.id,
-                                       cena_agenstv__gte=int(minc),
+                                       cena_agenstv__gte=int(minc), contract=contract,
                                        cena_agenstv__lte=int(maxc)).exclude(status_obj='В архиве').order_by('-date_sozd')
                 return render(request,'crm/uchastok/index.html',{'tpform':form,'tp_uch':uc,'tn1':n1,'tn2':n2})
     else:
