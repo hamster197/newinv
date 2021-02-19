@@ -98,9 +98,10 @@ class UserProfile1(models.Model):
                        ('Поселок Индустриальный', 'Поселок Индустриальный'), ('Поселок Колосистый', 'Поселок Колосистый'),
                        ('Станица Старокорсунская', 'Станица Старокорсунская'),
     )
-    contract_choises = (('Без договора', 'Без договора'), ('Агентский', 'Агентский'), ('Эксклюзив', 'Эксклюзив'))
+    contract_choises = (('Все', 'Все'),('Без договора', 'Без договора'),
+                        ('Агентский', 'Агентский'), ('Эксклюзив', 'Эксклюзив'))
     contract = models.CharField(max_length=55, verbose_name='Договор', choices=contract_choises,
-                                default='Без договора', )
+                                default='Все', )
     kr_search_raion=models.CharField('Район1', choices=kr_raion_choise, max_length=40 , default='Любой', blank=True)
     vestum_count_ads = models.IntegerField(verbose_name='Avito(Обычное):', default=0, validators=[MinValueValidator(0)])
     avitoPR_count_ads = models.IntegerField(verbose_name='Avito(Премиум):', default=0, validators=[MinValueValidator(0)])
