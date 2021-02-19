@@ -446,6 +446,9 @@ class flat_obj_gal(models.Model):
         im.save(fullname)
         super(flat_obj_gal, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return u'%s' % (self.file)
+
     # def __unicode__(self, *args, **kwargs):
     #     print('1')
     #     return u'%s' % self.npict
