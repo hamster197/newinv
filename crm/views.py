@@ -473,7 +473,8 @@ def my_flatview_edit(request,idd):
             if request.user.groups.get().name.find('Краснодар')==6:
                 flat = kr_yandex_flateditform(request.POST, instance=post)
             else:
-                flat=yandex_flateditform(request.POST, request.FILES, instance=post)
+                #flat=yandex_flateditform(request.POST, request.FILES, instance=post)
+                flat = flateditform(request.POST, request.FILES, instance=post)
         else:
             flat = flateditform(request.POST, request.FILES, instance=post)
         if flat.is_valid():
@@ -516,6 +517,7 @@ def my_flatview_edit(request,idd):
         #         flat=yandex_flateditform(instance=post)
         # else:
             flat=flateditform(instance=post)
+
         return render(request, 'crm/flat/flatedit.html', {'tpflatpostform': flat,'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj
                                                         , 'tcrm_obj_week_count': crm_obj_week_count, 'post':post,
                                                           'tpform':form, })
