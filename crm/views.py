@@ -490,13 +490,16 @@ def my_flatview_edit(request,idd):
                     post.contract_date_end = request.POST.get('date')
                 post.save()
             flat.save()
+            import sys
+            reload(sys)
+            sys.setdefaultencoding('utf8')
             files = request.FILES.getlist('myfiles')
             for a_file in files:
                 instance = flat_obj_gal(
                     id_gal_id=idd,
                     npict=a_file
                 )
-                instance.npict.name.encode('utf-8', 'ignore')
+                #instance.npict.name.encode('utf-8', 'ignore')
                 instance.save()#filename.encode('utf-8', 'ignore'), file, save=True
                 instance.save_water()
             if '_submit_close'in request.POST:
