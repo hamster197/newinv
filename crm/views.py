@@ -490,9 +490,7 @@ def my_flatview_edit(request,idd):
                     post.contract_date_end = request.POST.get('date')
                 post.save()
             flat.save()
-            import sys
-            reload(sys)
-            sys.setdefaultencoding('utf8')
+
             files = request.FILES.getlist('myfiles')
             for a_file in files:
                 instance = flat_obj_gal(
@@ -4821,12 +4819,23 @@ def my_admi_view(request):
 ############################################################
     vsForm = vestum_count_form()
     PrVsForm = vestum_poryadok_form()
+    from django.forms import modelform_factory
+    #formset = AuthorFormSet(queryset=Author.objects.filter(name__startswith='O'))
+    from django.forms import modelformset_factory
+    group_edit_formset = modelformset_factory(Group,
+                                    fields=('name',), extra=1, can_delete=False)
+    group_edit_form = group_edit_formset(queryset=Group.objects.order_by('name'))
+    #print(group_edit_form)
     all_reelt = User.objects.filter(is_active=True).exclude(groups__in=['8', '9', '10','12','11','13'])\
         .order_by('groups__name', 'last_name')
 ############################################################
 ## End of Vetsum
 ############################################################
     if request.POST:
+        if 'group_edit' in request.POST:
+            group_edit_form = group_edit_formset(request.POST, queryset=Group.objects.order_by('name'))
+            if group_edit_form.is_valid():
+                group_edit_form.save()
         if 'cian_delete' in request.POST:
             f = adm_form(request.POST)
             if f.is_valid():
@@ -4881,7 +4890,8 @@ def my_admi_view(request):
     form = adm_form()
     return render(request,'any/my_adm.html',{'tn1':n1, 'tn2':n2,'tform':form,'tdel':del1, 'tVsForm':vsForm,
                                              'tPrVsForm':PrVsForm, 'tallreelt':all_reelt,
-                                             'agent_subj':agent_subj, 'agent_applecations':agent_applecations})
+                                             'agent_subj':agent_subj, 'agent_applecations':agent_applecations,
+                                             'group_edit_form':group_edit_form,})
 @login_required
 def UserBallsAddView(request, idd):
     n1='CRM администрирование'

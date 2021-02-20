@@ -696,3 +696,9 @@ class UserChangePasswwordForm(forms.Form):
         if str(cleaned_data['passw1']) != str(cleaned_data['passw1']):
             raise ValidationError('Пароли не совпадают!', code='invalid')
         return cleaned_data
+
+
+class GroupEditForm(forms.ModelForm):
+    class Meta:
+        model =Group
+        fields =('name',)
