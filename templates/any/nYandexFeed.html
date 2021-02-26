@@ -216,7 +216,7 @@
     <email>{{ uchastoc.author.email }}</email>
 </sales-agent>
 <price>
-    <value>{{ uchastoc.cena_agenstv|cut:" "  }}</value>
+    <value>{{ uchastoc.cena_agenstv|cut:" "|floatformat:0  }}</value>
   <currency>RUR</currency>
 </price>
 <description>{{ uchastoc.prim }}  {{ tdm }}</description>
