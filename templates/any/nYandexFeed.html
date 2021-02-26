@@ -286,19 +286,19 @@
     <value>{{ subj.ploshad|cut:" " }}</value>
     <unit>кв.м</unit>
 </area>
-{% if subj.main_pct %}
-    <image>
-      http://77.222.52.20{{ subj.main_pct.url }}
-    </image>
-{% endif %}
-{% for i in subj.idd_gal.all %}
-   {% if i.npict.url %}
-    <image>
-      http://77.222.52.20{{ i.npict.url }}
-    </image>
-   {% endif %}
-{% endfor %}
-<description>{{ subj.prim }}</description>
-{% endfor %}
 </offer>
+{#{% if subj.main_pct %}#}
+{#    <image>#}
+{#      http://77.222.52.20{{ subj.main_pct.url }}#}
+{#    </image>#}
+{#{% endif %}#}
+{#{% for i in subj.idd_gal.all %}#}
+{#   {% if i.npict.url %}#}
+{#    <image>#}
+{#      http://77.222.52.20{{ i.npict.url }}#}
+{#    </image>#}
+{#   {% endif %}#}
+{#{% endfor %}#}
+{#<description>{{ subj.prim }}</description>#}
+{#{% endfor %}#}
 </realty-feed>
