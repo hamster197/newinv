@@ -332,7 +332,7 @@ class flat_obj(models.Model):
                           ('Монолитно-кирпичный','Монолитно-кирпичный'))
     h_tip_doma = models.CharField(max_length=25, verbose_name='Тип дома', choices= h_tip_doma_choises,default='n/a')
 
-    h_ploshad_uch = models.DecimalField(default='0', decimal_places=1, max_digits=8, verbose_name='Площадь участка (В МЕТРАХ!)')
+    h_ploshad_uch = models.IntegerField(default='0',  verbose_name='Площадь участка (В МЕТРАХ!)')#DecimalField decimal_places=1, max_digits=8,
     h_rast_more = models.IntegerField(verbose_name='Растояние до моря:', default=0)
 
     ##################################################################################################
@@ -767,6 +767,18 @@ class stat_obj_crm(models.Model):
         verbose_name_plural = 'Стат. по обьектам в ЦРМ'
     def __str__(self):
         return self.auth_ful_name
+
+class RieltsStat(models.Model):
+    rielt = models.OneToOneField(User, verbose_name='Риелтор', on_delete=models.CASCADE, related_name='rielt_stat_id')
+    dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(договор)', default=0)
+    not_dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(без договора)', default=0)
+    open_deal = models.IntegerField(verbose_name='сделки открытые ', default=0)
+    open_deal_count = models.IntegerField(verbose_name='сделки открытые(Счетчик) ', default=0)
+    closed_deal = models.IntegerField(verbose_name='сделки закрытые ', default=0)
+    closed_deal_count = models.IntegerField(verbose_name='сделки закрытые(Счетчик)', default=0)
+    class Meta:
+        verbose_name ='Стат. по обьектам в ЦРМ(new)'
+        verbose_name_plural = 'Стат. по обьектам в ЦРМ(new)'
 
 
 class reyting_po_sdelkam(models.Model):
