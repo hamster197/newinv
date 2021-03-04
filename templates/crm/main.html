@@ -466,30 +466,51 @@ label{margin:0;}
                             </a>
                         </li>
 						{% comment %} {% endif %}{% endcomment %}
-						<li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:New_Sdelka_Reit' year_pr=0 %}" aria-expanded="false">
-                                <i class="mdi mdi-star-outline"></i>
-                                <span class="hide-menu">Рейтинг</span>
-                            </a>
-                        </li>
+{#						<li class="sidebar-item">#}
+{#                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'crm:New_Sdelka_Reit' year_pr=0 %}" aria-expanded="false">#}
+{#                                <i class="mdi mdi-star-outline"></i>#}
+{#                                <span class="hide-menu">Рейтинг</span>#}
+{#                            </a>#}
+{#                        </li>#}
 						<li class="sidebar-item">
                             <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                                 <i class="mdi mdi-chart-areaspline"></i>
                                 <span class="hide-menu"> Статистика </span>
                             </a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item">
-                                    <a href="{% url 'crm:crm_obj_index' %}" class="sidebar-link">
+{#                            <ul aria-expanded="false" class="collapse  first-level">#}
+{#                                <li class="sidebar-item">#}
+{#                                    <a href="{% url 'crm:crm_obj_index' %}" class="sidebar-link">#}
+{#                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>#}
+{#                                        <span class="hide-menu"> Тек.неделя (Cочи)</span>#}
+{#                                    </a>#}
+{#                                </li>#}
+                            <li class="sidebar-item">
+                                    <a href="{% url 'crm:report_otdels_html'  %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
-                                        <span class="hide-menu"> Тек.неделя (Cочи)</span>
+                                        <span class="hide-menu"> Отчет по отделам </span>
                                     </a>
                                 </li>
+                            {% if request.user.groups.get.name != 'Администрация' %}
+                            <li class="sidebar-item">
+                                    <a href="{% url 'crm:report_in_otdel_html' group_pk=request.user.groups.get.pk %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Отчет по отделу </span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="sidebar-item">
+                                    <a href="{% url 'crm:report_all_html' %}" class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Отчет по всем сотрудникам</span>
+                                    </a>
+                            </li>
+                                {% comment %}
                                 <li class="sidebar-item">
                                     <a href="{% url 'crm:crm_obj_past_index' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Пр.неделя (Сочи)</span>
                                     </a>
-                                </li>{% comment %}
+                                </li>
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:crm_obj_index_adler' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>

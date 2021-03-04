@@ -4,7 +4,7 @@ from voronka.models import zayavka_vr, status_klienta, status_klienta_all, kanal
     zadachi_spr
 from .models import news, UserProfile1, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, \
     zayavka, stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, domclickText, TmpCianCount, \
-    vestum_poryadok_feed
+    vestum_poryadok_feed, RieltsStat
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 #from zvonki.models import zvonok
@@ -141,6 +141,7 @@ admin.site.register(zadachi, zadachi_fields)
 admin.site.register(zadachi_spr, zadachi_spr_fields)
 admin.site.register(flat_obj_gal, galery_fields)
 admin.site.register(clients, )
+#admin.site.register(RieltsStat)
 class UserInline(admin.StackedInline):
     model = UserProfile1
     can_delete = False

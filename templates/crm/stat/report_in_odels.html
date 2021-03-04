@@ -30,9 +30,9 @@
             <ul class="nav nav-pills m-t-30 m-b-30">
                <li class="nav-item"><a class="nav-link" data-toggle="tab" aria-expanded="false"
                   href="#test1">
-{#                   {% if flag == 'otdel' %}#}
-{#                   {{ request.user.groups.get.name}}#}
-{#                   {% endif %}#}
+                   {% if flag == 'otdel' %}
+                   {{ request.user.groups.get.name}}
+                   {% endif %}
                    <span class="new badge blue" data-badge-caption="">{{ tOtd1_cn }}</span></a></li>
             </ul>
             <div class="tab-content br-n pn">
@@ -46,11 +46,9 @@
                            <th><strong>Ф.И.О.</strong></th>
                            <th><strong>Кол-во обьектов в CRM(договор)</strong></th>
                            <th><strong>Кол-во обьектов в CRM(без договора)</strong></th>
-                            {% if request.user.userprofile1.nach_otd == 'Да' %}
-                                {% if flag == 'otdel' %}
+                            {% if request.user.groups.get.name == 'Администрация' %}
                                  <th><strong>Cделки открытые</strong></th>
                                 <th><strong>Cделки закрытые </strong></th>
-                                {% endif %}
                             {% endif %}
                         </tr>
                         {%   if tNach_otd != 'Yes' %}
@@ -64,18 +62,20 @@
                                     <a href="{% url 'crm:agent_report_in_otdel_html' agent_id=agent.rielt.pk %}" class="collection-item">
                                {% endif %}
                            {% endif %}
-                               {{ agent.rielt.last_name }} {{ agent.rielt.first_name }} (работает с  {{ agent.rielt.date_joined }} )
+                           {% if request.user.groups.get.name == 'Администрация' %}
+                           <a href="{% url 'crm:report_in_otdel_html' group_pk=agent.otdel.pk %}" class="sidebar-link">
+                           {% endif %}
+                               {{ agent.otdel.name }}
+                           </a>
                            {% if request.user.userprofile1.nach_otd == 'Да' %}
                            </a>
                            {% endif %}
                            </td>
                            <td>{{ agent.dog_obj }}</td>
                            <td>{{ agent.not_dog_obj }}</td>
-                        {% if request.user.userprofile1.nach_otd == 'Да' %}
-                            {% if flag == 'otdel' %}
+                        {% if request.user.groups.get.name == 'Администрация' %}
                            <td>{{ agent.open_deal }} руб.({{ agent.open_deal_count }})</td>
                            <td>{{ agent.closed_deal }} руб.({{ agent.closed_deal_count }})</td>
-                             {% endif %}
                         {% endif %}
                         </tr>
                         {% endfor %}

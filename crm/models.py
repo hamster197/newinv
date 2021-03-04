@@ -4,7 +4,7 @@ from datetime import timezone, datetime
 #from django_resized import ResizedImageField
 
 #from autoslug import AutoSlugField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.validators import MinValueValidator, MinLengthValidator, MaxValueValidator
 from django.db import models
 from multiselectfield import MultiSelectField
@@ -772,14 +772,25 @@ class RieltsStat(models.Model):
     rielt = models.OneToOneField(User, verbose_name='Риелтор', on_delete=models.CASCADE, related_name='rielt_stat_id')
     dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(договор)', default=0)
     not_dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(без договора)', default=0)
-    open_deal = models.IntegerField(verbose_name='сделки открытые ', default=0)
-    open_deal_count = models.IntegerField(verbose_name='сделки открытые(Счетчик) ', default=0)
-    closed_deal = models.IntegerField(verbose_name='сделки закрытые ', default=0)
-    closed_deal_count = models.IntegerField(verbose_name='сделки закрытые(Счетчик)', default=0)
+    open_deal = models.IntegerField(verbose_name='Cделки открытые ', default=0)
+    open_deal_count = models.IntegerField(verbose_name='Cделки открытые(Счетчик) ', default=0)
+    closed_deal = models.IntegerField(verbose_name='Cделки закрытые ', default=0)
+    closed_deal_count = models.IntegerField(verbose_name='Cделки закрытые(Счетчик)', default=0)
     class Meta:
-        verbose_name ='Стат. по обьектам в ЦРМ(new)'
-        verbose_name_plural = 'Стат. по обьектам в ЦРМ(new)'
+        verbose_name ='Стат. ЦРМ(new)'
+        verbose_name_plural = 'Стат.  ЦРМ(new)'
 
+class OtdelStat(models.Model):
+    otdel = models.OneToOneField(Group, verbose_name='Отдел', on_delete=models.CASCADE, related_name='otdel_stat_id')
+    dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(договор)', default=0)
+    not_dog_obj = models.IntegerField(verbose_name='Кол-во обьектов в CRM(без договора)', default=0)
+    open_deal = models.IntegerField(verbose_name='Cделки открытые ', default=0)
+    open_deal_count = models.IntegerField(verbose_name='Cделки открытые(Счетчик) ', default=0)
+    closed_deal = models.IntegerField(verbose_name='Cделки закрытые ', default=0)
+    closed_deal_count = models.IntegerField(verbose_name='Cделки закрытые(Счетчик)', default=0)
+    class Meta:
+        verbose_name ='Стат. по отделам в ЦРМ(new)'
+        verbose_name_plural = 'Стат. по отделам в ЦРМ(new)'
 
 class reyting_po_sdelkam(models.Model):
     auth_nic = models.CharField(max_length=40, verbose_name='Риелтор login:')

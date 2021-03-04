@@ -9,6 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.core.mail import send_mail
 from django.db.models import Sum, Q, Count
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -22,10 +23,11 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
     BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
     kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm, kr_flat_search_form, \
-    CommerceEditForm
+    CommerceEditForm, ReportInOtdelForm
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
-    vestum_poryadok_feed
+    vestum_poryadok_feed, RieltsStat, OtdelStat
+from .resources import RieltsStatResource
 
 
 def login_view(request):
@@ -5355,3 +5357,204 @@ def UserNewView(request, ):
     return render(request, 'crm/stat/user_edit.html', {'user_form':user_form, 'user_group_form':user_group_form,
                                                        'user_userprofile_form':user_userprofile_form,
                                                        'rezult':rezult,})
+
+@login_required
+def ReportAgentObjectsView(request, agent_id):
+    agent = get_object_or_404(User, pk=agent_id)
+    pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Опубликован').order_by('type')
+    un_pub_sybj = flat_obj.objects.filter(author=agent, status_obj='Не опубликован').order_by('type')
+    client = clients.objects.filter(auth__username=agent.username)
+    return render(request, 'crm/stat/agent_objects.html', {'agent':agent, 'pub_sybj':pub_sybj, 'clients':client,
+                                                           'un_pub_sybj':un_pub_sybj, })
+
+@login_required
+def ReportInOtdelView(request, group_pk):
+    users = User.objects.filter(is_active=True, groups__pk=group_pk)#
+    flag = 'otdel'
+    if '_exel_export' in request.POST:
+        agents = RieltsStat.objects.filter(rielt__groups__pk=group_pk).order_by('-closed_deal')
+        resource = RieltsStatResource()
+        dataset = resource.export(agents)
+        response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel', )
+        response['Content-Disposition'] = 'attachment; filename="exported_data.xls"'
+        return response
+    RieltsStat.objects.filter(rielt__groups__pk=group_pk).delete()
+    date_end = timezone.datetime.now()
+    date_start = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day - 1)
+    date_form = ReportInOtdelForm(initial={'start_date': date_start.date(), 'end_date': date_end.date(),})
+    #initial=timezone.datetime.now().date(),
+    if '_report_sereach' in request.POST:
+        date_form = ReportInOtdelForm(request.POST)
+        if date_form.is_valid():
+            date_start = date_form.cleaned_data['start_date']
+            date_end = date_form.cleaned_data['end_date']
+
+    for user in users:
+        contract_list = []
+        contract_list.append('Агентский')
+        contract_list.append('Эксклюзив')
+        dog_obj = flat_obj.objects.filter(author=user, contract__in=contract_list, status_obj='Опубликован', ).count()
+        not_dog_obj = flat_obj.objects.filter(author=user, status_obj='Опубликован',).exclude(contract__in=contract_list).count()
+        status_list = []
+        status_list.append('Нет')
+        status_list.append('Рассрочка')
+        open_deal = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                                              sdelka_zakrita__in=status_list,
+                                              date_zakr__lte=date_end, date_zakr__gte=date_start)
+        open_deal_sum = open_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+        if open_deal_sum is None:
+            open_deal_sum = 0
+        open_deal_count = open_deal.count()
+        closed_deal = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                                              sdelka_zakrita='Да',
+                                              date_zakr__lte=date_end, date_zakr__gte=date_start)
+        closed_deal_sum = closed_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+        if closed_deal_sum is None:
+            closed_deal_sum = 0
+        closed_deal_count = closed_deal.count()
+        #print(open_deal_sum['dial_sum'])
+        RieltsStat.objects.create(rielt=user, dog_obj=dog_obj, not_dog_obj=not_dog_obj,
+                                  open_deal=open_deal_sum, open_deal_count=open_deal_count,
+                                  closed_deal=closed_deal_sum, closed_deal_count=closed_deal_count,)
+    agents = RieltsStat.objects.filter(rielt__groups__pk=group_pk).order_by('-closed_deal')#request.user.groups.get().name
+
+    return render(request, 'crm/stat/report_in_odel.html', {'date_form':date_form, 'agents':agents, 'flag':flag })
+
+@login_required
+def ReportAllRieltsView(request,):
+    users = User.objects.filter(is_active=True,)
+    # if '_exel_export' in request.POST:
+    #     agents = RieltsStat.objects.filter(rielt__groups__name=request.user.groups.get().name).order_by('-closed_deal')
+    #     resource = RieltsStatResource()
+    #     dataset = resource.export(agents)
+    #     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel', )
+    #     response['Content-Disposition'] = 'attachment; filename="exported_data.xls"'
+    #     return response
+    RieltsStat.objects.all().delete()
+    date_end = timezone.datetime.now()
+    date_start = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day - 1)
+    date_form = ReportInOtdelForm(initial={'start_date': date_start.date(), 'end_date': date_end.date(),})
+    #initial=timezone.datetime.now().date(),
+    if '_report_sereach' in request.POST:
+        date_form = ReportInOtdelForm(request.POST)
+        if date_form.is_valid():
+            date_start = date_form.cleaned_data['start_date']
+            date_end = date_form.cleaned_data['end_date']
+
+    for user in users:
+        contract_list = []
+        contract_list.append('Агентский')
+        contract_list.append('Эксклюзив')
+        dog_obj = flat_obj.objects.filter(author=user, contract__in=contract_list, status_obj='Опубликован', ).count()
+        not_dog_obj = flat_obj.objects.filter(author=user, status_obj='Опубликован',).exclude(contract__in=contract_list).count()
+        status_list = []
+        status_list.append('Нет')
+        status_list.append('Рассрочка')
+        open_deal = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                                              sdelka_zakrita__in=status_list,
+                                              date_zakr__lte=date_end, date_zakr__gte=date_start)
+        open_deal_sum = open_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+        if open_deal_sum is None:
+            open_deal_sum = 0
+        open_deal_count = open_deal.count()
+        closed_deal = otchet_nov.objects.filter(Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                            | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                            | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                                              sdelka_zakrita='Да',
+                                              date_zakr__lte=date_end, date_zakr__gte=date_start)
+        closed_deal_sum = closed_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+        if closed_deal_sum is None:
+            closed_deal_sum = 0
+        closed_deal_count = closed_deal.count()
+        #print(open_deal_sum['dial_sum'])
+        RieltsStat.objects.create(rielt=user, dog_obj=dog_obj, not_dog_obj=not_dog_obj,
+                                  open_deal=open_deal_sum, open_deal_count=open_deal_count,
+                                  closed_deal=closed_deal_sum, closed_deal_count=closed_deal_count,)
+    agents = RieltsStat.objects.all().order_by('-closed_deal')
+
+    return render(request, 'crm/stat/report_in_odel.html', {'date_form':date_form, 'agents':agents, })
+
+@login_required
+def ReportOtdelsView(request,):
+    all_groups = Group.objects.filter(name__contains='Отдел').exclude(name__contains='Краснодар')
+    RieltsStat.objects.all().delete()
+    date_end = timezone.datetime.now()
+    date_start = timezone.datetime.now() - timedelta(days=timezone.datetime.now().day - 1)
+    date_form = ReportInOtdelForm(initial={'start_date': date_start.date(), 'end_date': date_end.date(),})
+    OtdelStat.objects.all().delete()
+    if '_report_sereach' in request.POST:
+        date_form = ReportInOtdelForm(request.POST)
+        if date_form.is_valid():
+            date_start = date_form.cleaned_data['start_date']
+            date_end = date_form.cleaned_data['end_date']
+    for group in all_groups:
+        users = User.objects.filter(is_active=True, groups__name=group.name)
+        open_deal_sum = 0
+        open_deal_count = 0
+        closed_deal_sum = 0
+        closed_deal_count = 0
+        dog_obj = 0
+        not_dog_obj = 0
+        for user in users:
+            contract_list = []
+            contract_list.append('Агентский')
+            contract_list.append('Эксклюзив')
+            dog_obj = dog_obj + flat_obj.objects.filter(author=user, contract__in=contract_list,
+                                              status_obj='Опубликован', ).count()
+            not_dog_obj = not_dog_obj + flat_obj.objects.filter(author=user, status_obj='Опубликован', ).exclude(
+                contract__in=contract_list).count()
+            status_list = []
+            status_list.append('Нет')
+            status_list.append('Рассрочка')
+            open_deal = otchet_nov.objects.filter(
+                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                sdelka_zakrita__in=status_list,
+                date_zakr__lte=date_end, date_zakr__gte=date_start)
+            if open_deal.count() != 0:
+                open_deal_sum = open_deal_sum + open_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+                # sum = 0
+                # if open_deal.reelt1 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc1 / 100))
+                # elif open_deal.reelt2 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc2 / 100))
+                # elif open_deal.reelt3 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt4 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt5 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt6 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt7 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt8 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt9 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # elif open_deal.reelt10 == user.username:
+                #     sum = sum + ((open_deal.komisia * 0.45) * (open_deal.rielt_proc3 / 100))
+                # open_deal_sum = open_deal_sum + sum
+            open_deal_count = open_deal_count + open_deal.count()
+            closed_deal = otchet_nov.objects.filter(
+                Q(reelt1=user.username) | Q(reelt2=user.username) | Q(reelt3=user.username)
+                | Q(reelt4=user.username) | Q(reelt5=user.username) | Q(reelt6=user.username) | Q(reelt7=user.username)
+                | Q(reelt8=user.username) | Q(reelt9=user.username) | Q(reelt10=user.username),
+                sdelka_zakrita='Да',
+                date_zakr__lte=date_end, date_zakr__gte=date_start)
+            if closed_deal.count() !=0:
+                closed_deal_sum = closed_deal_sum + closed_deal.aggregate(dial_sum=Sum('stoimost'))['dial_sum']
+            closed_deal_count = closed_deal_count + closed_deal.count()
+        OtdelStat.objects.create(otdel=group, dog_obj=dog_obj, not_dog_obj=not_dog_obj,
+                                 open_deal=open_deal_sum, open_deal_count=open_deal_count,
+                                 closed_deal=closed_deal_sum, closed_deal_count=closed_deal_count, )
+    otdels = OtdelStat.objects.all().order_by('-closed_deal')
+
+    return render(request, 'crm/stat/report_in_odels.html', {'date_form':date_form, 'agents':otdels, })

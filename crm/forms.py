@@ -702,3 +702,7 @@ class GroupEditForm(forms.ModelForm):
     class Meta:
         model =Group
         fields =('name',)
+
+class ReportInOtdelForm(forms.Form):
+    start_date = forms.DateField(label='Дата начала', required=True, widget=forms.TextInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(label='Дата конца', required=True, widget=forms.TextInput(attrs={'type': 'date'}))

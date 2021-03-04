@@ -149,7 +149,10 @@ urlpatterns = [
     url(r'^stat_obj_past_adler/$', views.stat_count_crm_obj_past_adler, name='crm_obj_past_index_adler'),
     url(r'^sdelkaReiting/(?P<year_pr>[0-9]+)/$', views.new_reyting_po_sdelkam,
         name='New_Sdelka_Reit'),
-
+    url(r'^stat_obj/report_in_otdel/(?P<group_pk>[0-9]+)/$', views.ReportInOtdelView, name='report_in_otdel_html'),#
+    url(r'^stat_obj/report_in_otdel/all/$', views.ReportAllRieltsView, name='report_all_html'),
+    url(r'^stat_obj/report_in_otdel/otdels/$', views.ReportOtdelsView, name='report_otdels_html'),
+    url(r'^stat_obj/report_in_otdel/agent/(?P<agent_id>[0-9]+)/$', views.ReportAgentObjectsView, name='agent_report_in_otdel_html'),
 
     #for homka admin
     url(r'^myadm/$', views.my_admi_view, name = 'myadm'),
