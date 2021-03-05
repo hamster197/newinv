@@ -317,7 +317,7 @@ class flat_obj(models.Model):
 
     h_infr_choises =(('Озеленение','Озеленение'),('Детская площадка','Детская площадка'),('Зона отдыха','Зона отдыха'),
                      ('Парковка','Парковка'),('Остановка','Остановка'),('Школа','Школа'),('Больница','Больница'),)
-    h_infr = MultiSelectField(max_length=25, verbose_name='Инфраструктура:', choices=h_infr_choises, )#default='n/a'
+    h_infr = MultiSelectField(max_length=225, verbose_name='Инфраструктура:', choices=h_infr_choises, )#default='n/a'
 
     h_etagnost_choises = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
     h_etagnost = models.CharField(max_length=3, verbose_name='Этажность:', choices=h_etagnost_choises, default='n/a')
