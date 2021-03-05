@@ -6,7 +6,7 @@ chardet==3.0.4
 decorator==4.4.1
 defusedxml==0.6.0
 diff-match-patch==20200713
-Django==1.11.17
+Django==1.11.29
 django-appconf==1.0.4
 django-braces==1.14.0
 django-ckeditor==5.9.0
