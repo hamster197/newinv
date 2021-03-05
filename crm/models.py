@@ -316,8 +316,8 @@ class flat_obj(models.Model):
     h_isp_uch = models.CharField(max_length=155, verbose_name='Использование участка:',choices=h_isp_uch_choises, default='n/a')
 
     h_infr_choises =(('Озеленение','Озеленение'),('Детская площадка','Детская площадка'),('Зона отдыха','Зона отдыха'),
-                     ('Парковка','Парковка'),('Остановка','Остановка'),('Школа','Школа'),('Больница','Больница'))
-    h_infr = models.CharField(max_length=25, verbose_name='Инфраструктура:', choices=h_infr_choises, default='n/a')
+                     ('Парковка','Парковка'),('Остановка','Остановка'),('Школа','Школа'),('Больница','Больница'),)
+    h_infr = MultiSelectField(max_length=25, verbose_name='Инфраструктура:', choices=h_infr_choises, )#default='n/a'
 
     h_etagnost_choises = (('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'))
     h_etagnost = models.CharField(max_length=3, verbose_name='Этажность:', choices=h_etagnost_choises, default='n/a')
@@ -354,8 +354,9 @@ class flat_obj(models.Model):
     vid_prava = models.CharField(verbose_name='Вид права:',max_length=25,default='--',choices=vid_prava_ch)
     vid_ch = (('На море','На море'),('На горы','На горы'),('На море и горы','На море и горы'))
     vid = models.CharField(verbose_name='Вид',max_length=25, default='--',choices=vid_ch)
-    pereferiya_ch = (('Электричество','Электричество'),('Вода','Вода'),('Газ','Газ'),('Канализация','Канализация'))
-    pereferiya = MultiSelectField(verbose_name='Коммуникации:',max_length=125,choices=pereferiya_ch,default='--')
+    pereferiya_ch = (('Нет','Нет'),('Электричество','Электричество'),('Вода','Вода'),
+                     ('Газ','Газ'),('Канализация','Канализация'))
+    pereferiya = MultiSelectField(verbose_name='Коммуникации:',max_length=125,choices=pereferiya_ch,default='Нет')
     latitude = models.CharField(verbose_name='latitude', max_length=255,)
     longitude = models.CharField(verbose_name='longitude', max_length=255, )
     ##################################################################################################
@@ -476,7 +477,7 @@ class clients(models.Model):
     budg_ot=models.IntegerField('Бюджет от:', validators=[MinValueValidator(300000)])
     budg_do=models.IntegerField('Бюджет до:', validators=[MinValueValidator(300000)])
     ferst_work=models.TextField('Проделана первичная работа')
-    prich_otkaza=models.TextField('Причина первичного отказа работы')
+    prich_otkaza=models.TextField('Причина первичного отказа работы', default='Отсутствуют причины')
     auth=models.ForeignKey('auth.User',verbose_name='Автор:', on_delete=models.CASCADE)
     auth_old = models.CharField(max_length=85, default='none' ,verbose_name='Автор(Был раньше):')
     st_choises=(('Только у себя','Только у себя'),('Видно в отделе','Видно в отделе'),('Видно всем','Видно всем'))

@@ -19,7 +19,13 @@
 
 
 
-
+<script>
+$('input[type="number"]').on('focus', function(e){
+  $(this).on('wheel',function(e){
+    e.preventDefault();
+  });
+});
+</script>
 
 
 {% endblock %}

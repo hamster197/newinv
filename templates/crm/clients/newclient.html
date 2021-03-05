@@ -25,7 +25,13 @@
     {{ tpformclient.media.js }}
 <script src="/static/select/js/i18n/ru.js"></script>
 
-
+<script>
+$('input[type="number"]').on('focus', function(e){
+  $(this).on('wheel',function(e){
+    e.preventDefault();
+  });
+});
+</script>
 
 
 {% endblock %}

@@ -47,7 +47,7 @@
                            <th><strong>Кол-во обьектов в CRM(договор)</strong></th>
                            <th><strong>Кол-во обьектов в CRM(без договора)</strong></th>
                             {% if request.user.userprofile1.nach_otd == 'Да' %}
-                                {% if flag == 'otdel' %}
+                                {% if flag == 'otdel' or request.user.groups.get.name == 'Администрация'%}
                                  <th><strong>Cделки открытые</strong></th>
                                 <th><strong>Cделки закрытые </strong></th>
                                 {% endif %}
@@ -59,20 +59,20 @@
                         {% for agent in agents %}
                         <tr>
                            <td>
-                           {% if request.user.userprofile1.nach_otd == 'Да' %}
+                           {% if request.user.userprofile1.nach_otd == 'Да' or request.user.groups.get.name == 'Администрация' %}
                                {% if flag == 'otdel' %}
                                     <a href="{% url 'crm:agent_report_in_otdel_html' agent_id=agent.rielt.pk %}" class="collection-item">
                                {% endif %}
                            {% endif %}
                                {{ agent.rielt.last_name }} {{ agent.rielt.first_name }} (работает с  {{ agent.rielt.date_joined }} )
-                           {% if request.user.userprofile1.nach_otd == 'Да' %}
+                           {% if request.user.userprofile1.nach_otd == 'Да' or request.user.groups.get.name == 'Администрация' %}
                            </a>
                            {% endif %}
                            </td>
                            <td>{{ agent.dog_obj }}</td>
                            <td>{{ agent.not_dog_obj }}</td>
-                        {% if request.user.userprofile1.nach_otd == 'Да' %}
-                            {% if flag == 'otdel' %}
+                        {% if request.user.userprofile1.nach_otd == 'Да' or request.user.groups.get.name == 'Администрация' %}
+                            {% if flag == 'otdel' or request.user.groups.get.name == 'Администрация' %}
                            <td>{{ agent.open_deal }} руб.({{ agent.open_deal_count }})</td>
                            <td>{{ agent.closed_deal }} руб.({{ agent.closed_deal_count }})</td>
                              {% endif %}

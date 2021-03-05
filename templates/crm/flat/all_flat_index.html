@@ -51,7 +51,7 @@
                {% lazy_paginate  tpflatlist %}
                {% for flatlist in tpflatlist %}
                <tbody>
-
+                <td>{{ flatlist.pk }}</td>
                     <td>
               {% if flatlist.main_pct %}
                    <img

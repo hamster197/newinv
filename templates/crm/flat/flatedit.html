@@ -11,7 +11,7 @@
                {% form form=tpflatpostform layout=form.layout%}{% endform %}{{ tdate }}
                <ul class="collapsible">
                   <li>
-                     <div class="collapsible-header"><i class="material-icons"></i>{{ post.contract}} (Договор)</div>
+                      <div class="collapsible-header"><i class="material-icons"></i>{{ post.contract}} <strong>(Договор)</strong></div>
                      <div class="collapsible-body">
                         <span>
                            <select name="compo" >
@@ -85,5 +85,12 @@
    $(document).ready(function(){
    $('.collapsible').collapsible();
    });
+</script>
+<script>
+$('input[type="number"]').on('focus', function(e){
+  $(this).on('wheel',function(e){
+    e.preventDefault();
+  });
+});
 </script>
 {% endblock %}

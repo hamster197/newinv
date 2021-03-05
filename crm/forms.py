@@ -28,8 +28,8 @@ class newsform(forms.ModelForm):
 
 class flatform(forms.ModelForm):
     class Meta:
-        model=flat_obj
-        fields=('client_name','client_tel','adress','raion','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya',
+        model=flat_obj#'status_obj',
+        fields=( 'client_name','client_tel','adress','raion','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya',
                 'remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','cena_sobstv','cena_agenstv',
                 'security','rubbish_chute','lift','balcony', 'kadastr','prim')#,'domclick_pub')
         #fields=('client_name','client_tel','status_obj','adress','raion','etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr','cena_sobstv','cena_agenstv','prim')
@@ -41,8 +41,8 @@ class flatform(forms.ModelForm):
                 raise ValidationError('Этаж больше этажности' , code='invalid')
         if str(cleaned_data['kvart_numb'])=='' and str(cleaned_data['kadastr'])=='':
                 raise ValidationError('введите №кв или кадастр' , code='invalid')
-        if len(str(cleaned_data['prim'])) < 300:
-                raise ValidationError('меньше 300 символов в описании' , code='invalid')
+        # if len(str(cleaned_data['prim'])) < 300:
+        #         raise ValidationError('меньше 300 символов в описании' , code='invalid')
         if  str(cleaned_data['raion'])=='Выбор района':
                 raise ValidationError('Не выбран район!' , code='invalid')
         return cleaned_data
@@ -90,7 +90,7 @@ class kadastr_form(forms.ModelForm):
 class yandex_flatform(forms.ModelForm):
     class Meta:
         model=flat_obj#'kredit',
-        fields=('client_name','client_tel','new_building','adress','dom_numb','kvart_numb','raion',
+        fields=('status_obj','client_name','client_tel','new_building','adress','dom_numb','kvart_numb','raion',
                 'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value','etag',#
                 'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim', 'kadastr',
                 'security','rubbish_chute','lift','balcony', 'main_pct',)#,'domclick_pub')
@@ -105,8 +105,8 @@ class yandex_flatform(forms.ModelForm):
         #         raise ValidationError('введите №кв или кадастр' , code='invalid')
         if len(str(cleaned_data['prim'])) == 0:
                 raise ValidationError('Введите текст описания' , code='invalid')
-        if len(str(cleaned_data['prim'])) < 80:
-                raise ValidationError('меньше 80 символов в описании' , code='invalid')
+        # if len(str(cleaned_data['prim'])) < 80:
+        #         raise ValidationError('меньше 80 символов в описании' , code='invalid')
         if  str(cleaned_data['raion'])=='Выбор района':
                 raise ValidationError('Выберите район!' , code='invalid')
 
@@ -262,7 +262,7 @@ class seo_pub_form(forms.ModelForm):
 class CommerceEditForm(forms.ModelForm):
     class Meta:
         model = flat_obj
-        fields = ('client_name','client_tel','raion','adress','type_building','type_deal','ploshad','cena_sobstv','cena_agenstv',
+        fields = ('status_obj','client_name','client_tel','raion','adress','type_building','type_deal','ploshad','cena_sobstv','cena_agenstv',
                   'prim', 'youtube', 'main_pct',)
         widgets = {'main_pct': forms.FileInput(attrs={'required': 'true', }),
                    'type_deal': forms.Select(attrs={'required': 'true', }),
@@ -305,14 +305,14 @@ class client_edit_form(forms.ModelForm):
 class doma_new_post(forms.ModelForm):
     class Meta:
         model=flat_obj
-        fields=('status_obj','client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv','kadastr',
+        fields=('status_obj','client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','kadastr','cena_sobstv',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct',)
 
     def clean(self):
         cleaned_data = super(doma_new_post, self).clean()
-        if len(str(cleaned_data['prim'])) < 300:
-            raise ValidationError('меньше 300 символов в описании', code='invalid')
+        # if len(str(cleaned_data['prim'])) < 300:
+        #     raise ValidationError('меньше 300 символов в описании', code='invalid')
         if str(cleaned_data['raion']) == 'Выбор района':
             raise ValidationError('Не выбран район!', code='invalid')
         return cleaned_data
@@ -335,13 +335,13 @@ class kr_doma_new_post(forms.ModelForm):
 class doma_edit_form(forms.ModelForm):
      class Meta:
         model = flat_obj
-        fields = ('status_obj','raion','adress','dom_numb','ploshad','kitchen_value','cena_sobstv', 'kadastr',#'nazv',
+        fields = ('status_obj','raion','adress','dom_numb','ploshad','kitchen_value', 'kadastr','cena_sobstv',#'nazv',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
                     'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct', )#
      def clean(self):
         cleaned_data = super(doma_edit_form, self).clean()
-        if len(str(cleaned_data['prim'])) < 300:
-            raise ValidationError('меньше 300 символов в описании', code='invalid')
+        # if len(str(cleaned_data['prim'])) < 300:
+        #     raise ValidationError('меньше 300 символов в описании', code='invalid')
         if str(cleaned_data['raion']) == 'Выбор района':
             raise ValidationError('Не выбран район!', code='invalid')
         return cleaned_data
@@ -374,8 +374,8 @@ class uc_new_post(forms.ModelForm):
                     'cena_sobstv','cena_agenstv','prim', 'main_pct', )
     def clean(self):
         cleaned_data = super(uc_new_post, self).clean()
-        if len(str(cleaned_data['prim'])) < 300:
-            raise ValidationError('меньше 300 символов в описании', code='invalid')
+        # if len(str(cleaned_data['prim'])) < 300:
+        #     raise ValidationError('меньше 300 символов в описании', code='invalid')
         if str(cleaned_data['raion']) == 'Выбор района':
             raise ValidationError('Не выбран район!', code='invalid')
         #if int(cleaned_data['h_rast_more']) < int(100):
@@ -410,8 +410,8 @@ class uc_edit_form(forms.ModelForm):
                     'cena_sobstv','cena_agenstv','prim', 'main_pct',)
         def clean(self):
             cleaned_data = super(uc_new_post, self).clean()
-            if len(str(cleaned_data['prim'])) < 300:
-                raise ValidationError('меньше 300 символов в описании', code='invalid')
+            # if len(str(cleaned_data['prim'])) < 300:
+            #     raise ValidationError('меньше 300 символов в описании', code='invalid')
             if str(cleaned_data['raion']) == 'Выбор района':
                 raise ValidationError('Не выбран район!', code='invalid')
             #if int(cleaned_data['h_rast_more']) < int(100):
