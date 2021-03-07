@@ -189,7 +189,15 @@
 <div class="card">
 <div class="card-body">
 {% ifequal request.user tpdom.author %}
-<a href="{% url 'crm:edit_commerce_url' idd=tpdom.id %} " class="btn" title = "Редактировать">Редактировать</a>{% endifequal %}
+<form enctype="multipart/form-data" method="post" class="post-form"> {% csrf_token %}
+
+<a href="{% url 'crm:edit_commerce_url' idd=tpdom.id %} " class="btn" title = "Редактировать">Редактировать</a>
+    <button type="submit" name="_search_board" class="btn" title = "Проверить на досках">Проверить на досках</button>
+</form>
+{% for url in urls %}
+    <p>{{ url }} </p>
+{% endfor %}
+{% endifequal %}
 
 </div>
 </div>

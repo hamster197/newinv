@@ -346,7 +346,17 @@
 <div class="card">
 <div class="card-body">
 {% ifequal request.user tpflat.author %}
-<a href="{% url 'crm:flat_edit' idd=tpflat.id %} " class="btn" title = "Редактировать">Редактировать</a>{% endifequal %}
+
+<form enctype="multipart/form-data" method="post" class="post-form"> {% csrf_token %}
+<a href="{% url 'crm:flat_edit' idd=tpflat.id %} " class="btn" title = "Редактировать">Редактировать</a>
+
+    <button type="submit" name="_search_board" class="btn" title = "Проверить на досках">Проверить на досках</button>
+</form>
+{% for url in urls %}
+    <p>{{ url }} </p>
+{% endfor %}
+{% endifequal %}
+
 {% comment %}
 {% if request.user.groups.get.name == 'seo' or request.user.groups.get.name == 'Администрация' %}
 <a href="{% url 'crm:form_flatpub' idd=tpflat.id %} " class="btn" title="Публиковать на сайте"> Публиковать на сайте </a>

@@ -108,7 +108,7 @@
 
     {% endif %}
         {% for i in tp_uch.idd_gal.all %}
-            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gallery" height="250" src="http://77.222.52.20{{ i.npict.url }}"></div>
+            <div style="float:left; margin-right:10px; margin-top:10px;"> <img class="materialboxed" rel="gРедактироватьallery" height="250" src="http://77.222.52.20{{ i.npict.url }}"></div>
         {% endfor %}{% comment %}	|watermark:"1,opacity=40,scale=F" {% endcomment %}
 </div>
 {% if tp_uch.youtube %}
@@ -167,8 +167,16 @@
 <div class="card">
 <div class="card-body">
 {% ifequal request.user tp_uch.author %}
-<a href="{% url 'crm:uc_edit' idd=tp_uch.id %} " class="btn" title = "Редактировать">Редактировать</a>{% endifequal %}
+<form enctype="multipart/form-data" method="post" class="post-form"> {% csrf_token %}
 
+<a href="{% url 'crm:uc_edit' idd=tp_uch.id %} " class="btn" title = "Редактировать">Редактировать</a>
+    <button type="submit" name="_search_board" class="btn" title = "Проверить на досках">Проверить на досках</button>
+
+</form>
+{% for url in urls %}
+    <p>{{ url }} </p>
+{% endfor %}
+{% endifequal %}
 </div>
 </div>
 </div>
