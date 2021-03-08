@@ -750,7 +750,7 @@ def DetailCommerceView(request, idd):
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
             # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
         url_string = url_string + str(tpdom.cena_agenstv) + '&price2=' + str(tpdom.cena_agenstv) + '&city=Сочи&phone=8'
-        url_string = url_string + tpdom.author.userprofile1.tel + '&category_id=2'
+        url_string = url_string + tpdom.author.userprofile1.tel + '&category_id=7'
         url = url_string
         # print(url)
         payload = {}
@@ -761,7 +761,7 @@ def DetailCommerceView(request, idd):
         for i in jmain['data']:
             urls.append(i['url'])
     return render(request, 'crm/commerce/detail.html',{'tn1': n1, 'tn2': n2, 'tn3': n3,'tpdom':tpdom,
-                                                       'registred_clients':registred_clients, 'url':url, })
+                                                       'registred_clients':registred_clients, 'urls':urls, })
 
 
 @login_required
@@ -1974,7 +1974,7 @@ def dom_detail_view(request, idd):
         import requests
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1="
         url_string = url_string + str(dom.cena_agenstv) + '&price2=' + str(dom.cena_agenstv) + '&city=Сочи&phone=8'
-        url_string = url_string + dom.author.userprofile1.tel + '&category_id=2'
+        url_string = url_string + dom.author.userprofile1.tel + '&category_id=4'
         url = url_string
         # print(url)
         payload = {}
@@ -2232,7 +2232,7 @@ def uch_detail_view(request, idd):
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
             # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
         url_string = url_string + str(uc.cena_agenstv) + '&price2=' + str(uc.cena_agenstv) + '&city=Сочи&phone=8'
-        url_string = url_string + uc.author.userprofile1.tel + '&category_id=2'
+        url_string = url_string + uc.author.userprofile1.tel + '&category_id=5'
         url = url_string
         # print(url)
         payload = {}
