@@ -407,6 +407,17 @@ class flat_obj(models.Model):
             self.longitude = '39.7341543'
         super(flat_obj, self).save(*args, **kwargs)
 
+    def save_water(self, *args, **kwargs):
+        from PIL import Image
+        filepath = self.main_pct.path
+        image = Image.open(filepath)
+        crm_watermark = Watermark.objects.first().image.path
+        a1 = round(image.size[0] / 2)
+        watermark = Image.open(crm_watermark).resize((a1, a1))
+        image.paste(watermark, (round(image.size[0] / 2) - round(a1/2), round(image.size[1] / 2) - round(a1/2)), watermark)
+        image.save(filepath)
+        super(flat_obj, self).save(*args, **kwargs)
+
 
 class flat_obj_gal(models.Model):
     id_gal = models.ForeignKey(flat_obj, related_name='idd_gal', verbose_name='Название', on_delete=models.CASCADE)
@@ -433,9 +444,11 @@ class flat_obj_gal(models.Model):
         #print(filepath)
         image = Image.open(filepath)
         crm_watermark = Watermark.objects.first().image.path
-        watermark = Image.open(crm_watermark)
+        a1 = round(image.size[0] / 2)
+        watermark = Image.open(crm_watermark).resize((a1, a1))
         #image.paste(watermark, (round(image.size[0] / 2), round(image.size[1] / 2)), watermark)
-        image.paste(watermark, (round(image.size[0] / 2) - 150, round(image.size[1] / 2) - 200), watermark)
+        #image.paste(watermark, (round(image.size[0] / 2) - 150, round(image.size[1] / 2) - 200), watermark)
+        image.paste(watermark, (round(image.size[0] / 2) - round(a1/2), round(image.size[1] / 2) - round(a1/2)), watermark)
         image.save(filepath)
         super(flat_obj_gal, self).save(*args, **kwargs)
 

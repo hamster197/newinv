@@ -391,6 +391,8 @@ def flat_postForm(request):
                 )
                 instance.save()
                 instance.save_water()
+            if flat_obj.main_pct:
+                flat_obj.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
             if '_submit_new' in request.POST:
@@ -502,6 +504,8 @@ def my_flatview_edit(request,idd):
                 #instance.npict.name.encode('utf-8', 'ignore')
                 instance.save()#filename.encode('utf-8', 'ignore'), file, save=True
                 instance.save_water()
+            if post.main_pct:
+                post.save_water()
             if '_submit_close'in request.POST:
                 return redirect('crm:my_flatunpub')
             if '_submit_new' in request.POST:
@@ -640,6 +644,8 @@ def NewCommerceView(request):
             flat_obj.save()
             # return redirect('crm:flat_edit', idd=flat_obj.pk)
             idd = flat_obj.pk
+            if flat_obj.main_pct:
+                flat_obj.save_water()
             files = request.FILES.getlist('myfiles')
             for a_file in files:
                 instance = flat_obj_gal(
@@ -774,6 +780,8 @@ def EditCommerceView(request, idd):
         form = CommerceEditForm(request.POST, request.FILES, instance=subj)
         if form.is_valid():
             form.save()
+            if subj.main_pct:
+                subj.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:my_index_commerce_url')
             if '_submit_new' in request.POST:
@@ -1759,6 +1767,8 @@ def new_dom_view(request):
             flat_obj.save()
             # return redirect('crm:newFlatgal',  idd=flat_obj.pk)
             idd = flat_obj.pk
+            if flat_obj.main_pct:
+                flat_obj.save_water()
             files = request.FILES.getlist('myfiles')
             for a_file in files:
                 instance = flat_obj_gal(
@@ -1812,6 +1822,8 @@ def domaeditview(request,idd):
                 )
                 instance.save()
                 instance.save_water()
+            if domform.main_pct:
+                domform.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:upb_dom_view')
             if '_submit_new' in request.POST:
@@ -2028,6 +2040,8 @@ def new_uc_view(request):
             #return redirect('crm:uc_detail', idd=flat_obj.pk)
             #return redirect('crm:newFlatgal', idd=flat_obj.pk)
             idd = flat_obj.pk
+            if flat_obj.main_pct:
+                flat_obj.save_water()
             files = request.FILES.getlist('myfiles')
             for a_file in files:
                 instance = flat_obj_gal(
@@ -2086,6 +2100,8 @@ def ucheditview(request,idd):
                 )
                 instance.save()
                 instance.save_water()
+            if post.main_pct:
+                post.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:unpub_uc_index')
             if '_submit_new' in request.POST:
