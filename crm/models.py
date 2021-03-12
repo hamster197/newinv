@@ -410,7 +410,7 @@ class flat_obj(models.Model):
     def save_water(self, *args, **kwargs):
         from PIL import Image
         filepath = self.main_pct.path
-        image = Image.open(filepath)
+        image = Image.open(filepath).convert('RGB')
         crm_watermark = Watermark.objects.first().image.path
         a1 = round(image.size[0] / 2)
         watermark = Image.open(crm_watermark).resize((a1, a1))
@@ -442,7 +442,7 @@ class flat_obj_gal(models.Model):
         from PIL import Image
         filepath = self.npict.path
         #print(filepath)
-        image = Image.open(filepath)
+        image = Image.open(filepath).convert('RGB')
         crm_watermark = Watermark.objects.first().image.path
         a1 = round(image.size[0] / 2)
         watermark = Image.open(crm_watermark).resize((a1, a1))
