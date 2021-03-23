@@ -28,6 +28,7 @@ class news(models.Model):
 class UserProfile1(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     tel = models.CharField('Телефон',help_text='9881112233',max_length=10, )
+    ya_tel = models.CharField('Телефон Yandex',help_text='89881112233',max_length=11, blank=True)
     ya_choises = (('Да','Да'),('Нет','Нет'))
     ya =models.CharField('Yandex недвижимость',default='Нет', max_length=3, choices=ya_choises)
     nach_otd = models.CharField('Начальник отдела', default='Нет', max_length=3, choices=ya_choises)

@@ -196,7 +196,10 @@
     <button type="submit" name="_search_board" class="btn" title = "Проверить на досках">Проверить на досках</button>
 
 </form>
-    {% for url in urls %}
+{% for url in urls %}
+    <p>{{ url }} </p>
+{% endfor %}
+{% for url in urls_ya %}
     <p>{{ url }} </p>
 {% endfor %}
 {% endifequal %}

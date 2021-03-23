@@ -683,7 +683,7 @@ class UserEditForm(forms.ModelForm):
 class UserProfileGroupForm(forms.ModelForm):
     class Meta:
         model = UserProfile1
-        fields = ('tel', 'avatar', 'nach_otd',)
+        fields = ('tel', 'ya_tel', 'avatar', 'nach_otd',)
 
 class UserGroupEdit(forms.Form):
     group = forms.ModelChoiceField(queryset=Group.objects.all().order_by('name'), label='Группа')

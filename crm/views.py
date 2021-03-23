@@ -751,6 +751,7 @@ def DetailCommerceView(request, idd):
     tpdom = get_object_or_404(flat_obj, pk=idd)
     registred_clients = flat_obj.objects.filter(client_tel=tpdom.client_tel).exclude(pk=tpdom.pk)
     urls = []
+    urls_ya = []
     if '_search_board' in request.POST:
         import requests
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
@@ -766,8 +767,23 @@ def DetailCommerceView(request, idd):
         jmain = dict(response.json())
         for i in jmain['data']:
             urls.append(i['url'])
+
+
+        url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
+            # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
+        url_string = url_string + str(tpdom.cena_agenstv) + '&price2=' + str(tpdom.cena_agenstv) + '&city=Сочи&phone='
+        url_string = url_string + tpdom.author.userprofile1.ya_tel + '&category_id=7'  # flat.author.userprofile1.ya_tel
+        url = url_string
+        # url = 'https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&phone=89654561231&source=3&price1=10502000&price2=10502000'
+        import time
+        time.sleep(5.5)  # Pause 5.5 seconds
+        response = requests.request("GET", url, headers=headers, data=payload)
+        jmain = dict(response.json())
+        for i in jmain['data']:
+            urls_ya.append(i['url'])
     return render(request, 'crm/commerce/detail.html',{'tn1': n1, 'tn2': n2, 'tn3': n3,'tpdom':tpdom,
-                                                       'registred_clients':registred_clients, 'urls':urls, })
+                                                       'registred_clients':registred_clients, 'urls':urls,
+                                                       'urls_ya':urls_ya, })
 
 
 @login_required
@@ -1240,6 +1256,7 @@ def myflatDetail(request, idd):
     otd_kl = clients.objects.filter(category='Квартиры', raion__contains=flat.raion, st_pub__contains='Видно в отделе', budg_do__gte=flat.cena_agenstv ).order_by('-date_sozd')
     all_kl = clients.objects.filter(category='Квартиры', raion__contains=flat.raion, st_pub__contains='Видно всем', budg_do__gte=flat.cena_agenstv ).order_by('-date_sozd')
     urls = []
+    urls_ya = []
     if '_search_board' in request.POST:
         import requests
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
@@ -1251,12 +1268,36 @@ def myflatDetail(request, idd):
         payload = {}
         headers = {}
         response = requests.request("GET", url, headers=headers, data=payload)
+        #print(response.text)
         #print('2 ', response)
         jmain = dict(response.json())
         for i in jmain['data']:
             urls.append(i['url'])
+
+
+        url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
+            # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
+        url_string = url_string + str(flat.cena_agenstv) + '&price2=' + str(flat.cena_agenstv) + '&city=Сочи&phone='
+        url_string = url_string + flat.author.userprofile1.ya_tel + '&category_id=2' #flat.author.userprofile1.ya_tel
+        url = str(url_string)
+        #print(url_string)
+        #url = 'https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&phone=89654561231&source=3&price1=10502000&price2=10502000'
+        #print(url_string)
+        import time
+        time.sleep(5.5)  # Pause 5.5 seconds
+        payload = "{\"query\":\"\",\"variables\":{}}"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("GET", url, headers=headers, data=payload)
+        jmain = dict(response.json())
+        for i in jmain['data']:
+            urls_ya.append(i['url'])
+        # for i in urls_ya:
+        #     print(i)
     return render(request, 'crm/flat/detail.html', {'tpflat':flat,'tp_my_kl':my_kl,'tp_otd_kl':otd_kl,'tp_all_kl':all_kl,
-                                                    'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj, 'urls':urls,
+                                                    'tn1':n1,'tn2':n2, 'tn3':n3,'t_my_ya_obj':my_ya_obj,
+                                                    'urls':urls, 'urls_ya':urls_ya,
                                                     'registred_clients':registred_clients,})
 
 @login_required
@@ -1982,6 +2023,7 @@ def dom_detail_view(request, idd):
     otd_kl = clients.objects.filter(category='Дома', raion__contains=dom.raion, st_pub__contains='Видно в отделе',budg_do__gte=dom.cena_agenstv, ).order_by('-date_sozd')
     all_kl = clients.objects.filter(category='Дома', raion__contains=dom.raion, st_pub__contains='Видно всем', budg_do__gte=dom.cena_agenstv, ).order_by('-date_sozd')
     urls = []
+    urls_ya = []
     if '_search_board' in request.POST:
         import requests
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1="
@@ -1996,8 +2038,24 @@ def dom_detail_view(request, idd):
         jmain = dict(response.json())
         for i in jmain['data']:
             urls.append(i['url'])
+
+
+        url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
+            # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
+        url_string = url_string + str(dom.cena_agenstv) + '&price2=' + str(dom.cena_agenstv) + '&city=Сочи&phone='
+        url_string = url_string + dom.author.userprofile1.ya_tel + '&category_id=4'  # flat.author.userprofile1.ya_tel
+        url = url_string
+        # url = 'https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&phone=89654561231&source=3&price1=10502000&price2=10502000'
+        import time
+        time.sleep(5.5)  # Pause 5.5 seconds
+        response = requests.request("GET", url, headers=headers, data=payload)
+        jmain = dict(response.json())
+        for i in jmain['data']:
+            urls_ya.append(i['url'])
+
     return render(request,'crm/doma/detail.html',{'tpdom':dom,'tp_my_kl':my_kl,'tp_otd_kl':otd_kl,'tp_all_kl':all_kl,'tn1':n1,
-                                                  'tn2':n2, 'registred_clients':registred_clients, 'urls':urls,})
+                                                  'tn2':n2, 'registred_clients':registred_clients,
+                                                  'urls':urls, 'urls_ya':urls_ya, })
 
 @login_required
 def dom_print_view(request, idd):
@@ -2243,6 +2301,7 @@ def uch_detail_view(request, idd):
     otd_kl = clients.objects.filter(category='Участки', raion__contains=uc.raion, st_pub__contains='Видно в отделе',budg_do__gte=uc.cena_agenstv, ).order_by('-date_sozd')
     all_kl = clients.objects.filter(category='Участки', raion__contains=uc.raion, st_pub__contains='Видно всем', budg_do__gte=uc.cena_agenstv, ).order_by('-date_sozd')
     urls = []
+    urls_ya = []
     if '_search_board' in request.POST:
         import requests
         url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
@@ -2258,8 +2317,24 @@ def uch_detail_view(request, idd):
         jmain = dict(response.json())
         for i in jmain['data']:
             urls.append(i['url'])
+
+
+        url_string = "https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&price1=" \
+            # "6500000&price2=6500000&city=Сочи&phone=89673270021&category_id=2"
+        url_string = url_string + str(uc.cena_agenstv) + '&price2=' + str(uc.cena_agenstv) + '&city=Сочи&phone='
+        url_string = url_string + uc.author.userprofile1.ya_tel + '&category_id=5'  # flat.author.userprofile1.ya_tel
+        url = url_string
+        # url = 'https://ads-api.ru/main/api?user=insochi@century21.ru&token=c4eef57751055fc4fc9e376e9448d06d&phone=89654561231&source=3&price1=10502000&price2=10502000'
+        import time
+        time.sleep(5.5)  # Pause 5.5 seconds
+        response = requests.request("GET", url, headers=headers, data=payload)
+        jmain = dict(response.json())
+        for i in jmain['data']:
+            urls_ya.append(i['url'])
+
     return render(request,'crm/uchastok/detail.html',{'tp_uch':uc,'tp_my_kl':my_kl,'tp_otd_kl':otd_kl,
-                                                      'tp_all_kl':all_kl,'tn1':n1,'tn2':n2, 'urls':urls,
+                                                      'tp_all_kl':all_kl,'tn1':n1,'tn2':n2,
+                                                      'urls':urls, 'urls_ya':urls_ya,
                                                       'registred_clients':registred_clients,})
 
 @login_required
