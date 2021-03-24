@@ -6,10 +6,10 @@
     <type>Продажа</type>
     <category>квартира</category>
     <property-type>Жилая</property-type>
- <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
+ <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
  {% if vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y" and post.contract != 'Без договора' %}
-     <vas>premium</vas>
- {% endif %}{% endcomment %}
+     <vas>premium {{ vas_date|date:"M d, Y" }}  <= {{post.date_sozd|date:"M d, Y"}} {{ post.contract }}</vas>
+ {% endif %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
