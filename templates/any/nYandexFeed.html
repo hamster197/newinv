@@ -7,11 +7,11 @@
     <category>квартира</category>
     <property-type>Жилая</property-type>
  <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
-     {% comment %}and post.contract != 'Без договора' {% endcomment %}
+{% comment %}and post.contract != 'Без договора'
  {% if vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y"  %}
      <vas>premium</vas>
  {% endif %}
-
+{% endcomment %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
