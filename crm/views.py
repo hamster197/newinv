@@ -1572,6 +1572,7 @@ def YandexFeedview(request):
 ## New Yandex for all(with out feiks)
 def NewYandexFeedview(request):
     vas_date = datetime.today() - timedelta(days=14)
+    print(vas_date.date())
     post = flat_obj.objects.filter(domclick='Да', domclick_pub='Да', type='flat', status_obj='Опубликован',).order_by('-pk')#[:20]
     #post = flat_obj.objects.filter(ya_verifed_pr='Да', type='flat').order_by('-pk')
     doma = flat_obj.objects.filter(domclick='Да', type='house', status_obj='Опубликован',).order_by('-datep')#[:20]
@@ -1592,7 +1593,7 @@ def NewYandexFeedview(request):
         dm = ''
     # end of autoручной ввод текста сео
     #print(vas_date)
-    return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'vas_date':vas_date,
+    return render(request,'any/nYandexFeed.html',{'tppost': post, 'tpgal':gal, 'tdate':date, 'vas_date':vas_date.date(),
                                                  'tdom':doma, 'tdm':dm, 'tuchastoc':uchastoc, 'comerce':comerce, }, content_type="text/xml")
 
 

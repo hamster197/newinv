@@ -6,12 +6,14 @@
     <type>Продажа</type>
     <category>квартира</category>
     <property-type>Жилая</property-type>
- <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
-{% comment %}and post.contract != 'Без договора'
- {% if vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y"  %}
+ <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00 {{ vas_date|date:"M d, Y" }}  {{ post.date_sozd|date:"M d, Y" }}</creation-date>
+{% comment %}vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y"  and post.contract != 'Без договора' {% endcomment %}
+ {% if vas_date <= post.date_sozd and post.contract == 'Агентский' %}
      <vas>premium</vas>
  {% endif %}
-{% endcomment %}
+ {% if vas_date <= post.date_sozd and post.contract == 'Эксклюзив' %}
+     <vas>premium</vas>
+ {% endif %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
@@ -113,10 +115,13 @@
     <type>Продажа</type>
     <property-type>Жилая</property-type>
     <category>дом</category>
- <creation-date>{{ doma.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
- {% if vas_date|date:"M d, Y" <= doma.date_sozd|date:"M d, Y" and doma.contract != 'Без договора' %}
+ <creation-date>{{ doma.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
+ {% if vas_date <= doma.date_sozd and doma.contract == 'Агентский' %}
      <vas>premium</vas>
- {% endif %}{% endcomment %}
+ {% endif %}
+ {% if vas_date <= doma.date_sozd and doma.contract == 'Эксклюзив' %}
+     <vas>premium</vas>
+ {% endif %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
@@ -199,10 +204,13 @@
     <property-type>Жилая</property-type>
     <category>участок</category>{%  if uchastoc.kadastr %}
     <cadastral-number>{{ uchastoc.kadastr }}</cadastral-number>{% endif %}
- <creation-date>{{ uchastoc.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>{% comment %}
-  {% if vas_date|date:"M d, Y" <= uchastoc.date_sozd|date:"M d, Y" and uchastoc.contract != 'Без договора' %}
+ <creation-date>{{ uchastoc.datep|date:"Y-m-d" }}T01:11:30+03:00</creation-date>
+ {% if vas_date <= uchastoc.date_sozd and uchastoc.contract == 'Агентский' %}
      <vas>premium</vas>
- {% endif %}{% endcomment %}
+ {% endif %}
+ {% if vas_date <= uchastoc.date_sozd and uchastoc.contract == 'Эксклюзив' %}
+     <vas>premium</vas>
+ {% endif %}
  <last-update-date>{{ tdate|date:"Y-m-d"  }}T{{ tdate|date:"h:m:s" }}+03:00</last-update-date>
  <location>
     <country>Россия</country>
@@ -275,6 +283,12 @@
     <locality-name>{% if subj.kr_raion == '' %}Сочи{% else %}Краснодар{% endif %}</locality-name>
     <address>{{ subj.adress }} </address>
 </location>
+ {% if vas_date <= subj.date_sozd and subj.contract == 'Агентский' %}
+     <vas>premium</vas>
+ {% endif %}
+ {% if vas_date <= subj.date_sozd and subj.contract == 'Эксклюзив' %}
+     <vas>premium</vas>
+ {% endif %}
 <sales-agent>
     <phone>{{ subj.author.userprofile1.tel }}</phone>
     <name>{{  subj.author.first_name }} {{ subj.author.last_name }}</name>
