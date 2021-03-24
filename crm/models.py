@@ -575,7 +575,7 @@ class otchet_nov(models.Model):
     rielt = models.ForeignKey('auth.User', verbose_name='Риелтор:', on_delete=models.CASCADE)
     rielt_proc = models.IntegerField(verbose_name='Проценты риелтора-инициатора сделки:',default=100, validators=[MaxValueValidator(100)], blank=True)
 
-    ploshad = models.DecimalField(verbose_name='Площадь:', decimal_places=2, max_digits=4,validators=[MinValueValidator(5)], help_text='min 5')
+    ploshad = models.DecimalField(verbose_name='Площадь:', decimal_places=2, max_digits=8,validators=[MinValueValidator(5)], help_text='min 5')
     stoimost = models.IntegerField(verbose_name='Стоимость объекта:', validators=[MinValueValidator(300000)],
                                    help_text='min 300 000', default=0)
     komisia =  models.IntegerField(verbose_name='Комисия:', validators=[MinValueValidator(1000)], help_text='min 1 000',

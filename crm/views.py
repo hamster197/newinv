@@ -1841,6 +1841,7 @@ def domaeditview(request,idd):
             form = kr_doma_edit_form(request.POST, request.FILES, instance=domform)
         else:
             form = doma_edit_form(request.POST, request.FILES, instance=domform)
+        print(form.errors)
         if form.is_valid():
             if request.POST.get('compo') == 'Без договора':
                 domform.contract = 'Без договора'

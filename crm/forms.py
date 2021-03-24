@@ -93,7 +93,7 @@ class yandex_flatform(forms.ModelForm):
         fields=('status_obj','client_name','client_tel','new_building','adress','dom_numb','kvart_numb','raion',
                 'etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','kitchen_value','etag',#
                 'etagnost','vid_is_okon','h_rast_more','san_usel','parking','cena_sobstv','cena_agenstv','prim', 'kadastr',
-                'security','rubbish_chute','lift','balcony', 'main_pct',)#,'domclick_pub')
+                'security','rubbish_chute','lift','balcony', 'main_pct','youtube',)#,'domclick_pub')
         #fields=('client_name','client_tel','domclick','status_obj','adress','raion','etap_sdachi','status_gilya','klass_gilya','remont','gaz','komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','kadastr','cena_sobstv','cena_agenstv','prim')
     def clean(self):
         cleaned_data = super(yandex_flatform, self).clean()
@@ -143,7 +143,8 @@ class flateditform(forms.ModelForm):
         model=flat_obj#'kredit',
         fields=('status_obj','raion', 'adress','dom_numb','kvart_numb','etap_sdachi','status_gilya','klass_gilya','remont',
                 'komnat','ploshad','etag','etagnost','vid_is_okon','san_usel','parking','gaz','kitchen_value','kadastr',
-                'cena_sobstv','cena_agenstv','prim','security','rubbish_chute','lift','balcony', 'h_rast_more', 'main_pct',)#,'domclick_pub')
+                'cena_sobstv','cena_agenstv','prim','security','rubbish_chute','lift','balcony', 'h_rast_more', 'main_pct',
+                'youtube')#,'domclick_pub')
     def clean(self):
         cleaned_data = super(flateditform, self).clean()
         if str(cleaned_data['etag']) == '0' or str(cleaned_data['etagnost']) == '0':
@@ -307,7 +308,7 @@ class doma_new_post(forms.ModelForm):
         model=flat_obj
         fields=('status_obj','client_name','client_tel','raion','adress','dom_numb','ploshad','kitchen_value','kadastr','cena_sobstv',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
-                    'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct',)
+                    'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct','youtube',)
 
     def clean(self):
         cleaned_data = super(doma_new_post, self).clean()
@@ -337,7 +338,7 @@ class doma_edit_form(forms.ModelForm):
         model = flat_obj
         fields = ('status_obj','raion','adress','dom_numb','ploshad','kitchen_value', 'kadastr','cena_sobstv',#'nazv',
                     'cena_agenstv','prim','h_vid_prava','h_vid_is_okon','h_isp_uch','h_infr','h_etagnost','h_komnat',
-                    'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct', )#
+                    'h_tip_doma','h_ploshad_uch','h_rast_more', 'main_pct', 'youtube', )#
      def clean(self):
         cleaned_data = super(doma_edit_form, self).clean()
         # if len(str(cleaned_data['prim'])) < 300:
@@ -371,7 +372,7 @@ class uc_new_post(forms.ModelForm):
         model=flat_obj
         fields=('status_obj','client_name','client_tel','raion','adress','uc_dom_nunb','h_infr','vid_razr','relef','kadastr',
                     'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
-                    'cena_sobstv','cena_agenstv','prim', 'main_pct', )
+                    'cena_sobstv','cena_agenstv','prim', 'main_pct', 'youtube',)
     def clean(self):
         cleaned_data = super(uc_new_post, self).clean()
         # if len(str(cleaned_data['prim'])) < 300:
@@ -407,7 +408,7 @@ class uc_edit_form(forms.ModelForm):
         model=flat_obj
         fields=('status_obj','raion','adress','h_infr','vid_razr','relef', 'kadastr',
                     'vid_prava','vid_prava','vid','pereferiya','h_ploshad_uch', 'h_rast_more',
-                    'cena_sobstv','cena_agenstv','prim', 'main_pct',)
+                    'cena_sobstv','cena_agenstv','prim', 'main_pct', 'youtube',)
         def clean(self):
             cleaned_data = super(uc_new_post, self).clean()
             # if len(str(cleaned_data['prim'])) < 300:
