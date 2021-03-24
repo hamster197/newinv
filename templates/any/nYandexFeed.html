@@ -6,7 +6,7 @@
     <type>Продажа</type>
     <category>квартира</category>
     <property-type>Жилая</property-type>
- <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00 {{ vas_date|date:"M d, Y" }}  {{ post.date_sozd|date:"M d, Y" }} {{ post.contract }}</creation-date>{% comment %}
+ <creation-date>{{ post.datep|date:"Y-m-d" }}T01:11:30+03:00 </creation-date>{% comment %}
  {% if vas_date|date:"M d, Y" <= post.date_sozd|date:"M d, Y" and post.contract != 'Без договора' %}
      <vas>premium</vas>
  {% endif %}{% endcomment %}
