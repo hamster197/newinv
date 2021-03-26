@@ -129,7 +129,7 @@ class flat_obj(models.Model):
     client_name=models.CharField('Имя собственника',max_length=50)
     client_tel = PhoneNumberField('тел собственника', help_text ='+79881234567')
     datep = models.DateField('Дата публикации', blank=True, auto_now=True)
-    date_sozd = models.DateField('Дата создания', blank=True, )
+    date_sozd = models.DateField('Дата создания', blank=True,  auto_now=True)#
     author=models.ForeignKey('auth.User',verbose_name='Автор', on_delete=models.CASCADE)
     status_obj_choises=(('Опубликован','Опубликован'),('Не опубликован','Не опубликован'), ('В архиве','В архиве'))
     status_obj=models.CharField('Публикация обьекта',max_length=45, choices=status_obj_choises,default='Опубликован')
