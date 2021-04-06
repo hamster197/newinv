@@ -802,6 +802,17 @@ def EditCommerceView(request, idd):
             #print(request.FILES.getlist('myfiles', '1'))
             files = request.FILES.getlist('myfiles')
             idd = subj.pk
+            if request.POST.get('compo') == 'Без договора':
+                subj.contract = 'Без договора'
+                subj.contract_number = ''
+                subj.contract_date_end = None
+                subj.save()
+            else:
+                subj.contract = request.POST.get('compo')
+                subj.contract_number = request.POST.get('contract_number')
+                if request.POST.get('date'):
+                    subj.contract_date_end = request.POST.get('date')
+                subj.save()
             for a_file in files:
                 instance = flat_obj_gal(
                     id_gal_id=idd,
