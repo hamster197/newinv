@@ -139,7 +139,7 @@ class flat_obj(models.Model):
     contract_date_end = models.DateField(verbose_name='До', null=True, blank=True)
     new_building = models.BooleanField(verbose_name='Новостройка?', default=False)
     youtube = models.CharField(verbose_name='Код видео с youtube', max_length=255, blank=True, )
-    kitchen_value = models.FloatField(verbose_name='Плошадь кухни',  default=0, null=True)
+    kitchen_value = models.FloatField(verbose_name='Плошадь кухни',  default=0, )#null=True
 
     type_choises = (('flat','flat'),('house','house'),('uchastok','uchastok'),('komerc','komerc'))
     type = models.CharField(max_length=25, verbose_name='Тип недвижимости', choices=type_choises, default='flat')

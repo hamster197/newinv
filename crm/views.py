@@ -794,10 +794,22 @@ def EditCommerceView(request, idd):
     subj = get_object_or_404(flat_obj, pk=idd)
     if request.POST:
         form = CommerceEditForm(request.POST, request.FILES, instance=subj)
+        #print(form.errors)
         if form.is_valid():
             form.save()
             if subj.main_pct:
                 subj.save_water()
+            #print(request.FILES.getlist('myfiles', '1'))
+            files = request.FILES.getlist('myfiles')
+            idd = subj.pk
+            for a_file in files:
+                instance = flat_obj_gal(
+                    id_gal_id=idd,
+                    npict=a_file
+                )
+                # instance.npict.name.encode('utf-8', 'ignore')
+                instance.save()  # filename.encode('utf-8', 'ignore'), file, save=True
+                instance.save_water()
             if '_submit_close' in request.POST:
                 return redirect('crm:my_index_commerce_url')
             if '_submit_new' in request.POST:
