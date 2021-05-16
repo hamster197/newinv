@@ -707,3 +707,6 @@ class GroupEditForm(forms.ModelForm):
 class ReportInOtdelForm(forms.Form):
     start_date = forms.DateField(label='Дата начала', required=True, widget=forms.TextInput(attrs={'type': 'date'}))
     end_date = forms.DateField(label='Дата конца', required=True, widget=forms.TextInput(attrs={'type': 'date'}))
+
+class CallSeacrhForm(forms.Form):
+    search_date = forms.DateField(label='Дата', required=True, widget=forms.TextInput(attrs={'type': 'date'}))

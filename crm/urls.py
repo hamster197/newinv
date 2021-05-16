@@ -162,6 +162,11 @@ urlpatterns = [
     url(r'^myadm/user_edit/(?P<agent_id>[\w\-]+)/$', views.UserEditView, name='user_edit_url'),
     url(r'^myadm/user_new/$', views.UserNewView, name='user_new_url'),
 
+    # Phone Calls Views
+    url(r'^myadm/admin_phone_calls/$', views.AdminPhoneView, name='adm_phone_call'),
+    url(r'^myadm/department_phone_calls/(?P<idd>[\w\-]+)/$', views.DepatmentPhoneView, name='department_phone_call'),
+    url(r'^myadm/user_phone_calls/(?P<idd>[\w\-]+)/$', views.UserPhoneView, name='user_phone_call'),
+
     # for Dashboard
     url(r'^dashboard/$', views.DashBoardView, name='DashBoard'),
 

@@ -23,7 +23,7 @@ from .forms import loginform, newsform, flatform, flat_search_form, newclientfor
     adm_form, DmTextForm, vestum_count_form, vestum_poryadok_form, vestum_pub_form, resep_flatform, flatform_appart, \
     BallForm, kr_yandex_flatform, kr_doma_new_post, kr_uc_new_post, kr_yandex_flateditform, kr_doma_edit_form, \
     kr_uc_edit_form, UserEditForm, UserGroupEdit, UserProfileGroupForm, UserChangePasswwordForm, kr_flat_search_form, \
-    CommerceEditForm, ReportInOtdelForm
+    CommerceEditForm, ReportInOtdelForm, CallSeacrhForm
 from .models import news, flat_obj, flat_obj_gal, clients, uchastok, otchet_nov, feed, feed_gallery, zayavka, \
     stat_obj_crm, reyting_po_sdelkam, reyt_sdelka_otd, cachestvoDomCl, UserProfile1, domclickText, TmpCianCount, \
     vestum_poryadok_feed, RieltsStat, OtdelStat
@@ -5737,3 +5737,70 @@ def ReportOtdelsView(request,):
     otdels = OtdelStat.objects.all().order_by('-closed_deal')
 
     return render(request, 'crm/stat/report_in_odels.html', {'date_form':date_form, 'agents':otdels, })
+
+
+#### Phone Calls
+@login_required
+def AdminPhoneView(request):
+    if request.user.groups.get().name != 'Администрация' and request.user.groups.get().name != 'Администрация Адлер':
+        if request.user.userprofile1.nach_otd == 'Да':
+            return redirect('crm:department_phone_call', idd=request.user.groups.get().pk)
+        else:
+            return redirect('crm:user_phone_call', idd=request.user.pk)
+
+    if request.user.groups.get().name == 'Администрация':#.exclude(name__contains='Адлер')
+        departments = Group.objects.all().exclude(name__startswith='Администрация') \
+            .exclude(name__contains='Краснодар').exclude(name__contains='Офис-менеджер').exclude(name__contains='Юристы')
+    if request.user.groups.get().name == 'Администрация Адлер':
+        departments = Group.objects.filter(name__contains='Адлер')
+    return render(request, 'zvonki/admin_phones.html', {'departments':departments.order_by('name'), 'tn1':'Звонки', 'tn2':'Общее' })
+
+@login_required
+def DepatmentPhoneView(request, idd):
+    department = get_object_or_404(Group, pk=idd)
+    if request.user.groups.get().name != 'Администрация' and request.user.groups.get().name != 'Администрация Адлер' \
+            and request.user.userprofile1.nach_otd != 'Да':
+        return redirect('crm:DashBoard')
+    users = User.objects.filter(groups=department, is_active=True,).order_by('last_name')
+    return render(request, 'zvonki/department_phones.html', { 'tn1':'Звонки', 'tn2':department, 'users':users, })
+
+@login_required
+def UserPhoneView(request, idd):
+    user = get_object_or_404(User, pk=idd)
+    date_now = datetime.now().date()
+    if '_call_search' in request.POST:
+        date_now = request.POST.get('search_date')
+    search_form = CallSeacrhForm(initial={'search_date': date_now, })
+    url = "https://cloudpbx.beeline.ru/apis/portal/records?userId=" + str(user.userprofile1.tel) + "%40ip.beeline.ru" + \
+          '&dateFrom=' + str(date_now) + 'T00%3A00%3A00.000Z&dateTo=' + str(date_now) + 'T23%3A00%3A00.000Z'
+    payload = {}
+    headers = {
+        'X-MPBX-API-AUTH-TOKEN': 'db73cb07-1624-45ab-8ea2-4decea1db7a0',
+        'Cookie': 'SRVNAME=AAP'
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+    calls_counter = 0
+    for i in response.json():
+        calls_counter += 1
+    import numpy as np
+    calls_array = np.chararray((calls_counter, 3), itemsize=185, unicode=True)
+    calls_counter = 0
+    for i in response.json():
+        call_id = str(i['id'])
+        url = "https://cloudpbx.beeline.ru/apis/portal/records/" +call_id + "/reference"
+
+        payload = {}
+        headers = {
+            'X-MPBX-API-AUTH-TOKEN': 'db73cb07-1624-45ab-8ea2-4decea1db7a0',
+            'Cookie': 'SRVNAME=AAP'
+        }
+
+        response_call = requests.request("GET", url, headers=headers, data=payload)
+        calls_array[calls_counter][0] = str(i['phone'])
+        calls_array[calls_counter][1] = round(i['duration']/60000, 2)#/60/60
+        calls_array[calls_counter][2] = response_call.json()['url']
+        calls_counter += 1
+
+    return render(request, 'zvonki/user_phones.html', {'tn1':'Звонки', 'tn2':user.last_name + ' '+ user.first_name + '(' + str(date_now) + ')',
+                                                       'calls_array':calls_array, 'search_form':search_form, })

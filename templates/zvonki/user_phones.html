@@ -1,0 +1,44 @@
+{% extends 'crm/main.html' %}
+{% block content %}
+<div class="row">
+   <div class="col s12 ">
+      <div class="card ">
+         <div class="card-content ">
+                 <form method="post" class="post-form" xmlns="http://www.w3.org/1999/html">
+                    {% csrf_token %}
+                     {{ search_form.as_p }}
+                     <div class="col s2"><button type="submit" name="_call_search" class="btn">Поиск</button></div>
+                 </form>
+         </div>
+      </div>
+   </div>
+</div>
+<div class="row">
+   <div class="col s12 ">
+      <div class="card ">
+         <div class="card-content ">
+            <table class="table">
+               <thead>
+                  <tr>
+                     <th scope="col">Входящий</th>
+                     <th scope="col">Продолжительность</th>
+                     <th scope="col"></th>
+{#                     <th scope="col">Handle</th>#}
+                  </tr>
+               </thead>
+               <tbody>
+               {% for phone_call in calls_array %}
+                  <tr>
+                     <th scope="row">{{ phone_call.0 }}</th>
+                     <td>{{ phone_call.1 }} мин.</td>
+                     <td><a href="{{ phone_call.2 }}" class="button" target="_blank">Скачать</a></td>
+{#                     <td>@mdo</td>#}
+                  </tr>
+               {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
