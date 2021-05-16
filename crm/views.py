@@ -5786,21 +5786,25 @@ def UserPhoneView(request, idd):
     import numpy as np
     calls_array = np.chararray((calls_counter, 3), itemsize=185, unicode=True)
     calls_counter = 0
-    for i in response.json():
-        call_id = str(i['id'])
-        url = "https://cloudpbx.beeline.ru/apis/portal/records/" +call_id + "/reference"
+    print(response.json()['description'])
+    if response.json()['description'] != 'Для заданного идентификатора нет абонента':
+        for i in response.json():
+            call_id = str(i['id'])
+            url = "https://cloudpbx.beeline.ru/apis/portal/records/" + call_id + "/reference"
 
-        payload = {}
-        headers = {
-            'X-MPBX-API-AUTH-TOKEN': 'db73cb07-1624-45ab-8ea2-4decea1db7a0',
-            'Cookie': 'SRVNAME=AAP'
-        }
+            payload = {}
+            headers = {
+                'X-MPBX-API-AUTH-TOKEN': 'db73cb07-1624-45ab-8ea2-4decea1db7a0',
+                'Cookie': 'SRVNAME=AAP'
+            }
 
-        response_call = requests.request("GET", url, headers=headers, data=payload)
-        calls_array[calls_counter][0] = str(i['phone'])
-        calls_array[calls_counter][1] = round(i['duration']/60000, 2)#/60/60
-        calls_array[calls_counter][2] = response_call.json()['url']
-        calls_counter += 1
+            response_call = requests.request("GET", url, headers=headers, data=payload)
+            calls_array[calls_counter][0] = str(i['phone'])
+            calls_array[calls_counter][1] = round(i['duration'] / 60000, 2)  # /60/60
+            calls_array[calls_counter][2] = response_call.json()['url']
+            calls_counter += 1
+    else:
+        calls_array[calls_counter][0] = 'Для заданного идентификатора нет абонента'
 
     return render(request, 'zvonki/user_phones.html', {'tn1':'Звонки', 'tn2':user.last_name + ' '+ user.first_name + '(' + str(date_now) + ')',
                                                        'calls_array':calls_array, 'search_form':search_form, })
