@@ -312,7 +312,16 @@ label{margin:0;}
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
                                         <span class="hide-menu"> Клиенты</span>
                                     </a>
-                                    </li>{% comment %}
+                                </li>
+								<li class="sidebar-item">
+                                    <a href="
+                                        {% url 'crm:adm_phone_call' %}
+                                    " class="sidebar-link">
+                                        <i class="mdi mdi-checkbox-marked-circle-outline"></i>
+                                        <span class="hide-menu"> Звонки</span>
+                                    </a>
+                                </li>
+                                {% comment %}
 								<li class="sidebar-item">
                                     <a href="{% url 'crm:cianindex' %}" class="sidebar-link">
                                         <i class="mdi mdi-checkbox-marked-circle-outline"></i>
