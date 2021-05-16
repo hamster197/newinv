@@ -5786,7 +5786,7 @@ def UserPhoneView(request, idd):
     import numpy as np
     calls_array = np.chararray((calls_counter, 3), itemsize=185, unicode=True)
     calls_counter = 0
-    print(response.json()['description'])
+    #print(response.json()['description'])
     if response.json()['description'] != 'Для заданного идентификатора нет абонента':
         for i in response.json():
             call_id = str(i['id'])
