@@ -5786,8 +5786,9 @@ def UserPhoneView(request, idd):
     import numpy as np
     calls_array = np.chararray((calls_counter, 3), itemsize=185, unicode=True)
     calls_counter = 0
-    #print(response.json()['description'])
-    if response.json()['description'] != 'Для заданного идентификатора нет абонента':
+    if response.text == '{"errorCode":"UserNotFound","description":"Для заданного идентификатора нет абонента"}':
+        calls_array[0][0] = 'Для заданного идентификатора нет абонента'
+    else:
         for i in response.json():
             call_id = str(i['id'])
             url = "https://cloudpbx.beeline.ru/apis/portal/records/" + call_id + "/reference"
@@ -5803,8 +5804,7 @@ def UserPhoneView(request, idd):
             calls_array[calls_counter][1] = round(i['duration'] / 60000, 2)  # /60/60
             calls_array[calls_counter][2] = response_call.json()['url']
             calls_counter += 1
-    else:
-        calls_array[calls_counter][0] = 'Для заданного идентификатора нет абонента'
+
 
     return render(request, 'zvonki/user_phones.html', {'tn1':'Звонки', 'tn2':user.last_name + ' '+ user.first_name + '(' + str(date_now) + ')',
                                                        'calls_array':calls_array, 'search_form':search_form, })
