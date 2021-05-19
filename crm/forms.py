@@ -710,3 +710,4 @@ class ReportInOtdelForm(forms.Form):
 
 class CallSeacrhForm(forms.Form):
     search_date = forms.DateField(label='Дата', required=True, widget=forms.TextInput(attrs={'type': 'date'}))
+    search_date_end = forms.DateField(label='Дата', required=True, widget=forms.TextInput(attrs={'type': 'date'}))

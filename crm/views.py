@@ -5768,11 +5768,13 @@ def DepatmentPhoneView(request, idd):
 def UserPhoneView(request, idd):
     user = get_object_or_404(User, pk=idd)
     date_now = datetime.now().date()
+    date_now_end = datetime.now().date()
     if '_call_search' in request.POST:
         date_now = request.POST.get('search_date')
-    search_form = CallSeacrhForm(initial={'search_date': date_now, })
+        date_now_end =  request.POST.get('search_date_end')
+    search_form = CallSeacrhForm(initial={'search_date': date_now, 'search_date_end': date_now_end,})
     url = "https://cloudpbx.beeline.ru/apis/portal/records?userId=" + str(user.userprofile1.tel) + "%40ip.beeline.ru" + \
-          '&dateFrom=' + str(date_now) + 'T00%3A00%3A00.000Z&dateTo=' + str(date_now) + 'T23%3A00%3A00.000Z'
+          '&dateFrom=' + str(date_now) + 'T00%3A00%3A00.000Z&dateTo=' + str(date_now_end) + 'T23%3A00%3A00.000Z'#date_now
     payload = {}
     headers = {
         'X-MPBX-API-AUTH-TOKEN': 'db73cb07-1624-45ab-8ea2-4decea1db7a0',
